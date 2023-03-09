@@ -51,8 +51,6 @@
   <macro name="author">
     <names variable="author">
       <name>
-        <!-- <name-part name="family" text-case="uppercase"/> -->
-        <!-- <name-part name="given"/> -->
         <name-part name="family" text-case="capitalize-first"/>
         <name-part name="given" text-case="capitalize-first"/>
       </name>
@@ -90,8 +88,6 @@
   <macro name="container-author">
     <names variable="editor">
       <name>
-        <!-- <name-part name="family" text-case="uppercase"/> -->
-        <!-- <name-part name="given"/> -->
         <name-part name="family" text-case="capitalize-first"/>
         <name-part name="given" text-case="capitalize-first"/>
       </name>
@@ -193,8 +189,6 @@
   <macro name="secondary-contributor">
     <names variable="translator">
       <name>
-        <!-- <name-part name="family" text-case="uppercase"/> -->
-        <!-- <name-part name="given"/> -->
         <name-part name="family" text-case="capitalize-first"/>
         <name-part name="given" text-case="capitalize-first"/>
       </name>
@@ -322,10 +316,10 @@
   </macro>
   <!-- 获取和访问路径以及 DOI -->
   <macro name="url-doi">
-    <!-- <group delimiter=". ">
+    <group delimiter=". ">
       <text variable="URL"/>
       <text variable="DOI" prefix="DOI:"/>
-    </group> -->
+    </group>
   </macro>
   <!-- 连续出版物的年卷期 -->
   <macro name="year-volume-issue">
@@ -345,7 +339,7 @@
       <text macro="secondary-contributor"/>
       <text macro="edition"/>
       <text macro="publishing"/>
-      <text macro="url-doi"/>
+      <!-- <text macro="url-doi"/> -->
     </group>
   </macro>
   <!-- 专著中的析出文献 -->
@@ -364,7 +358,7 @@
       </group>
       <text macro="edition"/>
       <text macro="publishing"/>
-      <text macro="url-doi"/>
+      <!-- <text macro="url-doi"/> -->
     </group>
   </macro>
   <!-- 连续出版物 -->
@@ -384,7 +378,7 @@
       <text macro="author"/>
       <text macro="title"/>
       <text macro="periodical-publishing"/>
-      <text macro="url-doi"/>
+      <!-- <text macro="url-doi"/> -->
     </group>
   </macro>
   <!-- 专利文献 -->
@@ -396,7 +390,7 @@
         <text macro="issued-date"/>
         <text macro="accessed-date"/>
       </group>
-      <text macro="url-doi"/>
+      <!-- <text macro="url-doi"/> -->
     </group>
   </macro>
   <!-- 正文中引用的文献标注格式 -->
