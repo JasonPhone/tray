@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <style xmlns="http://purl.org/net/xbiblio/csl" version="1.0" class="in-text" names-delimiter=". " name-as-sort-order="all" sort-separator=" " demote-non-dropping-particle="never" initialize-with=" " initialize-with-hyphen="false" page-range-format="expanded" default-locale="zh-CN">
   <info>
-    <title>GB/T 7714-2015 (numeric, 中文, no URL/DOI)</title>
-    <id>modified_by_jason</id>
-    <!-- <link href="http://www.zotero.org/styles/china-national-standard-gb-t-7714-2015-numeric" rel="self"/> -->
-    <!-- <link href="http://std.samr.gov.cn/gb/search/gbDetailed?id=71F772D8055ED3A7E05397BE0A0AB82A" rel="documentation"/> -->
+    <title>China National Standard GB/T 7714-2015 (numeric, 中文)</title>
+    <id>http://www.zotero.org/styles/china-national-standard-gb-t-7714-2015-numeric</id>
+    <link href="http://www.zotero.org/styles/china-national-standard-gb-t-7714-2015-numeric" rel="self"/>
+    <link href="http://std.samr.gov.cn/gb/search/gbDetailed?id=71F772D8055ED3A7E05397BE0A0AB82A" rel="documentation"/>
     <author>
       <name>牛耕田</name>
       <email>buffalo_d@163.com</email>
     </author>
     <contributor>
-      <name>jason</name>
-      <email>zs_feng@qq.com</email>
+      <name>Zeping Lee</name>
+      <email>zepinglee@gmail.com</email>
     </contributor>
     <category citation-format="numeric"/>
     <category field="generic-base"/>
-    <summary>GB/T 7714-2015 numeric style</summary>
-    <updated>2023-02-27T10:44:01+00:00</updated>
+    <summary>The Chinese GB/T 7714-2015 numeric style</summary>
+    <updated>2022-01-20T00:00:00+08:00</updated>
     <rights license="http://creativecommons.org/licenses/by-sa/3.0/">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>
   </info>
   <locale xml:lang="zh-CN">
@@ -51,10 +51,8 @@
   <macro name="author">
     <names variable="author">
       <name>
-        <!-- <name-part name="family" text-case="uppercase"/> -->
-        <!-- <name-part name="given"/> -->
-        <name-part name="family" text-case="capitalize-first"/>
-        <name-part name="given" text-case="capitalize-first"/>
+        <name-part name="family" text-case="uppercase"/>
+        <name-part name="given"/>
       </name>
       <substitute>
         <names variable="composer"/>
@@ -90,10 +88,8 @@
   <macro name="container-author">
     <names variable="editor">
       <name>
-        <!-- <name-part name="family" text-case="uppercase"/> -->
-        <!-- <name-part name="given"/> -->
-        <name-part name="family" text-case="capitalize-first"/>
-        <name-part name="given" text-case="capitalize-first"/>
+        <name-part name="family" text-case="uppercase"/>
+        <name-part name="given"/>
       </name>
       <substitute>
         <names variable="editorial-director"/>
@@ -193,10 +189,8 @@
   <macro name="secondary-contributor">
     <names variable="translator">
       <name>
-        <!-- <name-part name="family" text-case="uppercase"/> -->
-        <!-- <name-part name="given"/> -->
-        <name-part name="family" text-case="capitalize-first"/>
-        <name-part name="given" text-case="capitalize-first"/>
+        <name-part name="family" text-case="uppercase"/>
+        <name-part name="given"/>
       </name>
       <label form="short" prefix=", "/>
     </names>
@@ -313,20 +307,19 @@
           <text value="Z"/>
         </else>
       </choose>
-      <!-- Add /OL -->
-      <!-- <choose>
+      <choose>
         <if variable="URL DOI" match="any">
           <text value="OL"/>
         </if>
-      </choose> -->
+      </choose>
     </group>
   </macro>
   <!-- 获取和访问路径以及 DOI -->
   <macro name="url-doi">
-    <!-- <group delimiter=". ">
+    <group delimiter=". ">
       <text variable="URL"/>
       <text variable="DOI" prefix="DOI:"/>
-    </group> -->
+    </group>
   </macro>
   <!-- 连续出版物的年卷期 -->
   <macro name="year-volume-issue">
