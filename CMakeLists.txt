@@ -47,5 +47,6 @@ include_directories(
   ./src
 )
 
+add_subdirectory(./extern/ImGui)
 add_subdirectory(./src)
 add_subdirectory(./apps)
