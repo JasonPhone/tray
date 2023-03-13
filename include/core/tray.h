@@ -9,7 +9,7 @@
 #include <iostream>
 #include <cmath>
 #include <utility>
-#include "spdlog/spdlog.h"
+#include <assert.h>
 
 #ifdef TRAY_FLOAT_AS_DOUBLE
 using Float = double;
@@ -18,6 +18,9 @@ using Float = float;
 #endif
 // Logging and assert warp
 #define ASSERT(x) assert((x))
+// For compiling speed.
+#ifndef NDEBUG
+#include "spdlog/spdlog.h"
 #define SINFO(msg) spdlog::info(msg)
 #define FINFO(fmt, msg) spdlog::info(fmt, msg)
 #define SWARN(msg) spdlog::WARN(msg)
@@ -26,6 +29,27 @@ using Float = float;
 #define FERROR(fmt, msg) spdlog::error(fmt, msg)
 #define SCRITICAL(msg) spdlog::critical(msg)
 #define FCRITICAL(fmt, msg) spdlog::critical(fmt, msg)
+#else
+#define SINFO(msg)
+#define FINFO(fmt, msg)
+#define SWARN(msg)
+#define FWARN(fmt, msg)
+#define SERROR(msg)
+#define FERROR(fmt, msg)
+#define SCRITICAL(msg)
+#define FCRITICAL(fmt, msg)
+#endif
 
 namespace TRay {
+// geometry.h
+template <typename T>
+class Vector3;
+template <typename T>
+class Vector2;
+template <typename T>
+class Point3;
+template <typename T>
+class Point2;
+template <typename T>
+class Normal3;
 }  // namespace TRay
