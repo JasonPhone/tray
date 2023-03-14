@@ -134,11 +134,11 @@ inline Vector3<T> normalize(const Vector3<T> &v) {
   return (1.0 / v.length()) * v;
 }
 template <typename T>
-inline Vector3<T> min_component(const Vector3<T> &v) {
+inline T min_component(const Vector3<T> &v) {
   return std::min(v.x, std::min(v.y, v.z));
 }
 template <typename T>
-inline Vector3<T> max_component(const Vector3<T> &v) {
+inline T max_component(const Vector3<T> &v) {
   return std::max(v.x, std::max(v.y, v.z));
 }
 /// @brief Get (one of) the index of dimension which has the maximum component.
@@ -207,11 +207,11 @@ inline Vector2<T> normalize(const Vector2<T> &v) {
   return (1.0 / v.length()) * v;
 }
 template <typename T>
-inline Vector2<T> min_component(const Vector2<T> &v) {
+inline T min_component(const Vector2<T> &v) {
   return std::min(v.x, v.y);
 }
 template <typename T>
-inline Vector2<T> max_component(const Vector2<T> &v) {
+inline T max_component(const Vector2<T> &v) {
   return std::max(v.x, v.y);
 }
 /// @brief Get (one of) the index of dimension which has the maximum component.
