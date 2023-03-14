@@ -44,6 +44,7 @@ class Vector3 {
     x *= s, y *= s, z *= s;
     return *this;
   }
+  friend Vector3<T> operator*(T s, const Vector3<T> &v) { return v * s; }
   T operator[](int i) const {
     ASSERT(i >= 0 && i <= 2);
     return (i == 0) ? x : (i == 1 ? y : z);
@@ -87,6 +88,7 @@ class Vector2 {
     return *this;
   }
   Vector2<T> operator*(T s) const { return Vector2<T>(x * s, y * s); }
+  friend Vector2<T> operator*(T s, const Vector2<T> &v) { return v * s; }
   Vector2<T> &operator*=(T s) {
     x *= s, y *= s;
     return *this;
@@ -234,4 +236,4 @@ template <typename T>
 inline Vector2<T> permute(const Vector2<T> &v, int x, int y) {
   return Vector2<T>(v[x], v[y]);
 }
-} // namespace TRay
+}  // namespace TRay
