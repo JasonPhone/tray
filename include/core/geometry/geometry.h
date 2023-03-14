@@ -32,6 +32,7 @@
 #include "core/tray.h"
 #include "core/geometry/vector.h"
 #include "core/geometry/point.h"
+#include "core/geometry/ray.h"
 
 namespace TRay {
 /**

@@ -16,6 +16,7 @@ using Float = double;
 #else
 using Float = float;
 #endif
+
 // Logging and assert warp
 #define ASSERT(x) assert((x))
 // For compiling speed.
@@ -52,4 +53,7 @@ template <typename T>
 class Point2;
 template <typename T>
 class Normal3;
+// Math constants.
+static constexpr Float FLOAT_MAX = std::numeric_limits<Float>::max();
+static constexpr Float FLOAT_INF = std::numeric_limits<Float>::infinity();
 }  // namespace TRay
