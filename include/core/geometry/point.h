@@ -41,8 +41,11 @@ class Point3 {
     x -= v.x, y -= v.y, z -= v.z;
     return *this;
   }
-  Vector3<T> operator-(const Point3<T> &v) const {
-    return Vector3<T>(x - v.x, y - v.y, z - v.z);
+  Vector3<T> operator-(const Point3<T> &p) const {
+    return Vector3<T>(x - p.x, y - p.y, z - p.z);
+  }
+  bool operator==(const Point3<T> &p) const {
+    return x == p.x && y == p.y && z == p.z;
   }
 
   /// @brief To compute weighted sum.
@@ -110,6 +113,9 @@ class Point2 {
   }
   Vector2<T> operator-(const Point2<T> &p) const {
     return Vector2<T>(x - p.x, y - p.y);
+  }
+  bool operator==(const Point2<T> &p) const {
+    return x == p.x && y == p.y;
   }
 
   Point2<T> operator*(T s) const { return Point2<T>(x * s, y * s); }
