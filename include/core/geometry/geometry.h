@@ -33,6 +33,7 @@
 #include "core/geometry/vector.h"
 #include "core/geometry/point.h"
 #include "core/geometry/ray.h"
+#include "core/geometry/bound.h"
 
 namespace TRay {
 /**
@@ -143,6 +144,16 @@ inline std::ostream &operator<<(std::ostream &os, const Point2<T> &p) {
 template <typename T>
 inline std::ostream &operator<<(std::ostream &os, const Normal3<T> &n) {
   os << " <" << n.x << ", " << n.y << ", " << n.z << "> ";
+  return os;
+}
+template <typename T>
+inline std::ostream &operator<<(std::ostream &os, const Bound3<T> &b) {
+  os << " {" << b.p_min << ", " << b.p_max << "} ";
+  return os;
+}
+template <typename T>
+inline std::ostream &operator<<(std::ostream &os, const Bound2<T> &b) {
+  os << " {" << b.p_min << ", " << b.p_max << "} ";
   return os;
 }
 }  // namespace TRay

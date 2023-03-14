@@ -6,9 +6,11 @@
 #include <iostream>
 
 int main() {
-
-  TRay::Normal3 n(2, 3, 4);
-  TRay::Vector3 v = TRay::Vector3(n);
-  std::cout << n << v << std::endl;
+  TRay::Bound2i b({1, 2}, {5, 6});
+  TRay::Bound2iIterator r(b);
+  int c = 0;
+  for (auto p : r) {
+    std::cout << p ;
+  }
   return 0;
 }

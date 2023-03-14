@@ -42,7 +42,7 @@ using Float = float;
 #endif
 
 namespace TRay {
-// geometry.h
+// Geometry
 template <typename T>
 class Vector3;
 template <typename T>
@@ -53,7 +53,13 @@ template <typename T>
 class Point2;
 template <typename T>
 class Normal3;
+template <typename T>
+class Bound3;
+template <typename T>
+class Bound2;
 // Math constants.
 static constexpr Float FLOAT_MAX = std::numeric_limits<Float>::max();
 static constexpr Float FLOAT_INF = std::numeric_limits<Float>::infinity();
+// Math functions.
+inline Float lerp(Float a, Float b, Float t) { return (1 - t) * a + t * b; }
 }  // namespace TRay
