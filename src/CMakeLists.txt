@@ -14,8 +14,8 @@ add_library(tiny_obj_loader
   tiny_obj_loader.cpp
 )
 
-add_library(TRay_geometry
-  STATIC
-  ${HEADER_DIR}/core/geometry/geometry.h
-  ${SOURCE_DIR}/core/geometry/geometry.cpp
-)
+# add_library(TRay_geometry
+#   STATIC
+#   ${HEADER_DIR}/core/geometry/geometry.h
+#   ${SOURCE_DIR}/core/geometry/geometry.cpp
+# )

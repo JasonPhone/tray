@@ -9,5 +9,6 @@ int main() {
 
   TRay::Normal3 n(2, 3, 4);
   TRay::Vector3 v = TRay::Vector3(n);
+  std::cout << n << v << std::endl;
   return 0;
 }
