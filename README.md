@@ -39,12 +39,12 @@ TRay for "yet another Ray Tracer".
 ## Renderer
 
 - [ ] Geometry, Transformation
-  - [ ] Coordinate System
-  - [ ] Vector
-  - [ ] Point
-  - [ ] Normal
-  - [ ] Ray
-  - [ ] Bounding Box
+  - [x] Coordinate System
+  - [x] Vector
+  - [x] Point
+  - [x] Normal
+  - [x] Ray
+  - [x] Bounding Box
   - [ ] Transformation
   - [ ] Applying Transformation
   - [ ] Animating Transformation
@@ -52,8 +52,6 @@ TRay for "yet another Ray Tracer".
 - [ ] Shape
   - [ ] Basic Interface
   - [ ] Sphere
-  - [ ] Cylinder
-  - [ ] Disk
   - [ ] Triangle Meshes with tiny_obj_loader
   - [ ] Rounding Error
 - [ ] Primitive (Shape and shading info), Acceleration
