@@ -13,6 +13,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
   "${CMAKE_SOURCE_DIR}/lib/libglfw3.a"
   stb_image
   tiny_obj_loader
+  TRay_geometry
 )
 
 # Copy assimp dll into this folder
