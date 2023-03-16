@@ -75,6 +75,8 @@ TRay for "yet another Ray Tracer".
   - [ ] Film and Filter
 - [ ] Reflection, Material
   - [ ] Disney BSDF
+- [ ] Texture
+  - [ ] Checkerboard
 - [ ] Light
   - [ ] Interface
   - [ ] Point Light
