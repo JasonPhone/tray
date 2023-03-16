@@ -19,47 +19,86 @@ using Float = float;
 
 // Logging and assert warp
 #define ASSERT(x) assert((x))
+#define PEEK(x) std::cerr << #x << ": " << x << "\n";
 // For compiling speed.
 #ifndef NDEBUG
 #include "spdlog/spdlog.h"
-#define SINFO(msg) spdlog::info(msg)
-#define FINFO(fmt, msg) spdlog::info(fmt, msg)
-#define SWARN(msg) spdlog::WARN(msg)
-#define FWARN(fmt, msg) spdlog::WARN(fmt, msg)
-#define SERROR(msg) spdlog::error(msg)
-#define FERROR(fmt, msg) spdlog::error(fmt, msg)
-#define SCRITICAL(msg) spdlog::critical(msg)
-#define FCRITICAL(fmt, msg) spdlog::critical(fmt, msg)
+#define SInfo(msg) spdlog::info(msg)
+#define FInfo(fmt, msg...) spdlog::info(fmt, ##msg)
+#define SWarn(msg) spdlog::WARN(msg)
+#define FWarn(fmt, msg...) spdlog::WARN(fmt, ##msg)
+#define SError(msg) spdlog::error(msg)
+#define FError(fmt, msg...) spdlog::error(fmt, ##msg)
+#define SCritical(msg) spdlog::critical(msg)
+#define FCritical(fmt, msg...) spdlog::critical(fmt, ##msg)
 #else
-#define SINFO(msg)
-#define FINFO(fmt, msg)
-#define SWARN(msg)
-#define FWARN(fmt, msg)
-#define SERROR(msg)
-#define FERROR(fmt, msg)
-#define SCRITICAL(msg)
-#define FCRITICAL(fmt, msg)
+#define SInfo(msg)
+#define FInfo(fmt, msg...)
+#define SWarn(msg)
+#define FWarn(fmt, msg...)
+#define SError(msg)
+#define FError(fmt, msg...)
+#define SCritical(msg)
+#define FCritical(fmt, msg...)
 #endif
 
 namespace TRay {
-// Geometry
+// core/geometry/vector.h
+// ----------------------
 template <typename T>
 class Vector3;
+using Vector3i = Vector3<int>;
+using Vector3f = Vector3<Float>;
 template <typename T>
 class Vector2;
+using Vector2i = Vector2<int>;
+using Vector2f = Vector2<Float>;
+
+// core/geometry/point.h
+// ---------------------
 template <typename T>
 class Point3;
+using Point3i = Point3<int>;
+using Point3f = Point3<Float>;
 template <typename T>
 class Point2;
+using Point2i = Point2<int>;
+using Point2f = Point2<Float>;
 template <typename T>
+
+// core/geometry/geometry.h
+// ------------------------
 class Normal3;
+
+// core/geometry/ray.h
+// -------------------
+class Ray;
 template <typename T>
+
+// core/geometry/bound.h
+// ---------------------
 class Bound3;
+using Bound3i = Bound3<int>;
+using Bound3f = Bound3<Float>;
 template <typename T>
 class Bound2;
+using Bound2i = Bound2<int>;
+using Bound2f = Bound2<Float>;
+
+// core/geometry/transform.h
+// -------------------------
+struct Mat4x4;
+class Transform;
+
 // Math constants.
+// ---------------
 static constexpr Float FLOAT_MAX = std::numeric_limits<Float>::max();
 static constexpr Float FLOAT_INF = std::numeric_limits<Float>::infinity();
+static constexpr Float PI = 3.14159265358979323846;
+
 // Math functions.
+// ---------------
 inline Float lerp(Float a, Float b, Float t) { return (1 - t) * a + t * b; }
+inline Float deg_to_rad(Float deg) { return deg / 180.0 * PI; }
+
 }  // namespace TRay
