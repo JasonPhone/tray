@@ -104,11 +104,6 @@ class Vector2 {
   T x, y;
 };
 
-using Vector3f = Vector3<Float>;
-using Vector3i = Vector3<int>;
-using Vector2f = Vector2<Float>;
-using Vector2i = Vector2<int>;
-
 /// @brief Vector3 inlines.
 template <typename T>
 inline Vector3<T> abs(const Vector3<T> &v) {

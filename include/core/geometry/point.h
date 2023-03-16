@@ -143,10 +143,6 @@ class Point2 {
   T x, y;
 };
 
-using Point3i = Point3<int>;
-using Point3f = Point3<Float>;
-using Point2i = Point2<int>;
-using Point2f = Point2<Float>;
 
 /// @brief Point3 inlines.
 template <typename T>
