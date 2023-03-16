@@ -34,6 +34,7 @@
 #include "core/geometry/point.h"
 #include "core/geometry/ray.h"
 #include "core/geometry/bound.h"
+#include "core/geometry/transform.h"
 
 namespace TRay {
 /**
@@ -154,6 +155,18 @@ inline std::ostream &operator<<(std::ostream &os, const Bound3<T> &b) {
 template <typename T>
 inline std::ostream &operator<<(std::ostream &os, const Bound2<T> &b) {
   os << " {" << b.p_min << ", " << b.p_max << "} ";
+  return os;
+}
+inline std::ostream &operator<<(std::ostream &os, const Mat4x4 &mat) {
+  os << "{\n";
+  for (int i = 0; i < 4; i++) {
+    os << "\t";
+    for (int j = 0; j < 4; j++) {
+      os << mat.val[i][j] << " ";
+    }
+    os << "\n";
+  }
+  os << "}\n";
   return os;
 }
 }  // namespace TRay

@@ -112,10 +112,6 @@ class Bound2 {
   }
   Point2<T> p_min, p_max;
 };
-using Bound3i = Bound3<int>;
-using Bound3f = Bound3<Float>;
-using Bound2i = Bound2<int>;
-using Bound2f = Bound2<Float>;
 
 /**
  * @brief  Custom iterator for Bound2i.
