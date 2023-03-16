@@ -50,17 +50,20 @@ TRay for "yet another Ray Tracer".
   - [ ] Animating Transformation
   - [ ] Interaction
 - [ ] Shape
-  - [ ] Basic Interface
+  - [ ] Interface
   - [ ] Sphere
   - [ ] Triangle Meshes with tiny_obj_loader
   - [ ] Rounding Error
 - [ ] Primitive (Shape and shading info), Acceleration
+  - [ ] Interface
   - [ ] Primitives
   - [ ] Aggregates
   - [ ] BVH
 - [ ] Color, Radiometry
-  - [ ] Try only basic RGB with that interface
+  - [ ] Interface
+  - [ ] Try only basic RGB
 - [ ] Camera
+  - [ ] Interface
   - [ ] Camera Model
   - [ ] Perspective Camera and Thin Lens
 - [ ] **Sampling**
@@ -74,8 +77,10 @@ TRay for "yet another Ray Tracer".
   - [ ] Matbuilder
   - [ ] Film and Filter
 - [ ] Reflection, Material
+  - [ ] Interface
   - [ ] Disney BSDF
 - [ ] Texture
+  - [ ] Interface
   - [ ] Checkerboard
 - [ ] Light
   - [ ] Interface
