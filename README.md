@@ -45,8 +45,8 @@ TRay for "yet another Ray Tracer".
   - [x] Normal
   - [x] Ray
   - [x] Bounding Box
-  - [ ] Transformation
-  - [ ] Applying Transformation
+  - [x] Transformation
+  - [x] Applying Transformation
   - [ ] Animating Transformation
   - [ ] Interaction
 - [ ] Shape
