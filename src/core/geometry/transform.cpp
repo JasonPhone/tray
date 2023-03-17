@@ -1,6 +1,8 @@
 #include "core/geometry/transform.h"
 #include "core/geometry/vector.h"
 #include "core/geometry/point.h"
+#include "core/geometry/ray.h"
+#include "core/geometry/bound.h"
 
 namespace TRay {
 // Mat4x4 impl.
@@ -139,6 +141,75 @@ bool Transform::is_identity() const {
   }
   return true;
 }
+bool Transform::will_swap_hand() const {
+  Float det =
+      m.val[0][0] * (m.val[1][1] * m.val[2][2] - m.val[1][2] * m.val[2][1]) +
+      m.val[0][1] * (m.val[1][2] * m.val[2][0] - m.val[1][0] * m.val[2][2]) +
+      m.val[0][2] * (m.val[1][0] * m.val[2][1] - m.val[1][1] * m.val[2][0]);
+  return det < 0;
+}
+template <typename T>
+Point3<T> Transform::operator()(const Point3<T> &p) const {
+  T pv[4] = {p.x, p.y, p.z, 1.0};
+  T p_new[3] = {0, 0, 0, 0};
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 4; j++) {
+      p_new[i] += m.val[i][j] * pv[j];
+    }
+  }
+  if (p_new[3] == 1)
+    return Point3<T>(p_new[0], p_new[1], p_new[2]);
+  else
+    return 1.0 / p_new[3] * Point3<T>(p_new[0], p_new[1], p_new[2]);
+}
+template <typename T>
+Vector3<T> Transform::operator()(const Vector3<T> &v) const {
+  T pv[3] = {v.x, v.y, v.z};
+  T p_new[3] = {0, 0, 0};
+  for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < 3; j++) {
+      p_new[i] += m.val[i][j] * pv[j];
+    }
+  }
+  return Vector3<T>(p_new[0], p_new[1], p_new[2]);
+}
+/// @brief Some linear transform can show this.
+template <typename T>
+Normal3<T> Transform::operator()(const Normal3<T> &n) const {
+  T pv[3] = {n.x, n.y, n.z};
+  T p_new[3] = {0, 0, 0};
+  for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < 3; j++) {
+      p_new[i] += m_inv.val[j][i] * pv[j];
+    }
+  }
+  return Normal3<T>(p_new[0], p_new[1], p_new[2]);
+}
+Ray Transform::operator()(const Ray &r) const {
+  Vector3f o_err;
+  // Point3f o = (*this)(r.ori, &o_err);
+  // TODO Revisit this when dealing with rounding error.
+  Point3f o = (*this)(r.ori);
+  Vector3f d = (*this)(r.dir);
+  Float t_m = r.t_max;
+  // Offset ray origin to edge of error bounds and compute _tMax_
+  // Float lengthSquared = d.length2();
+  // if (lengthSquared > 0) {
+  //   Float dt = dot(abs(d), o_err) / lengthSquared;
+  //   o += d * dt;
+  //   t_m -= dt;
+  // }
+  return Ray(o, d, t_m, r.time);
+}
+Bound3f Transform::operator()(const Bound3f &b) const {
+  Point3f p1 = (*this)(b.p_min);
+  Point3f p2 = (*this)(b.p_max);
+  return Bound3f(p1, p2);
+}
+Transform Transform::operator*(const Transform &t) const {
+  return Transform(mat4x4_multiply(m, t.m), mat4x4_multiply(t.m_inv, m_inv));
+}
+
 // Inlines impl.
 // -------------
 Transform translate(const Vector3f &delta) {
@@ -274,7 +345,8 @@ Transform look_at(const Point3f &eye_pos, const Point3f &look,
   return Transform(mat4x4_inverse(camera_to_world), camera_to_world);
 }
 // Transform orthographic(Float z_near, Float z_far) {
-// return scale(1, 1, 1 / (z_far - z_near)) * translate(Vector3f(0, 0, -z_near));
+// return scale(1, 1, 1 / (z_far - z_near)) * translate(Vector3f(0, 0,
+// -z_near));
 // }
 // Transform perspective(Float fov, Float znear, Float zfar);
 }  // namespace TRay

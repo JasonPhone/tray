@@ -58,7 +58,17 @@ class Transform {
   bool operator!=(const Transform &other) const { return !(*this == other); }
   bool is_identity() const;
   // bool has_scale() const;
-
+  bool will_swap_hand() const;
+  // Transform apply.
+  template <typename T>
+  Point3<T> operator()(const Point3<T> &p) const;
+  template <typename T>
+  Vector3<T> operator()(const Vector3<T> &v) const;
+  template <typename T>
+  Normal3<T> operator()(const Normal3<T> &n) const;
+  Ray operator()(const Ray &r) const;
+  Bound3f operator()(const Bound3f &b) const;
+  Transform operator*(const Transform& t) const;
 
  private:
   Mat4x4 m, m_inv;
@@ -67,13 +77,12 @@ class Transform {
 // -------------
 Transform translate(const Vector3f &delta);
 Transform scale(Float x, Float y, Float z);
-Transform rotateX(Float theta);
-Transform rotateY(Float theta);
-Transform rotateZ(Float theta);
+Transform rotate_x(Float theta);
+Transform rotate_y(Float theta);
+Transform rotate_z(Float theta);
 Transform rotate(Float theta, const Vector3f &axis);
 /// @brief OpenGL-style viewing matrix.
 Transform look_at(const Point3f &eye_pos, const Point3f &look, const Vector3f &up_dir);
-
 // Transform orthographic(Float z_near, Float z_far);
 // Transform perspective(Float fov, Float znear, Float zfar);
 
