@@ -32,18 +32,18 @@ using Float = float;
 #define SCritical(msg) spdlog::critical(msg)
 #define FCritical(fmt, msg...) spdlog::critical(fmt, ##msg)
 #else
-#define SInfo(msg)
+#define SInfo(msg) std::cerr << msg << "\n";
 #define FInfo(fmt, msg...)
-#define SWarn(msg)
+#define SWarn(msg) std::cerr << msg << "\n";
 #define FWarn(fmt, msg...)
-#define SError(msg)
+#define SError(msg) std::cerr << msg << "\n";
 #define FError(fmt, msg...)
-#define SCritical(msg)
+#define SCritical(msg) std::cerr << msg << "\n";
 #define FCritical(fmt, msg...)
 #endif
 
 namespace TRay {
-// core/geometry/vector.h
+// core/geometry/Vector.h
 // ----------------------
 template <typename T>
 class Vector3;
@@ -54,7 +54,7 @@ class Vector2;
 using Vector2i = Vector2<int>;
 using Vector2f = Vector2<Float>;
 
-// core/geometry/point.h
+// core/geometry/Point.h
 // ---------------------
 template <typename T>
 class Point3;
@@ -71,12 +71,12 @@ template <typename T>
 class Normal3;
 using Normal3f = Normal3<Float>;
 
-// core/geometry/ray.h
+// core/geometry/Ray.h
 // -------------------
 class Ray;
 template <typename T>
 
-// core/geometry/bound.h
+// core/geometry/Bound.h
 // ---------------------
 class Bound3;
 using Bound3i = Bound3<int>;
@@ -86,18 +86,18 @@ class Bound2;
 using Bound2i = Bound2<int>;
 using Bound2f = Bound2<Float>;
 
-// core/geometry/transform.h
+// core/geometry/Transform.h
 // -------------------------
 class Transform;
 
-// core/geometry/animatetransform.h
+// core/geometry/AnimateTransform.h
 // -------------------------
 class AnimateTransform;
 
-// core/math/matrix.h
+// core/math/Matrix.h
 struct Mat4x4;
 
-// core/geometry/quaternion.h
+// core/geometry/Quaternion.h
 // --------------------------
 class Quaternion;
 
