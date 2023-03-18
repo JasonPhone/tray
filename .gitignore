@@ -1,0 +1,11 @@
+/build/
+.vscode/
+/apps/test/
+bin/
+lib/
+
+*.exe
+*.lib
+*.a
+*.pdb
+*.dll
