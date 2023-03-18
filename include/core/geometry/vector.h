@@ -1,18 +1,12 @@
 #pragma once
-#include "core/tray.h"
+#include "core/TRay.h"
 
 namespace TRay {
-/// @brief Vector3 decl and impl.
+template <typename T>
+Vector3<T> operator*(T s, const Vector3<T> &v);
+
+/// @brief Vector3 decl.
 /// --------------------
-/**
- * \note Maybe we can make this using Swizzle?
- * \see https://zhuanlan.zhihu.com/p/340119757
- */
-/**
- * @brief 3D vector.
- *
- * @tparam T Type of components.
- */
 template <typename T>
 class Vector3 {
  public:
@@ -24,46 +18,23 @@ class Vector3 {
   }
   Float length2() const { return x * x + y * y + z * z; }
   Float length() const { return std::sqrt(length2()); }
-  Vector3<T> operator+(const Vector3<T> &v) const {
-    return Vector3<T>(x + v.x, y + v.y, z + v.z);
-  }
-  Vector3<T> &operator+=(const Vector3<T> &v) {
-    x += v.x, y += v.y, z += v.z;
-    return *this;
-  }
-  Vector3<T> operator-(const Vector3<T> &v) const {
-    return Vector3<T>(x - v.x, y - v.y, z - v.z);
-  }
-  Vector3<T> operator-() const { return Vector3<T>(-x, -y, -z); }
-  Vector3<T> &operator-=(const Vector3<T> &v) {
-    x -= v.x, y -= v.y, z -= v.z;
-    return *this;
-  }
-  Vector3<T> operator*(T s) const { return Vector3<T>(x * s, y * s, z * s); }
-  Vector3<T> &operator*=(T s) {
-    x *= s, y *= s, z *= s;
-    return *this;
-  }
-  friend Vector3<T> operator*(T s, const Vector3<T> &v) { return v * s; }
-  T operator[](int i) const {
-    ASSERT(i >= 0 && i <= 2);
-    return (i == 0) ? x : (i == 1 ? y : z);
-  }
-  T &operator[](int i) {
-    ASSERT(i >= 0 && i <= 2);
-    return (i == 0) ? x : (i == 1 ? y : z);
-  }
+  Vector3<T> operator+(const Vector3<T> &v) const;
+  Vector3<T> &operator+=(const Vector3<T> &v);
+  Vector3<T> operator-(const Vector3<T> &v) const;
+  Vector3<T> operator-() const;
+  Vector3<T> &operator-=(const Vector3<T> &v);
+  Vector3<T> operator*(T s) const;
+  friend Vector3<T> operator*(T s, const Vector3<T> &v);
+  Vector3<T> &operator*=(T s);
+  T operator[](int i) const;
+  T &operator[](int i);
   T x, y, z;
 };
-// Avoid circular definition.
-template <typename T>
-Vector3<T>::Vector3(const Normal3<T> &n) : Vector3(n.x, n.y, n.z) {}
 
-/**
- * @brief 2D vector.
- *
- * @tparam T Type of x, y.
- */
+template <typename T>
+Vector2<T> operator*(T s, const Vector2<T> &v);
+/// @brief Vector2 decl.
+/// --------------------
 template <typename T>
 class Vector2 {
  public:
@@ -72,35 +43,16 @@ class Vector2 {
   bool has_NaN() const { return std::isnan(x) || std::isnan(y); }
   Float length2() const { return x * x + y * y; }
   Float length() const { return std::sqrt(length2()); }
-  Vector2<T> operator+(const Vector2<T> &v) const {
-    return Vector2<T>(x + v.x, y + v.y);
-  }
-  Vector2<T> &operator+=(const Vector2<T> &v) {
-    x += v.x, y += v.y;
-    return *this;
-  }
-  Vector2<T> operator-(const Vector2<T> &v) const {
-    return Vector2<T>(x - v.x, y - v.y);
-  }
-  Vector2<T> operator-() const { return Vector2<T>(-x, -y); }
-  Vector2<T> &operator-=(const Vector2<T> &v) {
-    x -= v.x, y -= v.y;
-    return *this;
-  }
-  Vector2<T> operator*(T s) const { return Vector2<T>(x * s, y * s); }
-  friend Vector2<T> operator*(T s, const Vector2<T> &v) { return v * s; }
-  Vector2<T> &operator*=(T s) {
-    x *= s, y *= s;
-    return *this;
-  }
-  T operator[](int i) const {
-    ASSERT(i == 0 || i == 1);
-    return i == 0 ? x : y;
-  }
-  T &operator[](int i) {
-    ASSERT(i == 0 || i == 1);
-    return i == 0 ? x : y;
-  }
+  Vector2<T> operator+(const Vector2<T> &v) const;
+  Vector2<T> &operator+=(const Vector2<T> &v);
+  Vector2<T> operator-(const Vector2<T> &v) const;
+  Vector2<T> operator-() const;
+  Vector2<T> &operator-=(const Vector2<T> &v);
+  Vector2<T> operator*(T s) const;
+  friend Vector2<T> operator*(T s, const Vector2<T> &v);
+  Vector2<T> &operator*=(T s);
+  T operator[](int i) const;
+  T &operator[](int i);
   T x, y;
 };
 
@@ -166,7 +118,8 @@ inline Vector3<T> permute(const Vector3<T> &v, int x, int y, int z) {
  * @param w One of the basis.
  */
 template <typename T>
-inline void MakeCoordSystem(const Vector3<T> &u, Vector3<T> *v, Vector3<T> *w) {
+inline void make_coord_system(const Vector3<T> &u, Vector3<T> *v,
+                              Vector3<T> *w) {
   ASSERT(v != nullptr && w != nullptr);
   // Make v perpendicular to u by removing a smaller component.
   if (std::abs(u.x) > std::abs(u.y)) {
@@ -230,5 +183,16 @@ inline Vector2<T> min(const Vector2<T> &u, const Vector2<T> &v) {
 template <typename T>
 inline Vector2<T> permute(const Vector2<T> &v, int x, int y) {
   return Vector2<T>(v[x], v[y]);
+}
+
+template <typename T>
+inline std::ostream &operator<<(std::ostream &os, const Vector3<T> &v) {
+  os << " (" << v.x << ", " << v.y << ", " << v.z << ") ";
+  return os;
+}
+template <typename T>
+inline std::ostream &operator<<(std::ostream &os, const Vector2<T> &v) {
+  os << " (" << v.x << ", " << v.y << ") ";
+  return os;
 }
 }  // namespace TRay

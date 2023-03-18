@@ -1,131 +1,10 @@
-#include "core/geometry/transform.h"
-#include "core/geometry/vector.h"
-#include "core/geometry/point.h"
-#include "core/geometry/ray.h"
-#include "core/geometry/bound.h"
+#include "core/geometry/Transform.h"
+#include "core/geometry/Vector.h"
+#include "core/geometry/Point.h"
+#include "core/geometry/Ray.h"
+#include "core/geometry/Bound.h"
 
 namespace TRay {
-// Mat4x4 impl.
-// ------------
-Mat4x4::Mat4x4() {
-  val[0][0] = val[1][1] = val[2][2] = val[3][3] = 1.0;
-  val[0][1] = val[0][2] = val[0][3] = 0.0;
-  val[1][0] = val[1][2] = val[1][3] = 0.0;
-  val[2][0] = val[2][1] = val[2][3] = 0.0;
-  val[3][0] = val[3][1] = val[3][2] = 0.0;
-}
-Mat4x4::Mat4x4(Float v[4][4]) { memcpy(this->val, v, 16 * sizeof(Float)); }
-// clang-format off
-Mat4x4::Mat4x4(Float v00, Float v01, Float v02, Float v03,
-               Float v10, Float v11, Float v12, Float v13,
-               Float v20, Float v21, Float v22, Float v23,
-               Float v30, Float v31, Float v32, Float v33) {
-  val[0][0] = v00, val[0][1] = v01, val[0][2] = v02, val[0][3] = v03;
-  val[1][0] = v10, val[1][1] = v11, val[1][2] = v12, val[1][3] = v03;
-  val[2][0] = v20, val[2][1] = v21, val[2][2] = v22, val[2][3] = v03;
-  val[3][0] = v30, val[3][1] = v31, val[3][2] = v32, val[3][3] = v03;
-}
-// clang-format on
-bool Mat4x4::operator==(const Mat4x4 &other) const {
-  for (int i = 0; i < 4; i++) {
-    for (int j = 0; j < 4; j++) {
-      if (val[i][j] != other.val[i][j]) return false;
-    }
-  }
-  return true;
-}
-
-// Mat4x4 inlines.
-// ---------------
-inline Mat4x4 mat4x4_multiply(const Mat4x4 &l, const Mat4x4 &r) {
-  Mat4x4 ans;
-  for (int i = 0; i < 4; i++) {
-    for (int j = 0; j < 4; j++) {
-      ans.val[i][j] = 0;
-      for (int k = 0; k < 4; k++) {
-        ans.val[i][j] += l.val[i][k] * r.val[j][k];
-      }
-    }
-  }
-  return ans;
-}
-inline Mat4x4 mat4x4_transpose(const Mat4x4 &mat) {
-  Mat4x4 ret;
-  for (int i = 0; i < 4; i++) {
-    for (int j = 0; j < 4; j++) {
-      ret.val[j][i] = mat.val[i][j];
-    }
-  }
-  return ret;
-}
-Mat4x4 mat4x4_inverse(const Mat4x4 &mat) {
-  Float m[4][4];                  // Operate on this.
-  int col_idx[4], row_idx[4];     // Store the swap history.
-  int piv_idx[4] = {0, 0, 0, 0};  // Pivot position counter.
-                                  // A pivot is always on diagonal.
-  memcpy(m, mat.val, 16 * sizeof(Float));
-  for (int i = 0; i < 4; i++) {
-    int irow = 0, icol = 0;
-    Float maxv = 0.0;
-    // Choose pivot.
-    for (int j = 0; j < 4; j++) {
-      // if (piv_idx[j] != 1) {
-      if (!piv_idx[j]) {
-        // This row has no pivot or over picked.
-        for (int k = 0; k < 4; k++) {
-          // if (piv_idx[k] > 1) {
-          //   // Over picked.
-          //   SError("Singular matrix has no inversion!");
-          // } else
-          if (piv_idx[k] == 0) {
-            // This column has no pivot.
-            // Seek maximum in this row.
-            if (std::abs(m[j][k]) >= maxv) {
-              maxv = Float(std::abs(m[j][k]));
-              irow = j;
-              icol = k;
-            }
-          }
-        }
-      }
-    }
-    // Over picked.
-    if (piv_idx[icol])
-      SError("TRay::mat4x4_inverse: Trying to inverse singular matrix.");
-    ++piv_idx[icol];
-    // Swap to the diagonal for pivot.
-    if (irow != icol) {
-      for (int k = 0; k < 4; ++k) std::swap(m[irow][k], m[icol][k]);
-    }
-    // Record the swapping.
-    row_idx[i] = irow;
-    col_idx[i] = icol;
-    if (m[icol][icol] == 0.f)
-      SError("TRay::mat4x4_inverse: Trying to inverse singular matrix.");
-
-    // Set the pivot to 1
-    Float pivinv = 1. / m[icol][icol];
-    m[icol][icol] = 1.;  // Store back to the original matrix.
-    for (int j = 0; j < 4; j++) m[icol][j] *= pivinv;
-
-    // Zero out the other columns of the other rows.
-    for (int j = 0; j < 4; j++) {
-      if (j != icol) {
-        Float save = m[j][icol];
-        m[j][icol] = 0;  // Store back to the original matrix.
-        for (int k = 0; k < 4; k++) m[j][k] -= m[icol][k] * save;
-      }
-    }
-  }
-  // Swap columns back to cancel the swapping.
-  for (int j = 3; j >= 0; j--) {
-    if (row_idx[j] != col_idx[j]) {
-      for (int k = 0; k < 4; k++) std::swap(m[k][row_idx[j]], m[k][col_idx[j]]);
-    }
-  }
-  return Mat4x4(m);
-}
-
 // Transform impl.
 // ---------------
 bool Transform::operator==(const Transform &other) const {
@@ -151,7 +30,7 @@ bool Transform::will_swap_hand() const {
 template <typename T>
 Point3<T> Transform::operator()(const Point3<T> &p) const {
   T pv[4] = {p.x, p.y, p.z, 1.0};
-  T p_new[3] = {0, 0, 0, 0};
+  T p_new[4] = {0, 0, 0, 0};
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
       p_new[i] += m.val[i][j] * pv[j];
@@ -202,8 +81,23 @@ Ray Transform::operator()(const Ray &r) const {
   return Ray(o, d, t_m, r.time);
 }
 Bound3f Transform::operator()(const Bound3f &b) const {
-  Point3f p1 = (*this)(b.p_min);
-  Point3f p2 = (*this)(b.p_max);
+  // Take every extreme element.
+  // https://github.com/erich666/GraphicsGems/blob/master/gems/TransBox.c
+  Float pmin[3], pmax[3];
+  for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < 3; j++) {
+      Float val1 = b.p_min[j] * m.val[i][j];
+      Float val2 = b.p_max[j] * m.val[i][j];
+      pmin[i] += std::min(val1, val2);
+      pmax[i] += std::max(val1, val2);
+    }
+  }
+  for (int i = 0; i < 3; i++) {
+    pmin[i] += m.val[i][3];
+    pmax[i] += m.val[i][3];
+  }
+  Point3f p1(pmin[0], pmin[1], pmin[2]);
+  Point3f p2(pmax[0], pmax[1], pmax[2]);
   return Bound3f(p1, p2);
 }
 Transform Transform::operator*(const Transform &t) const {
@@ -349,4 +243,6 @@ Transform look_at(const Point3f &eye_pos, const Point3f &look,
 // -z_near));
 // }
 // Transform perspective(Float fov, Float znear, Float zfar);
+
+
 }  // namespace TRay

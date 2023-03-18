@@ -1,12 +1,13 @@
 /**
  * @file transform.h
  * @author ja50n (zs_feng@qq.com)
- * @brief Static transformation
+ * @brief Static transformation.
  * @version 0.1
  * @date 2023-03-16
  */
 #pragma once
-#include "core/tray.h"
+#include "core/TRay.h"
+#include "core/math/Matrix.h"
 
 /**
  * Transform is a mapping. Here we consider transformations which are:
@@ -27,24 +28,6 @@
  */
 
 namespace TRay {
-/// @brief The homogeneous matrix in row first.
-/// @note We may need a math library for clean work.
-struct Mat4x4 {
-  Float val[4][4];
-  Mat4x4();
-  Mat4x4(Float v[4][4]);
-  Mat4x4(
-    Float v00, Float v01, Float v02, Float v03, 
-    Float v10, Float v11, Float v12, Float v13, 
-    Float v20, Float v21, Float v22, Float v23, 
-    Float v30, Float v31, Float v32, Float v33
-  );
-  bool operator==(const Mat4x4 &other) const;
-  bool operator!=(const Mat4x4 &other) const { return !(*this == other); }
-};
-Mat4x4 mat4x4_multiply(const Mat4x4 &l, const Mat4x4 &r);
-Mat4x4 mat4x4_transpose(const Mat4x4 &m);
-Mat4x4 mat4x4_inverse(const Mat4x4 &m);
 
 // Transform decl.
 // ---------------
@@ -68,10 +51,12 @@ class Transform {
   Normal3<T> operator()(const Normal3<T> &n) const;
   Ray operator()(const Ray &r) const;
   Bound3f operator()(const Bound3f &b) const;
-  Transform operator*(const Transform& t) const;
+  Transform operator*(const Transform &t) const;
 
  private:
   Mat4x4 m, m_inv;
+  friend class AnimateTransform;
+  friend class Quaternion;
 };
 // Inlines decl.
 // -------------
@@ -82,7 +67,8 @@ Transform rotate_y(Float theta);
 Transform rotate_z(Float theta);
 Transform rotate(Float theta, const Vector3f &axis);
 /// @brief OpenGL-style viewing matrix.
-Transform look_at(const Point3f &eye_pos, const Point3f &look, const Vector3f &up_dir);
+Transform look_at(const Point3f &eye_pos, const Point3f &look,
+                  const Vector3f &up_dir);
 // Transform orthographic(Float z_near, Float z_far);
 // Transform perspective(Float fov, Float znear, Float zfar);
 

@@ -6,16 +6,13 @@
 #include <iostream>
 
 int main() {
-  Float m[4][4] = {
-    {1, 0, 1, 2},
-    {0, 0, 1, 1},
-    {1, 0, 1, 0},
-    {0, 1, 1, 1}
-  };
-  TRay::Mat4x4 a(m);
-  std::cout << a;
-  TRay::Mat4x4 b = TRay::mat4x4_inverse(a);
-  std::cout << b;
-  std::cout << std::acos(-1);
+  TRay::Mat4x4 a;
+  TRay::Point3f p(0, 0, 0);
+  TRay::Transform t1(a);
+  TRay::Transform t2(TRay::translate({1, 1, 0}) * t1);
+  TRay::AnimateTransform at(t1, 0, t2, 1);
+  std::cout << t1(p) << " --> " << t2(p) << std::endl;
+  std::cout << at(p, 0.5) << std::endl;
+  
   return 0;
 }

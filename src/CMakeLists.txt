@@ -16,6 +16,14 @@ add_library(tiny_obj_loader
 
 add_library(TRay_geometry
   STATIC
-  ${SOURCE_DIR}/core/geometry/geometry.cpp
-  ${SOURCE_DIR}/core/geometry/transform.cpp
+  # ${SOURCE_DIR}/core/geometry/geometry.cpp
+  ${SOURCE_DIR}/core/geometry/AnimateTransform.cpp
+  ${SOURCE_DIR}/core/geometry/Transform.cpp
+  ${SOURCE_DIR}/core/geometry/Ray.cpp
+  ${SOURCE_DIR}/core/geometry/Bound.cpp
+  ${SOURCE_DIR}/core/geometry/Normal.cpp
+  ${SOURCE_DIR}/core/geometry/Quaternion.cpp
+  ${SOURCE_DIR}/core/geometry/Point.cpp
+  ${SOURCE_DIR}/core/geometry/Vector.cpp
+  ${SOURCE_DIR}/core/math/Matrix.cpp
 )

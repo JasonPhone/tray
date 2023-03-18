@@ -66,9 +66,10 @@ using Point2i = Point2<int>;
 using Point2f = Point2<Float>;
 template <typename T>
 
-// core/geometry/geometry.h
+// core/geometry/Normal.h
 // ------------------------
 class Normal3;
+using Normal3f = Normal3<Float>;
 
 // core/geometry/ray.h
 // -------------------
@@ -87,8 +88,18 @@ using Bound2f = Bound2<Float>;
 
 // core/geometry/transform.h
 // -------------------------
-struct Mat4x4;
 class Transform;
+
+// core/geometry/animatetransform.h
+// -------------------------
+class AnimateTransform;
+
+// core/math/matrix.h
+struct Mat4x4;
+
+// core/geometry/quaternion.h
+// --------------------------
+class Quaternion;
 
 // Math constants.
 // ---------------
@@ -99,6 +110,10 @@ static constexpr Float PI = 3.14159265358979323846;
 // Math functions.
 // ---------------
 inline Float lerp(Float a, Float b, Float t) { return (1 - t) * a + t * b; }
+template <typename T, typename U, typename V>
+inline T clamp(T val, U low, V high) {
+  return (val < low) ? low : ((val > high) ? high : val);
+}
 inline Float deg_to_rad(Float deg) { return deg / 180.0 * PI; }
 
 }  // namespace TRay
