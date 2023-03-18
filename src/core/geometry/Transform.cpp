@@ -27,43 +27,6 @@ bool Transform::will_swap_hand() const {
       m.val[0][2] * (m.val[1][0] * m.val[2][1] - m.val[1][1] * m.val[2][0]);
   return det < 0;
 }
-template <typename T>
-Point3<T> Transform::operator()(const Point3<T> &p) const {
-  T pv[4] = {p.x, p.y, p.z, 1.0};
-  T p_new[4] = {0, 0, 0, 0};
-  for (int i = 0; i < 4; i++) {
-    for (int j = 0; j < 4; j++) {
-      p_new[i] += m.val[i][j] * pv[j];
-    }
-  }
-  if (p_new[3] == 1)
-    return Point3<T>(p_new[0], p_new[1], p_new[2]);
-  else
-    return 1.0 / p_new[3] * Point3<T>(p_new[0], p_new[1], p_new[2]);
-}
-template <typename T>
-Vector3<T> Transform::operator()(const Vector3<T> &v) const {
-  T pv[3] = {v.x, v.y, v.z};
-  T p_new[3] = {0, 0, 0};
-  for (int i = 0; i < 3; i++) {
-    for (int j = 0; j < 3; j++) {
-      p_new[i] += m.val[i][j] * pv[j];
-    }
-  }
-  return Vector3<T>(p_new[0], p_new[1], p_new[2]);
-}
-/// @brief Some linear transform can show this.
-template <typename T>
-Normal3<T> Transform::operator()(const Normal3<T> &n) const {
-  T pv[3] = {n.x, n.y, n.z};
-  T p_new[3] = {0, 0, 0};
-  for (int i = 0; i < 3; i++) {
-    for (int j = 0; j < 3; j++) {
-      p_new[i] += m_inv.val[j][i] * pv[j];
-    }
-  }
-  return Normal3<T>(p_new[0], p_new[1], p_new[2]);
-}
 Ray Transform::operator()(const Ray &r) const {
   Vector3f o_err;
   // Point3f o = (*this)(r.ori, &o_err);
@@ -109,15 +72,15 @@ Transform Transform::operator*(const Transform &t) const {
 Transform translate(const Vector3f &delta) {
   // clang-format off
   Mat4x4 m(
-    0, 0, 0, delta.x,
-    0, 0, 0, delta.y,
-    0, 0, 0, delta.z,
+    1, 0, 0, delta.x,
+    0, 1, 0, delta.y,
+    0, 0, 1, delta.z,
     0, 0, 0,       1
   );
   Mat4x4 m_inv(
-    0, 0, 0, -delta.x,
-    0, 0, 0, -delta.y,
-    0, 0, 0, -delta.z,
+    1, 0, 0, -delta.x,
+    0, 1, 0, -delta.y,
+    0, 0, 1, -delta.z,
     0, 0, 0,        1
   );
   return Transform(m, m_inv);

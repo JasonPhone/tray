@@ -2,8 +2,6 @@
 #include "core/TRay.h"
 
 namespace TRay {
-template <typename T>
-Vector3<T> operator*(T s, const Vector3<T> &v);
 
 /// @brief Vector3 decl.
 /// --------------------
@@ -12,22 +10,45 @@ class Vector3 {
  public:
   Vector3(T x, T y, T z) : x(x), y(y), z(z) { ASSERT(!has_NaN()); }
   Vector3() : Vector3(0, 0, 0) {}
-  explicit Vector3(const Normal3<T> &n);
+  explicit Vector3(const Normal3<T> &n) : Vector3(n.x, n.y, n.z) {}
   bool has_NaN() const {
     return std::isnan(x) || std::isnan(y) || std::isnan(z);
   }
   Float length2() const { return x * x + y * y + z * z; }
   Float length() const { return std::sqrt(length2()); }
-  Vector3<T> operator+(const Vector3<T> &v) const;
-  Vector3<T> &operator+=(const Vector3<T> &v);
-  Vector3<T> operator-(const Vector3<T> &v) const;
-  Vector3<T> operator-() const;
-  Vector3<T> &operator-=(const Vector3<T> &v);
-  Vector3<T> operator*(T s) const;
-  friend Vector3<T> operator*(T s, const Vector3<T> &v);
-  Vector3<T> &operator*=(T s);
-  T operator[](int i) const;
-  T &operator[](int i);
+  Vector3<T> operator+(const Vector3<T> &v) const {
+    return Vector3<T>(x + v.x, y + v.y, z + v.z);
+  }
+  Vector3<T> &operator+=(const Vector3<T> &v) {
+    x += v.x, y += v.y, z += v.z;
+    return *this;
+  }
+  Vector3<T> operator-(const Vector3<T> &v) const {
+    return Vector3<T>(x - v.x, y - v.y, z - v.z);
+  }
+  Vector3<T> operator-() const { return Vector3<T>(-x, -y, -z); }
+  Vector3<T> &operator-=(const Vector3<T> &v) {
+    x -= v.x, y -= v.y, z -= v.z;
+    return *this;
+  }
+  Vector3<T> operator*(T s) const { return Vector3<T>(x * s, y * s, z * s); }
+  /**
+   * @brief The friend template overloading:
+   * https://stackoverflow.com/questions/4660123/
+   */
+  friend Vector3<T> operator*(T s, const Vector3<T> &v) { return v * s; }
+  Vector3<T> &operator*=(T s) {
+    x *= s, y *= s, z *= s;
+    return *this;
+  }
+  T operator[](int i) const {
+    ASSERT(i >= 0 && i <= 2);
+    return (i == 0) ? x : (i == 1 ? y : z);
+  }
+  T &operator[](int i) {
+    ASSERT(i >= 0 && i <= 2);
+    return (i == 0) ? x : (i == 1 ? y : z);
+  }
   T x, y, z;
 };
 
@@ -43,16 +64,35 @@ class Vector2 {
   bool has_NaN() const { return std::isnan(x) || std::isnan(y); }
   Float length2() const { return x * x + y * y; }
   Float length() const { return std::sqrt(length2()); }
-  Vector2<T> operator+(const Vector2<T> &v) const;
-  Vector2<T> &operator+=(const Vector2<T> &v);
-  Vector2<T> operator-(const Vector2<T> &v) const;
-  Vector2<T> operator-() const;
-  Vector2<T> &operator-=(const Vector2<T> &v);
-  Vector2<T> operator*(T s) const;
-  friend Vector2<T> operator*(T s, const Vector2<T> &v);
-  Vector2<T> &operator*=(T s);
-  T operator[](int i) const;
-  T &operator[](int i);
+  Vector2<T> operator+(const Vector2<T> &v) const {
+    return Vector2<T>(x + v.x, y + v.y);
+  }
+  Vector2<T> &operator+=(const Vector2<T> &v) {
+    x += v.x, y += v.y;
+    return *this;
+  }
+  Vector2<T> operator-(const Vector2<T> &v) const {
+    return Vector2<T>(x - v.x, y - v.y);
+  }
+  Vector2<T> operator-() const { return Vector2<T>(-x, -y); }
+  Vector2<T> &operator-=(const Vector2<T> &v) {
+    x -= v.x, y -= v.y;
+    return *this;
+  }
+  Vector2<T> operator*(T s) const { return Vector2<T>(x * s, y * s); }
+  friend Vector2<T> operator*(T s, const Vector2<T> &v) { return v * s; }
+  Vector2<T> &operator*=(T s) {
+    x *= s, y *= s;
+    return *this;
+  }
+  T operator[](int i) const {
+    ASSERT(i == 0 || i == 1);
+    return i == 0 ? x : y;
+  }
+  T &operator[](int i) {
+    ASSERT(i == 0 || i == 1);
+    return i == 0 ? x : y;
+  }
   T x, y;
 };
 

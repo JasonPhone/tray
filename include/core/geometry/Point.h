@@ -3,8 +3,8 @@
 #include "core/geometry/Vector.h"
 
 namespace TRay {
-template <typename T>
-Point3<T> operator*(Float s, Point3<T> p);
+// template <typename T>
+// Point3<T> operator*(Float s, Point3<T> p);
 /// @brief 3D point decl.
 /// ---------------------
 template <typename T>
@@ -27,22 +27,48 @@ class Point3 {
   }
 
   /// @note In the order of "Point + Vector"
-  Point3<T> operator+(const Vector3<T> &v) const;
-  Point3<T> &operator+=(const Vector3<T> &v);
-  Point3<T> operator-(const Vector3<T> &v) const;
-  Point3<T> &operator-=(const Vector3<T> &v);
-  Vector3<T> operator-(const Point3<T> &p) const;
-  bool operator==(const Point3<T> &p) const;
-
+  Point3<T> operator+(const Vector3<T> &v) const {
+    return Point3<T>(x + v.x, y + v.y, z + v.z);
+  }
+  Point3<T> &operator+=(const Vector3<T> &v) {
+    x += v.x, y += v.y, z += v.z;
+    return *this;
+  }
+  Point3<T> operator-(const Vector3<T> &v) const {
+    return Point3<T>(x - v.x, y - v.y, z - v.z);
+  }
+  Point3<T> &operator-=(const Vector3<T> &v) {
+    x -= v.x, y -= v.y, z -= v.z;
+    return *this;
+  }
+  Vector3<T> operator-(const Point3<T> &p) const {
+    return Vector3<T>(x - p.x, y - p.y, z - p.z);
+  }
+  bool operator==(const Point3<T> &p) const {
+    return x == p.x && y == p.y && z == p.z;
+  }
   /// @brief To compute weighted sum.
-  Point3<T> operator*(T s) const;
-  friend Point3<T> operator*(Float s, Point3<T> p);
-  Point3<T> &operator*=(T s);
-  Point3<T> operator+(const Point3<T> &p) const;
-  Point3<T> operator+=(const Point3<T> &p) const;
-
-  T operator[](int i) const;
-  T &operator[](int i);
+  Point3<T> operator*(T s) const { return Point3<T>(x * s, y * s, z * s); }
+  friend Point3<T> operator*(T s, Point3<T> p) { return p * s; }
+  Point3<T> &operator*=(T s) {
+    x *= s, y *= s, z *= s;
+    return *this;
+  }
+  Point3<T> operator+(const Point3<T> &p) const {
+    return Point3<T>(x + p.x, y + p.y, z + p.z);
+  }
+  Point3<T> operator+=(const Point3<T> &p) const {
+    x += p.x, y += p.y, z += p.z;
+    return *this;
+  }
+  T operator[](int i) const {
+    ASSERT(i >= 0 && i <= 2);
+    return (i == 0) ? x : (i == 1 ? y : z);
+  }
+  T &operator[](int i) {
+    ASSERT(i >= 0 && i <= 2);
+    return (i == 0) ? x : (i == 1 ? y : z);
+  }
   T x, y, z;
 };
 
@@ -68,21 +94,45 @@ class Point2 {
   }
   bool has_NaN() const { return std::isnan(x) || std::isnan(y); }
 
-  Point2<T> operator+(const Vector2<T> &v) const;
-  Point2<T> &operator+=(const Vector2<T> &v);
-  Point2<T> operator-(const Vector2<T> &v) const;
-  Point2<T> &operator-=(const Vector2<T> &v);
-  Vector2<T> operator-(const Point2<T> &p) const;
-  bool operator==(const Point2<T> &p) const;
-
-  Point2<T> operator*(T s) const;
-  friend Point2<T> operator*(Float s, Point2<T> p);
-  Point2<T> &operator*=(T s);
-  Point2<T> operator+(const Point2<T> &p) const;
-  Point2<T> operator+=(const Point2<T> &p) const;
-
-  T operator[](int i) const;
-  T &operator[](int i);
+  Point2<T> operator+(const Vector2<T> &v) const {
+    return Point2<T>(x + v.x, y + v.y);
+  }
+  Point2<T> &operator+=(const Vector2<T> &v) {
+    x += v.x, y += v.y;
+    return *this;
+  }
+  Point2<T> operator-(const Vector2<T> &v) const {
+    return Point2<T>(x - v.x, y - v.y);
+  }
+  Point2<T> &operator-=(const Vector2<T> &v) {
+    x -= v.x, y -= v.y;
+    return *this;
+  }
+  Vector2<T> operator-(const Point2<T> &p) const {
+    return Vector2<T>(x - p.x, y - p.y);
+  }
+  bool operator==(const Point2<T> &p) const { return x == p.x && y == p.y; }
+  Point2<T> operator*(T s) const { return Point2<T>(x * s, y * s); }
+  friend Point2<T> operator*(T s, Point2<T> p) { return p * s; }
+  Point2<T> &operator*=(T s) {
+    x *= s, y *= s;
+    return *this;
+  }
+  Point2<T> operator+(const Point2<T> &p) const {
+    return Point2<T>(x + p.x, y + p.y);
+  }
+  Point2<T> operator+=(const Point2<T> &p) const {
+    x += p.x, y += p.y;
+    return *this;
+  }
+  T operator[](int i) const {
+    ASSERT(i == 0 || i == 1);
+    return i == 0 ? x : y;
+  }
+  T &operator[](int i) {
+    ASSERT(i == 0 || i == 1);
+    return i == 0 ? x : y;
+  }
   T x, y;
 };
 

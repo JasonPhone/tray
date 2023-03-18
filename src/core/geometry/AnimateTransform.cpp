@@ -95,7 +95,7 @@ AnimateTransform::AnimateTransform(const Transform &_trans_st, Float _time_st,
       trans_ed(_trans_ed),
       time_st(_time_st),
       time_ed(_time_ed),
-      actually_moving(_trans_st == _trans_ed) {
+      actually_moving(_trans_st != _trans_ed) {
   decompose(trans_st.m, &(T[0]), &(R[0]), &(S[0]));
   decompose(trans_ed.m, &(T[1]), &(R[1]), &(S[1]));
   // Pick the shortest rotation.

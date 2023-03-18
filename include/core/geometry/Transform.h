@@ -44,11 +44,42 @@ class Transform {
   bool will_swap_hand() const;
   // Transform apply.
   template <typename T>
-  Point3<T> operator()(const Point3<T> &p) const;
+  Point3<T> operator()(const Point3<T> &p) const {
+    T pv[4] = {p.x, p.y, p.z, 1.0};
+    T p_new[4] = {0, 0, 0, 0};
+    for (int i = 0; i < 4; i++) {
+      for (int j = 0; j < 4; j++) {
+        p_new[i] += m.val[i][j] * pv[j];
+      }
+    }
+    if (p_new[3] == 1)
+      return Point3<T>(p_new[0], p_new[1], p_new[2]);
+    else
+      return 1.0 / p_new[3] * Point3<T>(p_new[0], p_new[1], p_new[2]);
+  }
   template <typename T>
-  Vector3<T> operator()(const Vector3<T> &v) const;
+  Vector3<T> operator()(const Vector3<T> &v) const {
+    T pv[3] = {v.x, v.y, v.z};
+    T p_new[3] = {0, 0, 0};
+    for (int i = 0; i < 3; i++) {
+      for (int j = 0; j < 3; j++) {
+        p_new[i] += m.val[i][j] * pv[j];
+      }
+    }
+    return Vector3<T>(p_new[0], p_new[1], p_new[2]);
+  }
+  /// @brief Some linear transform can show this.
   template <typename T>
-  Normal3<T> operator()(const Normal3<T> &n) const;
+  Normal3<T> operator()(const Normal3<T> &n) const {
+    T pv[3] = {n.x, n.y, n.z};
+    T p_new[3] = {0, 0, 0};
+    for (int i = 0; i < 3; i++) {
+      for (int j = 0; j < 3; j++) {
+        p_new[i] += m_inv.val[j][i] * pv[j];
+      }
+    }
+    return Normal3<T>(p_new[0], p_new[1], p_new[2]);
+  }
   Ray operator()(const Ray &r) const;
   Bound3f operator()(const Bound3f &b) const;
   Transform operator*(const Transform &t) const;

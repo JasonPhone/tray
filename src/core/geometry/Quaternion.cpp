@@ -77,7 +77,7 @@ Quaternion Quaternion::operator*(Float s) const {
 }
 Quaternion operator*(Float s, const Quaternion &q) { return q * s; }
 
-inline Float dot(const Quaternion &q1, const Quaternion &q2) {
+Float dot(const Quaternion &q1, const Quaternion &q2) {
   return dot(q1.imag, q2.imag) + q1.real * q2.real;
 }
 Transform Quaternion::to_transform() const {
@@ -99,10 +99,10 @@ Transform Quaternion::to_transform() const {
   // Left-handed.
   return Transform(mat4x4_transpose(m), m);
 }
-inline Quaternion normalize(const Quaternion &q) {
+Quaternion normalize(const Quaternion &q) {
   return q * (1.0 / std::sqrt(dot(q, q)));
 }
-inline Quaternion sph_lerp(const Quaternion &q1, const Quaternion &q2,
+Quaternion sph_lerp(const Quaternion &q1, const Quaternion &q2,
                            Float t) {
   Float cos_theta = dot(q1, q2);
   if (cos_theta > .9995)

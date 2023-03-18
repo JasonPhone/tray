@@ -15,9 +15,9 @@ Mat4x4::Mat4x4(Float v00, Float v01, Float v02, Float v03,
                Float v20, Float v21, Float v22, Float v23,
                Float v30, Float v31, Float v32, Float v33) {
   val[0][0] = v00, val[0][1] = v01, val[0][2] = v02, val[0][3] = v03;
-  val[1][0] = v10, val[1][1] = v11, val[1][2] = v12, val[1][3] = v03;
-  val[2][0] = v20, val[2][1] = v21, val[2][2] = v22, val[2][3] = v03;
-  val[3][0] = v30, val[3][1] = v31, val[3][2] = v32, val[3][3] = v03;
+  val[1][0] = v10, val[1][1] = v11, val[1][2] = v12, val[1][3] = v13;
+  val[2][0] = v20, val[2][1] = v21, val[2][2] = v22, val[2][3] = v23;
+  val[3][0] = v30, val[3][1] = v31, val[3][2] = v32, val[3][3] = v33;
 }
 // clang-format on
 bool Mat4x4::operator==(const Mat4x4 &other) const {
@@ -31,7 +31,7 @@ bool Mat4x4::operator==(const Mat4x4 &other) const {
 
 // Mat4x4 inlines.
 // ---------------
-inline Mat4x4 mat4x4_multiply(const Mat4x4 &l, const Mat4x4 &r) {
+Mat4x4 mat4x4_multiply(const Mat4x4 &l, const Mat4x4 &r) {
   Mat4x4 ans;
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
@@ -43,7 +43,7 @@ inline Mat4x4 mat4x4_multiply(const Mat4x4 &l, const Mat4x4 &r) {
   }
   return ans;
 }
-inline Mat4x4 mat4x4_transpose(const Mat4x4 &mat) {
+Mat4x4 mat4x4_transpose(const Mat4x4 &mat) {
   Mat4x4 ret;
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
