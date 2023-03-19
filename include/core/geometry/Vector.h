@@ -2,6 +2,8 @@
 #include "core/TRay.h"
 
 namespace TRay {
+/// \note Maybe we can make this using Swizzle?
+/// \see https://zhuanlan.zhihu.com/p/340119757
 
 /// @brief Vector3 decl.
 /// --------------------
