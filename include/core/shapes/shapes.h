@@ -1,6 +1,6 @@
 #pragma once
 #include "core/TRay.h"
-#include "core/shape/Shape.h"
-#include "core/shape/Sphere.h"
+#include "core/shapes/Shape.h"
+#include "core/shapes/Sphere.h"
 
 namespace TRay {}  // namespace TRay

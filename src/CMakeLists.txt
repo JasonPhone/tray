@@ -24,10 +24,10 @@ add_library(TRay_geometry
   ${SOURCE_DIR}/core/geometry/Quaternion.cpp
   ${SOURCE_DIR}/core/math/Matrix.cpp
 )
-add_library(TRay_shape
+add_library(TRay_shapes
   STATIC
   ${SOURCE_DIR}/core/geometry/Interaction.cpp
   ${SOURCE_DIR}/core/geometry/Ray.cpp
   ${SOURCE_DIR}/core/geometry/Bound.cpp
-  ${SOURCE_DIR}/core/shape/Sphere.cpp
+  ${SOURCE_DIR}/core/shapes/Sphere.cpp
 )

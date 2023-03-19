@@ -1,6 +1,6 @@
 #pragma once
 #include "core/TRay.h"
-#include "core/shape/shapes.h"
+#include "core/shapes/Shape.h"
 
 namespace TRay {
 class Sphere : public Shape {

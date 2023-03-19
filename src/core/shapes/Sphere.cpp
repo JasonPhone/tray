@@ -1,4 +1,4 @@
-#include "core/shape/Sphere.h"
+#include "core/shapes/Sphere.h"
 #include "core/geometry/Point.h"
 
 namespace TRay {
@@ -6,9 +6,8 @@ Bound3f Sphere::do_object_bound() const {
   return Bound3f(Point3f(-radius, -radius, z_min),
                  Point3f(radius, radius, z_max));
 }
-bool Sphere::do_intersect(const Ray &ray, Float *time,
-                          SurfaceInteraction *si,
-                          bool test_alpha_texture = true) const {
+bool Sphere::do_intersect(const Ray &ray, Float *time, SurfaceInteraction *si,
+                          bool test_alpha_texture) const {
   Float phi;
   Point3f p_hit;
   // Ray to obj space.
@@ -51,11 +50,11 @@ bool Sphere::do_intersect(const Ray &ray, Float *time,
   // Return values.
   *time = t_hit;
   *si = obj_to_world(SurfaceInteraction(p_hit, Point2f(u, v), -ray.dir, dpdu,
-                                           dpdv, ray.time, this));
+                                        dpdv, ray.time, this));
   return true;
 }
-bool Sphere::do_intersect_test(const Ray &ray,
-                               bool test_alpha_texture = true) const {
+/// @brief Same as do_intersect() but does not update interaction.
+bool Sphere::do_intersect_test(const Ray &ray, bool test_alpha_texture) const {
   Float phi;
   Point3f p_hit;
   // Ray to obj space.
@@ -98,7 +97,5 @@ bool Sphere::do_intersect_test(const Ray &ray,
 
   return true;
 }
-Float Sphere::do_area() const {
-  return phi_max * radius * (z_max - z_min);
-}
+Float Sphere::do_area() const { return phi_max * radius * (z_max - z_min); }
 }  // namespace TRay

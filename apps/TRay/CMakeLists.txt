@@ -14,6 +14,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
   stb_image
   tiny_obj_loader
   TRay_geometry
+  TRay_shapes
 )
 
 # Copy assimp dll into this folder
