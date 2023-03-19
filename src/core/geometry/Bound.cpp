@@ -1,5 +1,6 @@
 #include "core/geometry/Bound.h"
 #include "core/geometry/Point.h"
+#include "core/geometry/Ray.h"
 namespace TRay {
 // Bound2iIterator impl.
 // ---------------------
@@ -19,8 +20,8 @@ bool Bound2iIterator::operator==(Bound2iIterator other) const {
 bool Bound2iIterator::operator!=(Bound2iIterator other) const {
   return !(*this == other);
 }
-Point2i Bound2iIterator::operator*() const{ return pos; }
-Bound2iIterator Bound2iIterator::begin()const {
+Point2i Bound2iIterator::operator*() const { return pos; }
+Bound2iIterator Bound2iIterator::begin() const {
   return Bound2iIterator(bound, bound.p_min);
 }
 Bound2iIterator Bound2iIterator::end() const {

@@ -16,7 +16,6 @@ add_library(tiny_obj_loader
 
 add_library(TRay_geometry
   STATIC
-  # ${SOURCE_DIR}/core/geometry/geometry.cpp
   ${SOURCE_DIR}/core/geometry/AnimateTransform.cpp
   ${SOURCE_DIR}/core/geometry/Transform.cpp
   ${SOURCE_DIR}/core/geometry/Interaction.cpp
@@ -27,5 +26,8 @@ add_library(TRay_geometry
 )
 add_library(TRay_shape
   STATIC
-  ${SOURCE_DIR}/core/shape/Shape.cpp
+  ${SOURCE_DIR}/core/geometry/Interaction.cpp
+  ${SOURCE_DIR}/core/geometry/Ray.cpp
+  ${SOURCE_DIR}/core/geometry/Bound.cpp
+  ${SOURCE_DIR}/core/shape/Sphere.cpp
 )

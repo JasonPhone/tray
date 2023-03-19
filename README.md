@@ -38,7 +38,7 @@ TRay for "yet another Ray Tracer".
 
 ## Renderer
 
-- [ ] Geometry, Transformation
+- [x] Geometry, Transformation
   - [x] Coordinate System
   - [x] Vector
   - [x] Point
@@ -48,12 +48,11 @@ TRay for "yet another Ray Tracer".
   - [x] Transformation
   - [x] Applying Transformation
   - [x] Animating Transformation
-  - [ ] Interaction
+  - [x] Interaction
 - [ ] Shape
-  - [ ] Interface
-  - [ ] Sphere
+  - [x] Interface
+  - [x] Sphere
   - [ ] Triangle Meshes with tiny_obj_loader
-  - [ ] Rounding Error
 - [ ] Primitive (Shape and shading info), Acceleration
   - [ ] Interface
   - [ ] Primitives
@@ -108,3 +107,7 @@ TRay for "yet another Ray Tracer".
 - [ ] Chinese Font
 - [ ] Window Docking with [imguiDock](https://github.com/BentleyBlanks/imguiDock)
 
+
+## Input file format
+
+`flip_normal` controls if the surface normal of a geometry object is flipped.

@@ -5,15 +5,17 @@
 #include "stb_image.h"
 // #include "core/TRay.h"
 #include "core/geometry/Geometry.h"
+#include "core/shape/shapes.h"
+
+using namespace TRay;
+using namespace std;
+
 
 int main() {
-  TRay::Mat4x4 a;
-  TRay::Point3f p(0, 0, 0);
-  TRay::Transform t1(a);
-  TRay::Transform t2(TRay::translate({1, 1, 1}) * t1);
-  TRay::AnimateTransform at(t1, 0, t2, 1);
-  std::cout << t1(p) << " --> " << t2(p) << std::endl;
-  std::cout << at(p, 0.5) << std::endl;
-
+  std::cout << std::acos(1);
+  Transform t1(translate(Vector3f(1, 0, 0)));
+  Transform t2(translate(Vector3f(-1, 0, 0)));
+  Sphere s(t1, t2, false, 3);
+  cout << s.area() << endl;
   return 0;
 }

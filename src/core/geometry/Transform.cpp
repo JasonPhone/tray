@@ -3,6 +3,7 @@
 #include "core/geometry/Point.h"
 #include "core/geometry/Ray.h"
 #include "core/geometry/Bound.h"
+#include "core/geometry/Interaction.h"
 
 namespace TRay {
 // Transform impl.
@@ -63,6 +64,25 @@ Bound3f Transform::operator()(const Bound3f &b) const {
   Point3f p2(pmax[0], pmax[1], pmax[2]);
   return Bound3f(p1, p2);
 }
+SurfaceInteraction Transform::operator()(const SurfaceInteraction &si) const {
+    SurfaceInteraction ret;
+    const Transform &t = *this;
+    ret.p = t(si.p);
+
+    ret.n = normalize(t(si.n));
+    ret.wo = normalize(t(si.wo));
+    ret.time = si.time;
+    ret.uv = si.uv;
+    ret.shape = si.shape;
+    ret.dpdu = t(si.dpdu);
+    ret.dpdv = t(si.dpdv);
+    ret.shading.n = normalize(t(si.shading.n));
+    ret.shading.dpdu = t(si.shading.dpdu);
+    ret.shading.dpdv = t(si.shading.dpdv);
+    ret.shading.n = align_with(ret.shading.n, ret.n);
+    return ret;
+}
+
 Transform Transform::operator*(const Transform &t) const {
   return Transform(mat4x4_multiply(m, t.m), mat4x4_multiply(t.m_inv, m_inv));
 }

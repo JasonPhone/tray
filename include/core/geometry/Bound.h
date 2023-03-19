@@ -8,6 +8,7 @@
 #pragma once
 #include "core/TRay.h"
 #include "core/geometry/Point.h"
+#include "core/geometry/Ray.h"
 
 /// @brief By 2023-03-14 we use AABB, which is defined on two corner points.
 
@@ -64,8 +65,8 @@ class Bound3 {
     return off;
   }
   bool intersect_test(const Ray &ray, Float *time0, Float *time1) const;
-  bool intersect_test(const Ray &ray, const Vector3f &inv_dir,
-                      const int dir_is_neg[3]) const;
+  // bool intersect_test(const Ray &ray, const Vector3f &inv_dir,
+  //                     const int dir_is_neg[3]) const;
   Point3<T> p_min, p_max;
 };
 template <typename T>
@@ -194,8 +195,8 @@ inline bool Bound3<T>::intersect_test(const Ray &ray, Float *time0,
   for (int i = 0; i < 3; ++i) {
     // Update interval for bounding box slab i.
     Float inv_ray_dir = 1 / ray.dir[i];
-    Float t_near = (pMin[i] - ray.ori[i]) * inv_ray_dir;
-    Float t_far = (pMax[i] - ray.ori[i]) * inv_ray_dir;
+    Float t_near = (p_min[i] - ray.ori[i]) * inv_ray_dir;
+    Float t_far = (p_max[i] - ray.ori[i]) * inv_ray_dir;
     if (t_near > t_far) std::swap(t_near, t_far);
 
     // Ensure robust ray--bound intersection.
@@ -208,34 +209,6 @@ inline bool Bound3<T>::intersect_test(const Ray &ray, Float *time0,
   if (time0) *time0 = t0;
   if (time1) *time1 = t1;
   return true;
-}
-template <typename T>
-inline bool Bound3<T>::intersect_test(const Ray &ray, const Vector3f &inv_dir,
-                                      const int dir_is_neg[3]) const {
-  const Bound3f &bound = *this;
-  // Check for ray intersection against $x$ and $y$ slabs
-  Float t_min = (bound[dir_is_neg[0]].x - ray.ori.x) * inv_dir.x;
-  Float t_max = (bound[1 - dir_is_neg[0]].x - ray.ori.x) * inv_dir.x;
-  Float ty_min = (bound[dir_is_neg[1]].y - ray.ori.y) * inv_dir.y;
-  Float ty_max = (bound[1 - dir_is_neg[1]].y - ray.ori.y) * inv_dir.y;
-
-  // Ensure robust bound intersection
-  t_max *= 1 + 2 * gamma(3);
-  ty_max *= 1 + 2 * gamma(3);
-  if (t_min > ty_max || ty_min > t_max) return false;
-  if (ty_min > t_min) t_min = ty_min;
-  if (ty_max < t_max) t_max = ty_max;
-
-  // Check for ray intersection against $z$ slab
-  Float tz_min = (bound[dir_is_neg[2]].z - ray.ori.z) * inv_dir.z;
-  Float tz_max = (bound[1 - dir_is_neg[2]].z - ray.ori.z) * inv_dir.z;
-
-  // Ensure robust bound intersection
-  tz_max *= 1 + 2 * gamma(3);
-  if (t_min > tz_max || tz_min > t_max) return false;
-  if (tz_min > t_min) t_min = tz_min;
-  if (tz_max < t_max) t_max = tz_max;
-  return (t_min < ray.t_max) && (t_max > 0);
 }
 
 // Bound2 inlines.

@@ -16,7 +16,10 @@ class Normal3 {
     return std::isnan(x) || std::isnan(y) || std::isnan(z);
   }
   Float length2() const { return x * x + y * y * z * z; }
-  Float length() { return std::sqrt(length2()); }
+  Float length() const { return std::sqrt(length2()); }
+  bool operator==(const Normal3<T> &other) const {
+    return x == other.x && y == other.y && z == other.z;
+  }
   Normal3<T> operator+(const Normal3<T> &n) const {
     return Normal3<T>(x + n.x, y + n.y, z + n.z);
   }
@@ -78,8 +81,19 @@ template <typename T>
 inline Normal3<T> normalize(const Normal3<T> &v) {
   return (1.0 / v.length()) * v;
 }
+/**
+ * @brief Return the (maybe flipped) normal whose direction is aligned with
+ * given vector.
+ *
+ * @param n Normal to flip.
+ * @param v Vector to align with.
+ */
 template <typename T>
 inline Normal3<T> align_with(const Normal3<T> &n, const Vector3<T> &v) {
+  return (dot(n, v) < 0.0) ? -n : n;
+}
+template <typename T>
+inline Normal3<T> align_with(const Normal3<T> &n, const Normal3<T> &v) {
   return (dot(n, v) < 0.0) ? -n : n;
 }
 

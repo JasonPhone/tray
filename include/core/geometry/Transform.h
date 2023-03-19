@@ -82,6 +82,7 @@ class Transform {
   }
   Ray operator()(const Ray &r) const;
   Bound3f operator()(const Bound3f &b) const;
+  SurfaceInteraction operator()(const SurfaceInteraction &si) const;
   Transform operator*(const Transform &t) const;
 
  private:
