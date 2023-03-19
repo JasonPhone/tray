@@ -19,11 +19,13 @@ add_library(TRay_geometry
   # ${SOURCE_DIR}/core/geometry/geometry.cpp
   ${SOURCE_DIR}/core/geometry/AnimateTransform.cpp
   ${SOURCE_DIR}/core/geometry/Transform.cpp
+  ${SOURCE_DIR}/core/geometry/Interaction.cpp
   ${SOURCE_DIR}/core/geometry/Ray.cpp
   ${SOURCE_DIR}/core/geometry/Bound.cpp
-  ${SOURCE_DIR}/core/geometry/Normal.cpp
   ${SOURCE_DIR}/core/geometry/Quaternion.cpp
-  ${SOURCE_DIR}/core/geometry/Point.cpp
-  ${SOURCE_DIR}/core/geometry/Vector.cpp
   ${SOURCE_DIR}/core/math/Matrix.cpp
+)
+add_library(TRay_shape
+  STATIC
+  ${SOURCE_DIR}/core/shape/Shape.cpp
 )
