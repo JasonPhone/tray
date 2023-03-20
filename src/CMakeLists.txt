@@ -28,6 +28,6 @@ add_library(TRay_shapes
   STATIC
   ${SOURCE_DIR}/core/geometry/Interaction.cpp
   ${SOURCE_DIR}/core/geometry/Ray.cpp
-  ${SOURCE_DIR}/core/geometry/Bound.cpp
+  # ${SOURCE_DIR}/core/geometry/Bound.cpp
   ${SOURCE_DIR}/shapes/Sphere.cpp
 )
