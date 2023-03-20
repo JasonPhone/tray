@@ -2,6 +2,7 @@
 #include "core/TRay.h"
 #include "core/geometry/Point.h"
 #include "core/geometry/Normal.h"
+#include "core/primitives/primitives.h"
 
 namespace TRay {
 
@@ -52,8 +53,8 @@ class SurfaceInteraction : public Interaction {
     Vector3f dpdu, dpdv;
     // Normal3f dndu, dndv;
   } shading;
-  // const Primitive *primitive = nullptr;
-  // BSDF *bsdf = nullptr;
+  const Primitive *primitive = nullptr;
+  BSDF *bsdf = nullptr;
   // BSSRDF *bssrdf = nullptr;
   // mutable Vector3f dpdx, dpdy;
   // mutable Float dudx = 0, dvdx = 0, dudy = 0, dvdy = 0;

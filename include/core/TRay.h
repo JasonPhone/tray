@@ -94,16 +94,24 @@ class Quaternion;
 // ---------------------------
 class Interaction;
 class SurfaceInteraction;
-
-// core/Shape/Shape.h
+// core/geometry/Shape.h
 // ------------------
 class Shape;
-// core/Shape/Sphere.h
+// shapes/Sphere.h
 // ------------------
 class Sphere;
-
 // core/math/Matrix.h
 struct Mat4x4;
+// core/primitives/Primitive.h
+class Primitive;
+// core/lights/Ligtht.h
+class Light;
+class AreaLight;
+// core/materials/Material.h
+class Material;
+enum class TransportMode;
+// core/reflection?
+class BSDF;
 
 // Math constants.
 // ---------------
