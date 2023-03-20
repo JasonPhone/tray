@@ -2,6 +2,7 @@
 #include "core/TRay.h"
 #include "core/geometry/Interaction.h"
 #include "core/geometry/Bound.h"
+#include "core/geometry/Transform.h"
 
 namespace TRay {
 /// @brief Shape interface.

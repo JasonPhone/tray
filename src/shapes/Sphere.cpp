@@ -1,5 +1,5 @@
-#include "core/shapes/Sphere.h"
-#include "core/geometry/Point.h"
+#include "core/geometry/geometry.h"
+#include "shapes/Sphere.h"
 
 namespace TRay {
 Bound3f Sphere::do_object_bound() const {

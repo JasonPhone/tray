@@ -30,13 +30,15 @@
 // ------------------
 #pragma once
 #include "core/TRay.h"
-#include "core/geometry/Vector.h"
+#include "core/geometry/AnimateTransform.h"
+#include "core/geometry/Bound.h"
+#include "core/geometry/Interaction.h"
+#include "core/geometry/Normal.h"
 #include "core/geometry/Point.h"
 #include "core/geometry/Ray.h"
-#include "core/geometry/Bound.h"
+#include "core/geometry/Shape.h"
 #include "core/geometry/Transform.h"
-#include "core/geometry/AnimateTransform.h"
-#include "core/geometry/Normal.h"
+#include "core/geometry/Vector.h"
 
 namespace TRay {
 }  // namespace TRay

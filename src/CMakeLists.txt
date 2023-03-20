@@ -29,5 +29,5 @@ add_library(TRay_shapes
   ${SOURCE_DIR}/core/geometry/Interaction.cpp
   ${SOURCE_DIR}/core/geometry/Ray.cpp
   ${SOURCE_DIR}/core/geometry/Bound.cpp
-  ${SOURCE_DIR}/core/shapes/Sphere.cpp
+  ${SOURCE_DIR}/shapes/Sphere.cpp
 )

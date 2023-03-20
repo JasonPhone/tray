@@ -1,6 +1,7 @@
 #pragma once
 #include "core/TRay.h"
-#include "core/geometry/Geometry.h"
+#include "core/geometry/Point.h"
+#include "core/geometry/Normal.h"
 
 namespace TRay {
 

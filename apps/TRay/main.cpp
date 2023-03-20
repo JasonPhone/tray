@@ -4,8 +4,8 @@
 #include <iostream>
 #include "stb_image.h"
 // #include "core/TRay.h"
-#include "core/geometry/Geometry.h"
-#include "core/shapes/shapes.h"
+#include "core/geometry/geometry.h"
+#include "shapes/Sphere.h"
 
 using namespace TRay;
 using namespace std;
