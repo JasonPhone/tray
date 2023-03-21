@@ -54,9 +54,10 @@ TRay for "yet another Ray Tracer".
   - [x] Sphere
   - [ ] Triangle Meshes with tiny_obj_loader
 - [ ] Primitive (Shape and shading info), Acceleration
-  - [ ] Interface
-  - [ ] Primitives
-  - [ ] Aggregates
+  - [x] Interface
+  - [x] Primitives
+  - [x] Aggregates
+  - [ ] Plain linear structure
   - [ ] BVH
 - [ ] Color, Radiometry
   - [ ] Interface
