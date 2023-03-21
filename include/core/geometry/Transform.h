@@ -42,6 +42,7 @@ class Transform {
   bool is_identity() const;
   // bool has_scale() const;
   bool will_swap_hand() const;
+  Transform inverse() const;
   // Transform apply.
   template <typename T>
   Point3<T> operator()(const Point3<T> &p) const {

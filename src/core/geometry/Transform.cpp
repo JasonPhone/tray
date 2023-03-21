@@ -44,6 +44,9 @@ Ray Transform::operator()(const Ray &r) const {
   // }
   return Ray(o, d, t_m, r.time);
 }
+Transform Transform::inverse() const {
+  return Transform(m_inv, m);
+}
 Bound3f Transform::operator()(const Bound3f &b) const {
   // Take every extreme element.
   // https://github.com/erich666/GraphicsGems/blob/master/gems/TransBox.c
