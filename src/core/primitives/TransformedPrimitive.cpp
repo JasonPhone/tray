@@ -34,14 +34,14 @@ bool TransformedPrimitive::do_intersect_test(const Ray &ray) const {
 }
 AreaLight *TransformedPrimitive::do_area_light() const {
   SError(
-      "TransformedPrimitive::do_fill_scattering_func: Transformed primitive "
+      "TransformedPrimitive::do_area_light: Transformed primitive "
       "has no light source!");
   ASSERT(0);
   return nullptr;
 }
 Material *TransformedPrimitive::do_material() const {
   SError(
-      "TransformedPrimitive::do_fill_scattering_func: Transformed primitive "
+      "TransformedPrimitive::do_material: Transformed primitive "
       "has no material!");
   ASSERT(0);
   return nullptr;
