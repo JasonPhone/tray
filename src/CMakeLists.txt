@@ -35,4 +35,5 @@ add_library(TRay_primitive
   STATIC
   ${SOURCE_DIR}/core/primitives/GeometricPrimitive.cpp
   ${SOURCE_DIR}/core/primitives/TransformedPrimitive.cpp
+  ${SOURCE_DIR}/core/primitives/Aggregate.cpp
 )

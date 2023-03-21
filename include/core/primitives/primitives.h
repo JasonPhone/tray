@@ -3,6 +3,7 @@
 #include "core/primitives/Primitive.h"
 #include "core/primitives/GeometricPrimitive.h"
 #include "core/primitives/TransformedPrimitive.h"
+#include "core/primitives/Aggregate.h"
 
 /**
  * Primitives are the abstraction of geometry, shading and transform.

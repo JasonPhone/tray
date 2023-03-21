@@ -109,6 +109,8 @@ class Primitive;
 class GeometricPrimitive;
 // core/primitives/TransformedPrimitive.h
 class TransformedPrimitive;
+// core/primitives/Aggregate.h
+class Aggregate;
 // core/lights/Ligtht.h
 class Light;
 class AreaLight;
