@@ -11,6 +11,7 @@
 #include <utility>
 #include <assert.h>
 #include <memory>
+#include <vector>
 
 #ifdef TRAY_FLOAT_AS_DOUBLE
 using Float = double;
@@ -111,6 +112,9 @@ class GeometricPrimitive;
 class TransformedPrimitive;
 // core/primitives/Aggregate.h
 class Aggregate;
+// accelerators/LinearAccel.h
+class LinearAccel;
+
 // core/lights/Ligtht.h
 class Light;
 class AreaLight;

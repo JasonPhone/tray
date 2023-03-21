@@ -57,7 +57,7 @@ TRay for "yet another Ray Tracer".
   - [x] Interface
   - [x] Primitives
   - [x] Aggregates
-  - [ ] Plain linear structure
+  - [x] Plain linear structure
   - [ ] BVH
 - [ ] Color, Radiometry
   - [ ] Interface

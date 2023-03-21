@@ -2,7 +2,6 @@
 #include "core/TRay.h"
 #include "core/geometry/Point.h"
 #include "core/geometry/Normal.h"
-#include "core/primitives/primitives.h"
 
 namespace TRay {
 

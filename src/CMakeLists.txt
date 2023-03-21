@@ -36,4 +36,5 @@ add_library(TRay_primitive
   ${SOURCE_DIR}/core/primitives/GeometricPrimitive.cpp
   ${SOURCE_DIR}/core/primitives/TransformedPrimitive.cpp
   ${SOURCE_DIR}/core/primitives/Aggregate.cpp
+  ${SOURCE_DIR}/accelerators/LinearAccel.cpp
 )
