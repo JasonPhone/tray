@@ -107,6 +107,8 @@ struct Mat4x4;
 class Primitive;
 // core/primitives/GeometricPrimitive.h
 class GeometricPrimitive;
+// core/primitives/TransformedPrimitive.h
+class TransformedPrimitive;
 // core/lights/Ligtht.h
 class Light;
 class AreaLight;

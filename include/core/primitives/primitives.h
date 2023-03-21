@@ -2,6 +2,7 @@
 #include "core/TRay.h"
 #include "core/primitives/Primitive.h"
 #include "core/primitives/GeometricPrimitive.h"
+#include "core/primitives/TransformedPrimitive.h"
 
 /**
  * Primitives are the abstraction of geometry, shading and transform.
