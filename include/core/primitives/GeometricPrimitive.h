@@ -9,11 +9,12 @@ class GeometricPrimitive : public Primitive {
   /// @param sh Shape.
   /// @param mt Material.
   /// @param al AreaLight, nullptr if this primitive is not emissive.
-  GeometricPrimitive(const Shape &_shape, const Material &_material,
-                     const AreaLight &_area_light)
-      : m_shape(std::make_shared<Shape>(_shape)),
-        m_material(std::make_shared<Material>(_material)),
-        m_area_light(std::make_shared<AreaLight>(_area_light)) {}
+  GeometricPrimitive(const std::shared_ptr<Shape> &_shape,
+                     const std::shared_ptr<Material> &_material,
+                     const std::shared_ptr<AreaLight> &_area_light)
+      : m_shape(_shape),
+        m_material(_material),
+        m_area_light(_area_light) {}
 
  private:
   Bound3f do_world_bound() const override;

@@ -1,5 +1,4 @@
 #pragma once
-#include "core/TRay.h"
 #include "core/primitives/Primitive.h"
 #include "core/geometry/AnimateTransform.h"
 // AnimateTransform is applied here, not inside with Shape.

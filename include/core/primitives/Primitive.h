@@ -1,5 +1,4 @@
 #pragma once
-#include "core/TRay.h"
 #include "core/geometry/Bound.h"
 #include "core/geometry/Ray.h"
 #include "core/geometry/Interaction.h"
