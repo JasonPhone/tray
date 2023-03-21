@@ -31,3 +31,7 @@ add_library(TRay_shapes
   # ${SOURCE_DIR}/core/geometry/Bound.cpp
   ${SOURCE_DIR}/shapes/Sphere.cpp
 )
+add_library(TRay_primitive
+  STATIC
+  ${SOURCE_DIR}/core/primitives/GeometricPrimitive.cpp
+)

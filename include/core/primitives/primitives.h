@@ -1,6 +1,7 @@
 #pragma once
 #include "core/TRay.h"
 #include "core/primitives/Primitive.h"
+#include "core/primitives/GeometricPrimitive.h"
 
 /**
  * Primitives are the abstraction of geometry, shading and transform.

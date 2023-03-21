@@ -27,9 +27,9 @@ class Shape {
    * @param inter Return hit point interaction.
    * @param test_alpha_texture If test transparent texture.
    */
-  bool intersect(const Ray &ray, Float *time, SurfaceInteraction *inter,
+  bool intersect(const Ray &ray, Float *time, SurfaceInteraction *si,
                  bool test_alpha_texture = true) const {
-    return do_intersect(ray, time, inter, test_alpha_texture);
+    return do_intersect(ray, time, si, test_alpha_texture);
   }
   /// @brief Just test without getting any detailed info.
   bool intersect_test(const Ray &ray, bool test_alpha_texture = true) const {
@@ -52,7 +52,7 @@ class Shape {
    *     and the return interaction info should be in world space.
    */
   virtual bool do_intersect(const Ray &r, Float *time,
-                            SurfaceInteraction *inter,
+                            SurfaceInteraction *si,
                             bool test_alpha_texture = true) const = 0;
   virtual bool do_intersect_test(const Ray &ray,
                                  bool test_alpha_texture = true) const {

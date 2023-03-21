@@ -10,6 +10,7 @@
 #include <cmath>
 #include <utility>
 #include <assert.h>
+#include <memory>
 
 #ifdef TRAY_FLOAT_AS_DOUBLE
 using Float = double;
@@ -104,6 +105,8 @@ class Sphere;
 struct Mat4x4;
 // core/primitives/Primitive.h
 class Primitive;
+// core/primitives/GeometricPrimitive.h
+class GeometricPrimitive;
 // core/lights/Ligtht.h
 class Light;
 class AreaLight;
