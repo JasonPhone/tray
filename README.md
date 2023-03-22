@@ -60,8 +60,8 @@ TRay for "yet another Ray Tracer".
   - [x] Plain linear structure
   - [ ] BVH
 - [ ] Color, Radiometry
-  - [ ] Interface
-  - [ ] Try only basic RGB
+  - [x] Interface
+  - [x] Try only basic RGB
 - [ ] Camera
   - [ ] Interface
   - [ ] Camera Model

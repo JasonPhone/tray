@@ -114,6 +114,11 @@ class TransformedPrimitive;
 class Aggregate;
 // accelerators/LinearAccel.h
 class LinearAccel;
+// core/spectrum/CoefficientSpectrum.h
+template <int n_samples_t>
+class CoefficientSpectrum;
+// core/spectrum/RGBSpectrum.h
+class RGBSpectrum;
 
 // core/lights/Ligtht.h
 class Light;
@@ -142,7 +147,7 @@ inline Float deg_to_rad(Float deg) { return deg / 180.0 * PI; }
 inline Float gamma(int n) { return (n * FLOAT_EPS) / (1 - n * FLOAT_EPS); }
 /**
  * @brief Solving quadratic formulation ax^2 + bx + c = 0.
- * 
+ *
  * @param t0 Store the solutions.
  * @param t1 t0 < t1 is guaranteed.
  */
