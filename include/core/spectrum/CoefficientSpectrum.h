@@ -143,6 +143,7 @@ class CoefficientSpectrum {
   std::string to_string() const {
     std::string str = "[";
     for (int i = 0; i < n_spec_samples; ++i) {
+      // TODO Make this a func?
       size_t size =
           snprintf(nullptr, 0, "%.2f", c[i]) + 1;  // +1 for trailing \0
       std::string s;
