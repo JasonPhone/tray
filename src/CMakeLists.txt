@@ -38,3 +38,10 @@ add_library(TRay_primitive
   ${SOURCE_DIR}/core/primitives/Aggregate.cpp
   ${SOURCE_DIR}/accelerators/LinearAccel.cpp
 )
+add_library(TRay_camera
+  STATIC
+  ${SOURCE_DIR}/filters/BoxFilter.cpp
+  ${SOURCE_DIR}/core/Camera.cpp
+  ${SOURCE_DIR}/core/Film.cpp
+  ${SOURCE_DIR}/cameras/PerspectiveCamera.cpp
+)

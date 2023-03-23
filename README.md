@@ -63,9 +63,9 @@ TRay for "yet another Ray Tracer".
   - [x] Interface
   - [x] Try only basic RGB
 - [ ] Camera
-  - [ ] Interface
+  - [x] Interface
   - [ ] Camera Model
-  - [ ] Perspective Camera and Thin Lens
+  - [ ] Perspective Camera with Thin Lens
 - [ ] **Sampling**
   - [ ] Interface
   - [ ] Stratified

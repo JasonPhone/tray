@@ -119,14 +119,20 @@ template <int n_samples_t>
 class CoefficientSpectrum;
 // core/spectrum/RGBSpectrum.h
 class RGBSpectrum;
+// Camera.h
+class Camera;
 
-// core/lights/Ligtht.h
+// core/Film.h
+class Film;
+// core/Filter.h
+class Filter;
+// core/lights/Ligtht.h?
 class Light;
 class AreaLight;
-// core/materials/Material.h
+// core/materials/Material.h?
 class Material;
 enum class TransportMode;
-// core/reflection?
+// core/reflection.h?
 class BSDF;
 
 // Math constants.
