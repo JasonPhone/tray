@@ -113,7 +113,7 @@ class CoefficientSpectrum {
     return !(*this == other);
   }
   /// @note This implies the SPD is linearly scaling a set of basis functions.
-  Float &operator[](int i) { return c[i]; }
+  Float operator[](int i) const { return c[i]; }
 
   /// @brief Used by reflection models.
 
