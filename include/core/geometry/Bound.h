@@ -81,6 +81,10 @@ class Bound2 {
     p_max = Point2<T>(maxv, maxv);
   }
   Bound2(const Point2<T> &p) : Bound2(p, p) {}
+  template <typename U>
+  explicit operator Bound2<U>() const {
+    return Bound2<U>((Point2<U>)p_min, (Point2<U>)p_max);
+  }
   bool is_valid() const { return p_min.x <= p_max.x && p_min.y <= p_max.y; }
   bool operator==(const Bound2<T> &other) const {
     return p_min == other.p_min && p_max == other.p_max;
