@@ -2,12 +2,20 @@
 #include "shapes/Sphere.h"
 
 namespace TRay {
-Bound3f Sphere::do_object_bound() const {
+Bound3f Sphere::object_bound() const {
   return Bound3f(Point3f(-radius, -radius, z_min),
                  Point3f(radius, radius, z_max));
 }
-bool Sphere::do_intersect(const Ray &ray, Float *time, SurfaceInteraction *si,
-                          bool test_alpha_texture) const {
+/**
+ * Some points in doing intersection:
+ *  1. Intersection after ray.t_max is ignored.
+ *  2. Use *time to return time of the FIRST hit.
+ *  3. Interaction is used widely to separate geometry code and shading code.
+ *  4. Ray is in world space, but intersection test is easier in object space,
+ *     and the return interaction info should be in world space.
+ */
+bool Sphere::intersect(const Ray &ray, Float *time, SurfaceInteraction *si,
+                       bool test_alpha_texture) const {
   Float phi;
   Point3f p_hit;
   // Ray to obj space.
@@ -53,8 +61,8 @@ bool Sphere::do_intersect(const Ray &ray, Float *time, SurfaceInteraction *si,
                                         dpdv, ray.time, this));
   return true;
 }
-/// @brief Same as do_intersect() but does not update interaction.
-bool Sphere::do_intersect_test(const Ray &ray, bool test_alpha_texture) const {
+/// @brief Same as intersect() but does not update interaction.
+bool Sphere::intersect_test(const Ray &ray, bool test_alpha_texture) const {
   Float phi;
   Point3f p_hit;
   // Ray to obj space.
@@ -97,5 +105,5 @@ bool Sphere::do_intersect_test(const Ray &ray, bool test_alpha_texture) const {
 
   return true;
 }
-Float Sphere::do_area() const { return phi_max * radius * (z_max - z_min); }
+Float Sphere::area() const { return phi_max * radius * (z_max - z_min); }
 }  // namespace TRay

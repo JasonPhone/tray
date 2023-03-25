@@ -23,6 +23,12 @@ class Sphere : public Shape {
         theta_min(0),
         theta_max(PI),
         phi_max(deg_to_rad(360)) {}
+  Bound3f object_bound() const override;
+  bool intersect(const Ray &ray, Float *time, SurfaceInteraction *si,
+                 bool test_alpha_texture = true) const override;
+  bool intersect_test(const Ray &ray,
+                      bool test_alpha_texture = true) const override;
+  Float area() const override;
   /**
    * @brief Construct a new Sphere object.
    *
@@ -50,11 +56,5 @@ class Sphere : public Shape {
   const Float z_min, z_max;
   const Float theta_min, theta_max;
   const Float phi_max;
-  Bound3f do_object_bound() const override;
-  bool do_intersect(const Ray &ray, Float *time, SurfaceInteraction *si,
-                    bool test_alpha_texture = true) const override;
-  bool do_intersect_test(const Ray &ray,
-                         bool test_alpha_texture = true) const override;
-  Float do_area() const override;
 };
 }  // namespace TRay

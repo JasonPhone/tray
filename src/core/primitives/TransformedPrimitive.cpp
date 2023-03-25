@@ -3,7 +3,7 @@
 
 namespace TRay {
 
-Bound3f TransformedPrimitive::do_world_bound() const {
+Bound3f TransformedPrimitive::world_bound() const {
   return m_prim_to_world.motion_bound(m_primitive->world_bound());
 }
 /**
@@ -11,8 +11,8 @@ Bound3f TransformedPrimitive::do_world_bound() const {
  * intersect() function.
  *
  */
-bool TransformedPrimitive::do_intersect(const Ray &ray,
-                                        SurfaceInteraction *si) const {
+bool TransformedPrimitive::intersect(const Ray &ray,
+                                     SurfaceInteraction *si) const {
   // Transform ray to primitive space.
   Transform prim_to_world_erp;
   m_prim_to_world.interpolate(ray.time, &prim_to_world_erp);
@@ -24,7 +24,7 @@ bool TransformedPrimitive::do_intersect(const Ray &ray,
   if (!prim_to_world_erp.is_identity()) *si = prim_to_world_erp(*si);
   return true;
 }
-bool TransformedPrimitive::do_intersect_test(const Ray &ray) const {
+bool TransformedPrimitive::intersect_test(const Ray &ray) const {
   Transform prim_to_world_erp;
   m_prim_to_world.interpolate(ray.time, &prim_to_world_erp);
   // Inverse then interpolate does not guarantee the same result due to polar
@@ -32,24 +32,25 @@ bool TransformedPrimitive::do_intersect_test(const Ray &ray) const {
   Transform world_to_prim_erp = prim_to_world_erp.inverse();
   return m_primitive->intersect_test(world_to_prim_erp(ray));
 }
-AreaLight *TransformedPrimitive::do_area_light() const {
+AreaLight *TransformedPrimitive::area_light() const {
   SError(
-      "TransformedPrimitive::do_area_light: Transformed primitive "
+      "TransformedPrimitive::area_light: Transformed primitive "
       "has no light source!");
   ASSERT(0);
   return nullptr;
 }
-Material *TransformedPrimitive::do_material() const {
+Material *TransformedPrimitive::material() const {
   SError(
-      "TransformedPrimitive::do_material: Transformed primitive "
+      "TransformedPrimitive::material: Transformed primitive "
       "has no material!");
   ASSERT(0);
   return nullptr;
 }
-void TransformedPrimitive::do_fill_scattering_func(
-    SurfaceInteraction *si, TransportMode mode, bool allow_multi_lobes) const {
+void TransformedPrimitive::fill_scattering_func(SurfaceInteraction *si,
+                                                TransportMode mode,
+                                                bool allow_multi_lobes) const {
   SError(
-      "TransformedPrimitive::do_fill_scattering_func: Transformed primitive "
+      "TransformedPrimitive::fill_scattering_func: Transformed primitive "
       "has no BxDF!");
   ASSERT(0);
 }
