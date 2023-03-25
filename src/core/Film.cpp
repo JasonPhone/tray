@@ -108,13 +108,13 @@ void FilmTile::add_sample(const Point2f &point_on_film, const Spectrum &L,
   // Precompute offset in the table.
   int *offx = ALLOCA(int, p1.x - p0.x);
   for (int x = p0.x; x < p1.x; x++) {
-    Float fx = std::abs((x - p_discrete.x)) * m_filter_radius_inv *
+    Float fx = std::abs((x - p_discrete.x)) * m_filter_radius_inv.x *
                m_filter_table_width;
     offx[x - p0.x] = std::min((int)std::floor(fx), m_filter_table_width);
   }
   int *offy = ALLOCA(int, p1.y - p0.y);
   for (int y = p0.y; y < p1.y; y++) {
-    Float fy = std::abs((y - p_discrete.y)) * m_filter_radius_inv *
+    Float fy = std::abs((y - p_discrete.y)) * m_filter_radius_inv.y *
                m_filter_table_width;
     offy[y - p0.y] = std::min((int)std::floor(fy), m_filter_table_width);
   }

@@ -59,13 +59,13 @@ TRay for "yet another Ray Tracer".
   - [x] Aggregates
   - [x] Plain linear structure
   - [ ] BVH
-- [ ] Color, Radiometry
+- [x] Color, Radiometry
   - [x] Interface
   - [x] Try only basic RGB
-- [ ] Camera
+- [x] Camera
   - [x] Interface
-  - [ ] Camera Model
-  - [ ] Perspective Camera with Thin Lens
+  - [x] Camera Model
+  - [x] Perspective Camera with Thin Lens
 - [ ] **Sampling**
   - [ ] Interface
   - [ ] Stratified

@@ -125,9 +125,13 @@ class RGBSpectrum;
 using Spectrum = RGBSpectrum;
 // Camera.h
 class Camera;
+class ProjectiveCamera;
+// cameras/PerspectiveCamera.h
+class PerspectiveCamera;
 
 // core/Film.h
 class Film;
+class FilmTile;
 // core/Filter.h
 class Filter;
 // core/lights/Ligtht.h?
@@ -144,6 +148,8 @@ class BSDF;
 static constexpr Float FLOAT_MAX = std::numeric_limits<Float>::max();
 static constexpr Float FLOAT_INF = std::numeric_limits<Float>::infinity();
 static constexpr Float PI = 3.14159265358979323846;
+static constexpr Float PI_DIV_2 = 1.57079632679489661923;
+static constexpr Float PI_DIV_4 = 0.78539816339744830961;
 static constexpr Float FLOAT_EPS = std::numeric_limits<Float>::epsilon() * 0.5;
 
 // Math functions.

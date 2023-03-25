@@ -10,7 +10,7 @@ void image_to_array(Float *src, uint8_t *dst, int width, int height) {
       dst[0] = uint8RGB(src[(y * width + x) * 3 + 0]);
       dst[1] = uint8RGB(src[(y * width + x) * 3 + 1]);
       dst[2] = uint8RGB(src[(y * width + x) * 3 + 2]);
-#undef uint8RGB(v)
+#undef uint8RGB
       dst += 3;
     }
   }
