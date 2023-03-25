@@ -12,6 +12,12 @@ struct Mat4x4 {
          Float v30, Float v31, Float v32, Float v33);
   bool operator==(const Mat4x4 &other) const;
   bool operator!=(const Mat4x4 &other) const { return !(*this == other); }
+  bool has_NaN() const {
+    for (int i = 0; i < 4; i++) 
+      for (int j = 0; j < 4; j++)
+        if (std::isnan(val[i][j])) return true;
+   return false;
+  }
 };
 Mat4x4 mat4x4_multiply(const Mat4x4 &l, const Mat4x4 &r);
 Mat4x4 mat4x4_transpose(const Mat4x4 &m);

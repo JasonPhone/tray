@@ -34,9 +34,17 @@ namespace TRay {
 class Transform {
  public:
   Transform() {}
-  Transform(const Mat4x4 &_m, const Mat4x4 &_m_inv) : m(_m), m_inv(_m_inv) {}
-  Transform(Float _m[4][4]) : m(_m) { m_inv = mat4x4_inverse(m); }
-  Transform(const Mat4x4 &_m) : m(_m) { m_inv = mat4x4_inverse(m); }
+  Transform(const Mat4x4 &_m, const Mat4x4 &_m_inv) : m(_m), m_inv(_m_inv) {
+    ASSERT(!m.has_NaN() && !m_inv.has_NaN());
+  }
+  Transform(Float _m[4][4]) : m(_m) {
+    m_inv = mat4x4_inverse(m);
+    ASSERT(!m.has_NaN() && !m_inv.has_NaN());
+  }
+  Transform(const Mat4x4 &_m) : m(_m) {
+    m_inv = mat4x4_inverse(m);
+    ASSERT(!m.has_NaN() && !m_inv.has_NaN());
+  }
   bool operator==(const Transform &other) const;
   bool operator!=(const Transform &other) const { return !(*this == other); }
   bool is_identity() const;
