@@ -69,26 +69,23 @@ void Film::set_image(const Spectrum *colors) {
 void Film::write_image(Float, uint8_t *dst) {
   ASSERT(dst != nullptr);
   int offset = 0;
-  Float vals[m_cropped_pixel_bound.area() * 3];
-  for (int i = 0; i < m_cropped_pixel_bound.area(); i++) {
-    Pixel pxl = m_pixels[i];
-    vals[offset * 3 + 0] = pxl.rgb[0];
-    vals[offset * 3 + 1] = pxl.rgb[1];
-    vals[offset * 3 + 2] = pxl.rgb[2];
+  const Bound2i &bound = m_cropped_pixel_bound;
+  std::unique_ptr<Float[]> rgb(new Float[bound.area() * 3]);
+  Bound2iIterator pxl_range(bound);
+  for (const Point2i &pxl_pos : pxl_range) {
+    const Pixel &pxl = pixel(pxl_pos);
+    rgb[offset * 3 + 0] = pxl.rgb[0];
+    rgb[offset * 3 + 1] = pxl.rgb[1];
+    rgb[offset * 3 + 2] = pxl.rgb[2];
     if (pxl.filter_weight_sum) {
       Float w_inv = 1.0 / pxl.filter_weight_sum;
-      vals[offset * 3 + 0] = std::max(Float(0), vals[offset * 3 + 0] * w_inv);
-      vals[offset * 3 + 1] = std::max(Float(0), vals[offset * 3 + 1] * w_inv);
-      vals[offset * 3 + 2] = std::max(Float(0), vals[offset * 3 + 2] * w_inv);
+      rgb[offset * 3 + 0] = std::max(Float(0), rgb[offset * 3 + 0] * w_inv);
+      rgb[offset * 3 + 1] = std::max(Float(0), rgb[offset * 3 + 1] * w_inv);
+      rgb[offset * 3 + 2] = std::max(Float(0), rgb[offset * 3 + 2] * w_inv);
     }
-// Gamma correction and scale to [0, 255].
-#define uint8RGB(v) (uint8_t) clamp(255.0 * gamma_correct(v) + 0.5, 0.0, 255.0)
-    dst[offset * 3 + 0] = uint8RGB(vals[offset * 3 + 0]);
-    dst[offset * 3 + 1] = uint8RGB(vals[offset * 3 + 1]);
-    dst[offset * 3 + 2] = uint8RGB(vals[offset * 3 + 2]);
-#undef uint8RGB(v)
     offset++;
   }
+  image_to_array(&rgb[0], dst, bound.diagonal().x, bound.diagonal().y);
 }
 
 void FilmTile::add_sample(const Point2f &point_on_film, const Spectrum &L,
