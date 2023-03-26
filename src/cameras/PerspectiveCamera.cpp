@@ -39,5 +39,6 @@ Float PerspectiveCamera::ray_sample(const CameraSample &cam_sample,
     gen_ray->ori = Point3f(p_on_lens.x, p_on_lens.y, 0);
     gen_ray->dir = normalize(focus_pos - gen_ray->ori);
   }
+  return 1.0;
 }
 }  // namespace TRay
