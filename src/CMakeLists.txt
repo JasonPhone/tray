@@ -45,3 +45,7 @@ add_library(TRay_camera
   ${SOURCE_DIR}/core/Film.cpp
   ${SOURCE_DIR}/cameras/PerspectiveCamera.cpp
 )
+add_library(TRay_sampler
+  STATIC
+  ${SOURCE_DIR}/core/Sampler.cpp
+)

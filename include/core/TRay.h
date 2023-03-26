@@ -128,12 +128,16 @@ class Camera;
 class ProjectiveCamera;
 // cameras/PerspectiveCamera.h
 class PerspectiveCamera;
-
 // core/Film.h
 class Film;
 class FilmTile;
 // core/Filter.h
 class Filter;
+// core/Sampler.h
+class Sampler;
+class PixelSampler;
+class GlobalSampler;
+
 // core/lights/Ligtht.h?
 class Light;
 class AreaLight;
