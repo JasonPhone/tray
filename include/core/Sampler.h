@@ -1,3 +1,4 @@
+#pragma once
 #include "core/TRay.h"
 #include "core/geometry/Point.h"
 #include "core/Camera.h"
@@ -37,16 +38,18 @@ class Sampler {
   /// @brief Start next sample.
   /// @return true until the spp is exceeded.
   virtual bool next_sample();
-  /// @brief Clone a sampler with the same strategy but different random seed.
-  virtual std::unique_ptr<Sampler> clone(int seed) const = 0;
   /// @brief Set the index of sample for current pixel to generate NEXT sample.
   /// @return false if the spp is exceeded.
   virtual bool set_sample_index(int64_t idx);
+  /// @brief Clone a sampler with the same strategy but different random seed.
+  virtual std::unique_ptr<Sampler> clone(int seed) const = 0;
 
   const int64_t m_spp;
 
  protected:
   std::vector<int> m_1D_array_sizes, m_2D_array_sizes;
+  // Layout: m_sample_1D_array[this_arr_size][this_arr_size * m_spp].
+  // 2D layout in each array. Dimension goes first. 
   std::vector<std::vector<Float>> m_sample_1D_array;
   std::vector<std::vector<Point2f>> m_sample_2D_array;
   Point2i m_current_pixel;
@@ -74,6 +77,7 @@ class PixelSampler : public Sampler {
  protected:
   // Sample values for MULTIPLE samples in ONE pixel.
   // Layout: m_samplexD[dim_idx][sample_idx].
+  // The sizes are all m_spp.
   std::vector<std::vector<Float>> m_sample_1D;
   std::vector<std::vector<Point2f>> m_sample_2D;
   // Indexing the corresponding array in m_sample_[12]D.
