@@ -68,7 +68,7 @@ TRay for "yet another Ray Tracer".
   - [x] Perspective Camera with Thin Lens
 - [ ] **Sampling**
   - [x] Interfaces
-  - [ ] Stratified
+  - [x] Stratified
   - [ ] Halton
   - [ ] (0, 2)-Sequence
   - [ ] Maximized Minimal Distance
