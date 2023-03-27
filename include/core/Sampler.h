@@ -1,6 +1,7 @@
 #include "core/TRay.h"
 #include "core/geometry/Point.h"
 #include "core/Camera.h"
+#include "core/math/RNG.h"
 
 namespace TRay {
 class Sampler {
@@ -54,5 +55,65 @@ class Sampler {
  private:
   /// @brief Offset for both array size and corresponding array.
   size_t m_1D_array_offset, m_2D_array_offset;
+};
+
+/**
+ * @brief Samplers that generates definite numbers of samples.
+ *        Number of dimensions will not be known until the ray goes into the
+ *        scene. Uniform random values will be returned if number of dimensions
+ *        is exceeded.
+ */
+class PixelSampler : public Sampler {
+ public:
+  PixelSampler(int64_t samples_per_pxiel, int sample_dims);
+  bool next_sample() override;
+  bool set_sample_index(int64_t idx) override;
+  Float sample_1D() override;
+  Point2f sample_2D() override;
+
+ protected:
+  // Sample values for MULTIPLE samples in ONE pixel.
+  // Layout: m_samplexD[dim_idx][sample_idx].
+  std::vector<std::vector<Float>> m_sample_1D;
+  std::vector<std::vector<Point2f>> m_sample_2D;
+  // Indexing the corresponding array in m_sample_[12]D.
+  int m_idx_current_1D = 0, m_idx_current_2D = 0;
+  RNG m_rng;
+};
+
+/**
+ * @brief GlobalSampler is to convert image-range sequences into pixel-by-pixel
+ *        range, so that the pixel-tile based multi-therading will be easy.
+ */
+class GlobalSampler : public Sampler {
+ public:
+  GlobalSampler(int64_t samples_per_pixel);
+  /// @brief Get the global index of sample vector based on current pixel and
+  ///        sample index in this pixel.
+  virtual int64_t global_index(int64_t native_index) const = 0;
+  /// @brief Get the component value of sample vector of given global index and
+  ///        dimension index.
+  /// @param global_idx_sample Global index of sample. Start from 0.
+  /// @param idx_dim Index of dimension. Start from 0.
+  /// @return Sample value. Scaled by resolution to offset into pixel for
+  ///         first 2 dimension.
+  virtual Float value_by_dimension(int64_t global_idx_sample,
+                                   int idx_dim) const = 0;
+  void start_pixel(const Point2i &p) override;
+  bool next_sample() override;
+  bool set_sample_index(int64_t idx) override;
+  Float sample_1D() override;
+  Point2f sample_2D() override;
+
+ private:
+  // Sampler will generate a sample value for this dimension.
+  int m_dimension;
+  int64_t m_global_idx_current_sample;
+  // GlobalSampler fill values by dimension.
+  // The first some dimensions of sequence are saved for regular 1D and 2D
+  // samples. Subsequent dimensions are for array samples.
+  static const int m_idx_array_start_dim = 5;
+  // Finite dimensions.
+  int m_idx_array_end_dim;
 };
 }  // namespace TRay

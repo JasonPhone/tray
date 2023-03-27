@@ -15,9 +15,9 @@ namespace TRay {
 class Ray {
  public:
   Ray(const Point3f &o, const Vector3f &d, Float t = 0.0,
-      Float t_maxv = FLOAT_INF)
+      Float t_maxv = TRAY_INF)
       : ori(o), dir(d), t_max(t_maxv), time(t) {}
-  Ray() : t_max(FLOAT_INF), time(0.0) {}
+  Ray() : t_max(TRAY_INF), time(0.0) {}
   Point3f operator()(Float t) const;
 
   Point3f ori;

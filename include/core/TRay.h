@@ -107,6 +107,8 @@ class Shape;
 class Sphere;
 // core/math/Matrix.h
 struct Mat4x4;
+// core/math/RNG.h
+class RNG;
 // core/primitives/Primitive.h
 class Primitive;
 // core/primitives/GeometricPrimitive.h
@@ -149,12 +151,14 @@ class BSDF;
 
 // Math constants.
 // ---------------
-static constexpr Float FLOAT_MAX = std::numeric_limits<Float>::max();
-static constexpr Float FLOAT_INF = std::numeric_limits<Float>::infinity();
+static constexpr Float TRAY_MAX = std::numeric_limits<Float>::max();
+static constexpr Float TRAY_INF = std::numeric_limits<Float>::infinity();
 static constexpr Float PI = 3.14159265358979323846;
 static constexpr Float PI_DIV_2 = 1.57079632679489661923;
 static constexpr Float PI_DIV_4 = 0.78539816339744830961;
-static constexpr Float FLOAT_EPS = std::numeric_limits<Float>::epsilon() * 0.5;
+static constexpr Float TRAY_EPS = std::numeric_limits<Float>::epsilon() * 0.5;
+// static constexpr Float DoubleOneMinusEpsilon = 0x1.fffffffffffffp-1;
+// static constexpr Float FloatOneMinusEpsilon = 0x1.fffffep-1;
 
 // Math functions.
 // ---------------
@@ -164,7 +168,7 @@ inline T clamp(T val, U low, V high) {
   return (val < low) ? low : ((val > high) ? high : val);
 }
 inline Float deg_to_rad(Float deg) { return deg / 180.0 * PI; }
-inline Float gamma(int n) { return (n * FLOAT_EPS) / (1 - n * FLOAT_EPS); }
+inline Float gamma(int n) { return (n * TRAY_EPS) / (1 - n * TRAY_EPS); }
 /**
  * @brief Solving quadratic formulation ax^2 + bx + c = 0.
  *
