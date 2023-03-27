@@ -4,12 +4,14 @@ set(EXTERN_DIR "${CMAKE_SOURCE_DIR}/extern")
 
 add_library(stb_image
   STATIC
+
   # ${EXTERN_DIR}/stb_image.h
   stb_image.cpp
 )
 
 add_library(tiny_obj_loader
   STATIC
+
   # ${EXTERN_DIR}/tiny_obj_loader.h
   tiny_obj_loader.cpp
 )
@@ -28,6 +30,7 @@ add_library(TRay_shapes
   STATIC
   ${SOURCE_DIR}/core/geometry/Interaction.cpp
   ${SOURCE_DIR}/core/geometry/Ray.cpp
+
   # ${SOURCE_DIR}/core/geometry/Bound.cpp
   ${SOURCE_DIR}/shapes/Sphere.cpp
 )
@@ -40,6 +43,7 @@ add_library(TRay_primitive
 )
 add_library(TRay_camera
   STATIC
+  ${SOURCE_DIR}/core/math/sampling.cpp
   ${SOURCE_DIR}/filters/BoxFilter.cpp
   ${SOURCE_DIR}/core/Camera.cpp
   ${SOURCE_DIR}/core/Film.cpp
@@ -48,4 +52,6 @@ add_library(TRay_camera
 add_library(TRay_sampler
   STATIC
   ${SOURCE_DIR}/core/Sampler.cpp
+  ${SOURCE_DIR}/samplers/StratifiedSampler.cpp
+  ${SOURCE_DIR}/core/math/sampling.cpp
 )
