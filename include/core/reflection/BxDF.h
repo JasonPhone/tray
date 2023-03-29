@@ -84,26 +84,29 @@ class BxDF {
   ///        wo. Assuming the wavelengths are decoupled.
   virtual Spectrum f(const Vector3f &wo, const Vector3f &wi) const = 0;
   /// @brief Computes wi based on given wo and returns the value for them.
+  // TODO The impl is in pbrt 14.1.
   virtual Spectrum sample_f(const Vector3f &wo, Vector3f *wi,
                             const Point2f &sample, Float *pdf,
                             BxDFType *sampled_type = nullptr) const;
   /// @brief hemispherical-directional reflectance (ratio of flux), rho_hd,
-  /// albedo. The total reflection in
+  ///        albedo. The total reflection in
   ///        given direction when illumination is constant over the hemisphere.
-  ///        Or the total reflection over the hemisphere when light comes from
+  ///        Or the total reflectance over the hemisphere when light comes from
   ///        one direction. The latter one is true only if the BxDF is
   ///        reciprocal.
   /// @param wo Direction.
   /// @param n_samples Samples are used by MCM to compute an approx value.
   /// @param samples
+  // TODO The impl is in pbrt 14.1.5.
   virtual Spectrum rho(const Vector3f &wo, int n_samples,
                        const Point2f *samples) const;
   /// @brief hemisherical-hemispherical reflectance (ratio of flux), rho_hh. The
-  /// total reflection in
+  ///        total reflection in
   ///        all directions when illumination is constant over the hemisphere.
   /// @param n_samples Samples are used by MCM to compute an approx value.
   /// @param samples1
   /// @param samples2
+  // TODO The impl is in pbrt 14.1.5.
   virtual Spectrum rho(int n_samples, const Point2f *samples1,
                        const Point2f *samples2) const;
 

@@ -7,6 +7,7 @@
 namespace TRay {
 class Sampler {
  public:
+ virtual ~Sampler() {};
   Sampler(int64_t sample_per_pixel);
   /// @brief Start sampling on a new pixel.
   /// @param p Position of the raster 'pixel'.

@@ -57,4 +57,5 @@ add_library(TRay_material
   ${SOURCE_DIR}/core/reflection/BxDF.cpp
   ${SOURCE_DIR}/core/reflection/Fresnel.cpp
   ${SOURCE_DIR}/core/reflection/FresnelSpecular.cpp
+  ${SOURCE_DIR}/core/reflection/Lambertian.cpp
 )

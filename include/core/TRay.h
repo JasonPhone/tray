@@ -141,6 +141,9 @@ class FresnelConst;
 // core/reflection/SpecularReflection.h
 class SpecularReflection;
 class SpecularTransmission;
+// core/reflection/Lambertian.h
+class LambertianReflection;
+class LambertianTransmission;
 
 // ---------------------
 // core/lights/Ligtht.h?
@@ -158,9 +161,15 @@ class BSDF;
 static constexpr Float TRAY_MAX = std::numeric_limits<Float>::max();
 static constexpr Float TRAY_INF = std::numeric_limits<Float>::infinity();
 static constexpr Float PI = 3.14159265358979323846;
+static constexpr Float PI_INV = 0.31830988618379067154;
+// \frac{1}{2 \pi}
+static constexpr Float PI_INV2 = 0.15915494309189533577;
+// \frac{1}{4 \pi}
+static constexpr Float PI_INV4 = 0.07957747154594766788;
 static constexpr Float PI_DIV_2 = 1.57079632679489661923;
 static constexpr Float PI_DIV_4 = 0.78539816339744830961;
 static constexpr Float TRAY_EPS = std::numeric_limits<Float>::epsilon() * 0.5;
+static constexpr Float SQRT2 = 1.41421356237309504880;
 // static constexpr Float DoubleOneMinusEpsilon = 0x1.fffffffffffffp-1;
 // static constexpr Float FloatOneMinusEpsilon = 0x1.fffffep-1;
 
