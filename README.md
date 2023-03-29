@@ -77,8 +77,10 @@ TRay for "yet another Ray Tracer".
   - [ ] Matbuilder
   - [ ] Film and Filter
 - [ ] Reflection, Material
-  - [ ] Interface
-  - [ ] Disney BSDF
+  - [x] Interface
+  - [x] Specular
+  - [ ] Lambertian
+  - [ ] BSDF and Disney BSDF
 - [ ] Texture
   - [ ] Interface
   - [ ] Checkerboard

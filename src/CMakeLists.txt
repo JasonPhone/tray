@@ -52,3 +52,9 @@ add_library(TRay_sampler
   ${SOURCE_DIR}/samplers/StratifiedSampler.cpp
   ${SOURCE_DIR}/core/math/sampling.cpp
 )
+add_library(TRay_material
+  STATIC
+  ${SOURCE_DIR}/core/reflection/BxDF.cpp
+  ${SOURCE_DIR}/core/reflection/Fresnel.cpp
+  ${SOURCE_DIR}/core/reflection/FresnelSpecular.cpp
+)

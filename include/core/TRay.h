@@ -48,8 +48,9 @@ using Float = float;
 #define ALLOCA(TYPE, COUNT) (TYPE *)alloca((COUNT) * sizeof(TYPE))
 
 namespace TRay {
+// Forward decl.
+// -------------
 // core/geometry/Vector.h
-// ----------------------
 template <typename T>
 class Vector3;
 using Vector3i = Vector3<int>;
@@ -59,7 +60,6 @@ class Vector2;
 using Vector2i = Vector2<int>;
 using Vector2f = Vector2<Float>;
 // core/geometry/Point.h
-// ---------------------
 template <typename T>
 class Point3;
 using Point3i = Point3<int>;
@@ -70,15 +70,12 @@ using Point2i = Point2<int>;
 using Point2f = Point2<Float>;
 template <typename T>
 // core/geometry/Normal.h
-// ------------------------
 class Normal3;
 using Normal3f = Normal3<Float>;
 // core/geometry/Ray.h
-// -------------------
 class Ray;
-template <typename T>
 // core/geometry/Bound.h
-// ---------------------
+template <typename T>
 class Bound3;
 using Bound3i = Bound3<int>;
 using Bound3f = Bound3<Float>;
@@ -87,23 +84,17 @@ class Bound2;
 using Bound2i = Bound2<int>;
 using Bound2f = Bound2<Float>;
 // core/geometry/Transform.h
-// -------------------------
 class Transform;
 // core/geometry/AnimateTransform.h
-// -------------------------
 class AnimateTransform;
 // core/geometry/Quaternion.h
-// --------------------------
 class Quaternion;
 // core/geometry/Interaction.h
-// ---------------------------
 class Interaction;
 class SurfaceInteraction;
 // core/geometry/Shape.h
-// ------------------
 class Shape;
 // shapes/Sphere.h
-// ------------------
 class Sphere;
 // core/math/Matrix.h
 struct Mat4x4;
@@ -139,13 +130,26 @@ class Filter;
 class Sampler;
 class PixelSampler;
 class GlobalSampler;
+// core/reflection/BxDF.h
+class BxDF;
+class ScaledBxDF;
+// core/reflection/Fresnel.h
+class Fresnel;
+class FresnelDielectric;
+class FresnelConductor;
+class FresnelConst;
+// core/reflection/SpecularReflection.h
+class SpecularReflection;
+class SpecularTransmission;
 
+// ---------------------
 // core/lights/Ligtht.h?
 class Light;
 class AreaLight;
 // core/materials/Material.h?
 class Material;
-enum class TransportMode;
+// TODO This definition should be in Material.h
+enum class TransportMode { Radiance, Importance };
 // core/reflection.h?
 class BSDF;
 
