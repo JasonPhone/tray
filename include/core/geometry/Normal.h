@@ -78,6 +78,20 @@ inline T abs_dot(const Vector3<T> &u, const Normal3<T> &v) {
   return std::abs(dot(u, v));
 }
 template <typename T>
+inline Vector3<T> cross(const Vector3<T> &u, const Normal3<T> &v) {
+  // In case of floating prescision error
+  double ux = u.x, uy = u.y, uz = u.z;
+  double vx = v.x, vy = v.y, vz = v.z;
+  return Vector3<T>(uy * vz - uz * vy, uz * vx - ux * vz, ux * vy - uy * vx);
+}
+template <typename T>
+inline Vector3<T> cross(const Normal3<T> &u, const Vector3<T> &v) {
+  // In case of floating prescision error
+  double ux = u.x, uy = u.y, uz = u.z;
+  double vx = v.x, vy = v.y, vz = v.z;
+  return Vector3<T>(uy * vz - uz * vy, uz * vx - ux * vz, ux * vy - uy * vx);
+}
+template <typename T>
 inline Normal3<T> normalize(const Normal3<T> &v) {
   return (1.0 / v.length()) * v;
 }
