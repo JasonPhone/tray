@@ -138,12 +138,15 @@ class Fresnel;
 class FresnelDielectric;
 class FresnelConductor;
 class FresnelConst;
-// core/reflection/SpecularReflection.h
+// core/reflection/FresnelSpecular.h
 class SpecularReflection;
 class SpecularTransmission;
+class FresnelSpcular;
 // core/reflection/Lambertian.h
 class LambertianReflection;
 class LambertianTransmission;
+// core/reflection/BSDF.h
+class BSDF;
 
 // ---------------------
 // core/lights/Ligtht.h?
@@ -153,8 +156,6 @@ class AreaLight;
 class Material;
 // TODO This definition should be in Material.h
 enum class TransportMode { Radiance, Importance };
-// core/reflection.h?
-class BSDF;
 
 // Math constants.
 // ---------------
