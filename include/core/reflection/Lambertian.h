@@ -8,8 +8,12 @@ class LambertianReflection : public BxDF {
   LambertianReflection(const Spectrum &scale)
       : BxDF(BxDFType(BSDF_DIFFUSE | BSDF_REFLECTION)), m_scale(scale) {}
   virtual Spectrum f(const Vector3f &wo, const Vector3f &wi) const override;
-  Spectrum rho(const Vector3f &, int, const Point2f *) const { return m_scale; }
-  Spectrum rho(int, const Point2f *, const Point2f *) const { return m_scale; }
+  Spectrum rho(const Vector3f &, int, const Point2f *) const override {
+    return m_scale;
+  }
+  Spectrum rho(int, const Point2f *, const Point2f *) const override {
+    return m_scale;
+  }
   std::string to_string() const override;
 
  private:
@@ -22,8 +26,12 @@ class LambertianTransmission : public BxDF {
   LambertianTransmission(const Spectrum &scale)
       : BxDF(BxDFType(BSDF_TRANSMISSION | BSDF_DIFFUSE)), m_scale(scale) {}
   Spectrum f(const Vector3f &wo, const Vector3f &wi) const override;
-  Spectrum rho(const Vector3f &, int, const Point2f *) const { return m_scale; }
-  Spectrum rho(int, const Point2f *, const Point2f *) const { return m_scale; }
+  Spectrum rho(const Vector3f &, int, const Point2f *) const override {
+    return m_scale;
+  }
+  Spectrum rho(int, const Point2f *, const Point2f *) const override {
+    return m_scale;
+  }
   // TODO impl later.
   Spectrum sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &u,
                     Float *pdf, BxDFType *sampledType) const override;
