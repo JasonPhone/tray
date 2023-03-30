@@ -78,7 +78,7 @@ class BxDF {
  public:
   virtual ~BxDF() {}
   BxDF(BxDFType type) : m_type(type) {}
-  /// @brief See if this BxDF contains given types.
+  /// @brief See if this BxDF perfectly matches given types.
   bool match_types(BxDFType t) const { return (m_type & t) == m_type; }
   /// @brief Return Spectrum value of the distribution function based on wi and
   ///        wo. Assuming the wavelengths are decoupled.
