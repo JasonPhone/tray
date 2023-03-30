@@ -35,19 +35,19 @@ Spectrum fresnel_conductor(Float cos_theta_i, const Spectrum &eta_i,
   Spectrum eta = eta_t / eta_i;
   Spectrum etak = k / eta_i;
 
-  Float cos_theta_i2 = cos_theta_i * cos_theta_i;
-  Float sin2_theta_i = 1. - cos_theta_i2;
+  Float cos2_theta_i = cos_theta_i * cos_theta_i;
+  Float sin2_theta_i = 1. - cos2_theta_i;
   Spectrum eta2 = eta * eta;
   Spectrum etak2 = etak * etak;
 
   Spectrum t0 = eta2 - etak2 - sin2_theta_i;
   Spectrum a2plusb2 = sqrt(t0 * t0 + 4 * eta2 * etak2);
-  Spectrum t1 = a2plusb2 + cos_theta_i2;
+  Spectrum t1 = a2plusb2 + cos2_theta_i;
   Spectrum a = sqrt(0.5f * (a2plusb2 + t0));
   Spectrum t2 = (Float)2 * cos_theta_i * a;
   Spectrum ref_perp = (t1 - t2) / (t1 + t2);
 
-  Spectrum t3 = cos_theta_i2 * a2plusb2 + sin2_theta_i * sin2_theta_i;
+  Spectrum t3 = cos2_theta_i * a2plusb2 + sin2_theta_i * sin2_theta_i;
   Spectrum t4 = t2 * sin2_theta_i;
   Spectrum ref_para = ref_perp * (t3 - t4) / (t3 + t4);
 
