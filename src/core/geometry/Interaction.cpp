@@ -1,4 +1,5 @@
 #include "core/geometry/Interaction.h"
+#include "core/primitives/Primitive.h"
 
 namespace TRay {
 SurfaceInteraction::SurfaceInteraction(const Point3f &p, const Point2f &uv,
@@ -15,5 +16,8 @@ SurfaceInteraction::SurfaceInteraction(const Point3f &p, const Point2f &uv,
   shading.n = n;
   shading.dpdu = dpdu;
   shading.dpdv = dpdv;
+}
+void SurfaceInteraction::fill_scattering_func(bool allow_multi_lobes, TransportMode mode) {
+  primitive->fill_scattering_func(this, mode, allow_multi_lobes);
 }
 }  // namespace TRay

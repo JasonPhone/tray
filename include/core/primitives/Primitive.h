@@ -27,7 +27,7 @@ class Primitive {
   /// @brief Compute the BxDF for the material at the intersection point.
   /// @todo Review the two params below to see if truly needed.
   /// @param mode Light transport mode, used in materials.
-  /// @param allow_multi_lobes Detail of some BxDFs.
+  /// @param allow_multi_lobes true to allow mixed BxDFs like FresnelSpecular.
   virtual void fill_scattering_func(SurfaceInteraction *si, TransportMode mode,
                                     bool allow_multi_lobes) const = 0;
 };
