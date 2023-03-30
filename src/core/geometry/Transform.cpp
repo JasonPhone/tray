@@ -90,8 +90,6 @@ Transform Transform::operator*(const Transform &t) const {
   return Transform(mat4x4_multiply(m, t.m), mat4x4_multiply(t.m_inv, m_inv));
 }
 
-// Inlines impl.
-// -------------
 Transform translate(const Vector3f &delta) {
   // clang-format off
   Mat4x4 m(
