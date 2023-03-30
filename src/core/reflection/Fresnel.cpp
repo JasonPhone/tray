@@ -57,7 +57,16 @@ Spectrum fresnel_conductor(Float cos_theta_i, const Spectrum &eta_i,
 Spectrum FresnelConductor::evaluate(Float cos_i) const {
   return fresnel_conductor(cos_i, m_eta_i, m_eta_t, m_k);
 }
+std::string FresnelConductor::to_string() const {
+  return "[ FresnelConductor etaI: " + m_eta_i.to_string() +
+         "etaT: " + m_eta_t.to_string() + "k: " + m_k.to_string() + " ]";
+}
+
 Spectrum FresnelDielectric::evaluate(Float cos_i) const {
   return fresnel_dielectric(cos_i, m_eta_i, m_eta_t);
 }
+std::string FresnelDielectric::to_string() const {
+  return "[ FresnelConductor etaI: " + format_one("%f", m_eta_i) +
+         "etaT: " + format_one("%f", m_eta_t) + " ]";
 }
+}  // namespace TRay

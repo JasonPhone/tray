@@ -1,5 +1,6 @@
 #pragma once
 #include "core/TRay.h"
+#include "core/stringprint.h"
 
 namespace TRay {
 enum class SpectrumType { Reflectance, Illuminant };
@@ -143,14 +144,7 @@ class CoefficientSpectrum {
   std::string to_string() const {
     std::string str = "[";
     for (int i = 0; i < n_spec_samples; ++i) {
-      // TODO Make this a func?
-      size_t size =
-          snprintf(nullptr, 0, "%.2f", c[i]) + 1;  // +1 for trailing \0
-      std::string s;
-      s.resize(size);
-      snprintf(&s[0], size, "%.2f", c[i]);
-      s.pop_back();  // remove trailing \0
-      str += s;
+      str += str_printf("%f", c[i]);
       if (i + 1 < n_spec_samples) str += ", ";
     }
     str += "]";

@@ -24,6 +24,7 @@ class Fresnel {
   /// @brief Get the coefficients.
   /// @param cos_i Cosine of incident angle.
   virtual Spectrum evaluate(Float cos_i) const = 0;
+  virtual std::string to_string() const = 0;
 };
 class FresnelConductor : public Fresnel {
  public:
@@ -34,6 +35,7 @@ class FresnelConductor : public Fresnel {
                    const Spectrum &k)
       : m_eta_i(etai), m_eta_t(etat), m_k(k) {}
   Spectrum evaluate(Float cos_i) const override;
+  std::string to_string() const override;
 
  private:
   Spectrum m_eta_i, m_eta_t, m_k;
@@ -45,6 +47,7 @@ class FresnelDielectric : public Fresnel {
   FresnelDielectric(const Float &etai, const Float &etat)
       : m_eta_i(etai), m_eta_t(etat) {}
   Spectrum evaluate(Float cos_i) const override;
+  std::string to_string() const override;
 
  private:
   Float m_eta_i, m_eta_t;
@@ -53,5 +56,8 @@ class FresnelDielectric : public Fresnel {
 class FresnelConst : public Fresnel {
  public:
   Spectrum evaluate(Float) const override { return Spectrum(1.0); }
+  std::string to_string() const override {
+    return "[ FresnelConst 1.0 ]";
+  }
 };
 }  // namespace TRay

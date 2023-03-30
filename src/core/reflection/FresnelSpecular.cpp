@@ -13,6 +13,10 @@ Spectrum SpecularReflection::sample_f(const Vector3f &wo, Vector3f *wi,
   *pdf = 1.0;
   return m_fresnel->evaluate(cos_theta(*wi)) * m_scale / abs_cos_theta(*wi);
 }
+std::string SpecularReflection::to_string() const {
+  return "[ SpecularReflection scale: " + m_scale.to_string() +
+         " fresnel: " + m_fresnel->to_string() + " ]";
+}
 
 Spectrum SpecularTransmission::f(const Vector3f &wo, const Vector3f &wi) const {
   return Spectrum(0.0);
@@ -35,6 +39,13 @@ Spectrum SpecularTransmission::sample_f(
     ft *= (eta_i * eta_i) / (eta_t * eta_t);
   return ft / abs_cos_theta(*wi);
 }
+std::string SpecularTransmission::to_string() const {
+  return "[ SpecularTransmission scale: " + m_scale.to_string() +
+         " fresnel: " + m_fresnel.to_string() +
+         " etaA: " + format_one("%f", m_eta_A) +
+         " etaB: " + format_one("%f", m_eta_B) + " mode : " +
+         (m_mode == TransportMode::Radiance ? "RADIANCE" : "IMPORTANCE") + " ]";
+}
 
 Spectrum FresnelSpecular::f(const Vector3f &wo, const Vector3f &wi) const {
   return Spectrum(0.0);
@@ -44,5 +55,13 @@ Spectrum FresnelSpecular::sample_f(const Vector3f &wo, Vector3f *wi,
                                    BxDFType *sampled_type = nullptr) const {
   // TODO Impl is in pbrt 14.1.3.
   return Spectrum(0.0);
+}
+std::string FresnelSpecular::to_string() const {
+  return "[ FresnelSpecular R scale: " + m_R_scale.to_string() +
+         " T scale: " + m_T_scale.to_string() +
+         " fresnel: " + m_fresnel.to_string() +
+         " etaA: " + format_one("%f", m_eta_A) +
+         " etaB: " + format_one("%f", m_eta_B) + " mode : " +
+         (m_mode == TransportMode::Radiance ? "RADIANCE" : "IMPORTANCE") + " ]";
 }
 }  // namespace TRay

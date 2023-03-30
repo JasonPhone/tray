@@ -18,6 +18,7 @@ class SpecularReflection : public BxDF {
   Spectrum f(const Vector3f &wo, const Vector3f &wi) const override;
   Spectrum sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample,
                     Float *pdf, BxDFType *sampled_type) const override;
+  std::string to_string() const override;
 
  private:
   // Reflection scale factor.
@@ -45,6 +46,7 @@ class SpecularTransmission : public BxDF {
   Spectrum f(const Vector3f &wo, const Vector3f &wi) const override;
   Spectrum sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample,
                     Float *pdf, BxDFType *sampled_type) const override;
+  std::string to_string() const override;
 
  private:
   // Transmission scale factor.
@@ -74,6 +76,7 @@ class FresnelSpecular : public BxDF {
   Spectrum f(const Vector3f &wo, const Vector3f &wi) const override;
   Spectrum sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample,
                     Float *pdf, BxDFType *sampled_type) const override;
+  std::string to_string() const override;
 
  private:
   const Spectrum m_R_scale, m_T_scale;
