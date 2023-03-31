@@ -19,8 +19,6 @@ class Interaction {
   Point3f p;
   /// @brief  Time interection happens.
   Float time;
-  /// @brief  Float rounding error.
-  // Vector3f p_error;
   /// @brief  Outgoing direction, (0, 0, 0) if no incoming ray.
   Vector3f wo;
   /// @brief Surface normal, (0, 0, 0) if not at surface.
