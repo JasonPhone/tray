@@ -152,6 +152,27 @@ template <typename T>
 inline Vector3<T> permute(const Vector3<T> &v, int x, int y, int z) {
   return Vector3<T>(v[x], v[y], v[z]);
 }
+/// @brief Get the unit direction vector by spherical angles.
+inline Vector3f spherical_direction(Float sin_theta, Float cos_theta,
+                                    Float phi) {
+  return Vector3f(sin_theta * std::cos(phi), sin_theta * std::sin(phi),
+                  cos_theta);
+}
+/// @brief Get the unit direction vector by spherical angles in given frame.
+inline Vector3f spherical_direction(Float sin_theta, Float cos_theta, Float phi,
+                                    const Vector3f &x, const Vector3f &y,
+                                    const Vector3f &z) {
+  return sin_theta * std::cos(phi) * x + sin_theta * std::sin(phi) * y +
+         cos_theta * z;
+}
+inline Float spherical_theta(const Vector3f &v) {
+  return std::acos(clamp(v.z, -1, 1));
+}
+inline Float spherical_phi(const Vector3f &v) {
+  Float p = std::atan2(v.y, v.x);
+  return (p < 0) ? (p + 2 * PI) : p;
+}
+
 /**
  * @brief Create a local coordinate system.
  *

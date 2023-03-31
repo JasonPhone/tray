@@ -7,31 +7,37 @@
 namespace TRay {
 // Theta is with positive z, phi is with positive x.
 // The left-handed frame is by x right, y backward and z upward.
-inline Float cos_theta(const Vector3f &w) { return w.z; }
-inline Float cos2_theta(const Vector3f &w) { return w.z * w.z; }
-inline Float abs_cos_theta(const Vector3f &w) { return std::abs(w.z); }
-inline Float sin2_theta(const Vector3f &w) {
-  return std::max((Float)0, (Float)1 - cos2_theta(w));
+inline Float cos_theta_of(const Vector3f &w) { return w.z; }
+inline Float cos2_theta_of(const Vector3f &w) { return w.z * w.z; }
+inline Float abs_cos_theta_of(const Vector3f &w) { return std::abs(w.z); }
+inline Float sin2_theta_of(const Vector3f &w) {
+  return std::max((Float)0, (Float)1 - cos2_theta_of(w));
 }
-inline Float sin_theta(const Vector3f &w) { return std::sqrt(sin2_theta(w)); }
-inline Float tan_theta(const Vector3f &w) {
-  return sin_theta(w) / cos_theta(w);
+inline Float sin_theta_of(const Vector3f &w) {
+  return std::sqrt(sin2_theta_of(w));
 }
-inline Float tan2_theta(const Vector3f &w) {
-  return sin2_theta(w) / cos2_theta(w);
+inline Float tan_theta_of(const Vector3f &w) {
+  return sin_theta_of(w) / cos_theta_of(w);
 }
-inline Float cos_phi(const Vector3f &w) {
-  Float sin_t = sin_theta(w);
+inline Float tan2_theta_of(const Vector3f &w) {
+  return sin2_theta_of(w) / cos2_theta_of(w);
+}
+inline Float cos_phi_of(const Vector3f &w) {
+  Float sin_t = sin_theta_of(w);
   return (sin_t == 0) ? 1 : clamp(w.x / sin_t, -1, 1);
 }
-inline Float sin_phi(const Vector3f &w) {
-  Float sin_t = sin_theta(w);
+inline Float sin_phi_of(const Vector3f &w) {
+  Float sin_t = sin_theta_of(w);
   return (sin_t == 0) ? 0 : clamp(w.y / sin_t, -1, 1);
 }
-inline Float cos2_phi(const Vector3f &w) { return cos_phi(w) * cos_phi(w); }
-inline Float sin2_phi(const Vector3f &w) { return sin_phi(w) * sin_phi(w); }
+inline Float cos2_phi_of(const Vector3f &w) {
+  return cos_phi_of(w) * cos_phi_of(w);
+}
+inline Float sin2_phi_of(const Vector3f &w) {
+  return sin_phi_of(w) * sin_phi_of(w);
+}
 /// @brief Cosine value of difference of phi of two direction.
-inline Float cos_delta_phi(const Vector3f &wa, const Vector3f &wb) {
+inline Float cos_delta_phi_of(const Vector3f &wa, const Vector3f &wb) {
   Float waxy = wa.x * wa.x + wa.y * wa.y;
   Float wbxy = wb.x * wb.x + wb.y * wb.y;
   if (waxy == 0 || wbxy == 0) return 1;
