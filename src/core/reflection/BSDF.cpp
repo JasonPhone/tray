@@ -4,7 +4,7 @@
 
 namespace TRay {
 
-BSDF::BSDF(const SurfaceInteraction &si, Float eta = 1.0)
+BSDF::BSDF(const SurfaceInteraction &si, Float eta)
     : m_eta(eta),
       m_normal_s(si.shading.n),
       m_normal_g(si.n),
