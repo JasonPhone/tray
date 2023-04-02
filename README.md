@@ -75,14 +75,15 @@ TRay for "yet another Ray Tracer".
   - [ ] Sobol'
   - [ ] Cascaded Sobol'
   - [ ] Matbuilder
-  - [ ] Film and Filter
+  - [x] Film and Filter
 - [ ] Reflection, Material
   - [x] Interface
   - [x] Specular
-  - [ ] Lambertian
-  - [ ] BSDF and Disney BSDF
+  - [x] Lambertian
+  - [ ] Microfacet Models (basis for many material)
+  - [ ] BSDF
 - [ ] Texture
-  - [ ] Interface
+  - [x] Interface
   - [ ] Checkerboard
 - [ ] Light
   - [ ] Interface
