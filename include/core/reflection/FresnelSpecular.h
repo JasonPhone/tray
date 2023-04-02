@@ -17,7 +17,7 @@ class SpecularReflection : public BxDF {
   // No scattering is returned by f().
   Spectrum f(const Vector3f &wo, const Vector3f &wi) const override;
   Spectrum sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample,
-                    Float *pdf, BxDFType *sampled_type) const override;
+                    Float *pdf, BxDFType *sampled_type = nullptr) const override;
   std::string to_string() const override;
 
  private:
@@ -45,7 +45,7 @@ class SpecularTransmission : public BxDF {
   // No scattering is returned by f().
   Spectrum f(const Vector3f &wo, const Vector3f &wi) const override;
   Spectrum sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample,
-                    Float *pdf, BxDFType *sampled_type) const override;
+                    Float *pdf, BxDFType *sampled_type = nullptr) const override;
   std::string to_string() const override;
 
  private:
@@ -75,7 +75,7 @@ class FresnelSpecular : public BxDF {
         m_mode(mode) {}
   Spectrum f(const Vector3f &wo, const Vector3f &wi) const override;
   Spectrum sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample,
-                    Float *pdf, BxDFType *sampled_type) const override;
+                    Float *pdf, BxDFType *sampled_type = nullptr) const override;
   std::string to_string() const override;
 
  private:

@@ -8,7 +8,7 @@ Spectrum SpecularReflection::f(const Vector3f &wo, const Vector3f &wi) const {
 }
 Spectrum SpecularReflection::sample_f(const Vector3f &wo, Vector3f *wi,
                                       const Point2f &sample, Float *pdf,
-                                      BxDFType *sampled_type = nullptr) const {
+                                      BxDFType *sampled_type) const {
   // Reflection direction for perfect speculat reflection. In BRDF space.
   *wi = Vector3f(-wo.x, -wo.y, wo.z);
   *pdf = 1.0;
@@ -23,9 +23,9 @@ std::string SpecularReflection::to_string() const {
 Spectrum SpecularTransmission::f(const Vector3f &wo, const Vector3f &wi) const {
   return Spectrum(0.0);
 }
-Spectrum SpecularTransmission::sample_f(
-    const Vector3f &wo, Vector3f *wi, const Point2f &sample, Float *pdf,
-    BxDFType *sampled_type = nullptr) const {
+Spectrum SpecularTransmission::sample_f(const Vector3f &wo, Vector3f *wi,
+                                        const Point2f &sample, Float *pdf,
+                                        BxDFType *sampled_type) const {
   // Check the incident and transmit eta.
   bool entering = cos_theta_of(wo) > 0;
   Float eta_i = entering ? m_eta_A : m_eta_B;
@@ -55,7 +55,7 @@ Spectrum FresnelSpecular::f(const Vector3f &wo, const Vector3f &wi) const {
 }
 Spectrum FresnelSpecular::sample_f(const Vector3f &wo, Vector3f *wi,
                                    const Point2f &sample, Float *pdf,
-                                   BxDFType *sampled_type = nullptr) const {
+                                   BxDFType *sampled_type) const {
   // TODO Impl is in pbrt 14.1.3.
   return Spectrum(0.0);
 }
