@@ -7,7 +7,7 @@
 
 namespace TRay {
 
-inline void str_printf_recursive(std::string *s, const char *fmt) {
+inline void string_format_recursive(std::string *s, const char *fmt) {
   const char *c = fmt;
   // Make sure no extra formatting specifiers when no args left.
   while (*c) {
@@ -74,20 +74,20 @@ inline std::string format_one(const char *fmt, T v) {
 }
 
 /**
- * @brief General-purpose version of str_printf_recursive.
+ * @brief General-purpose version of string_format_recursive.
  *        Format the string into @param s one arg each iteration.
  */
 template <typename T, typename... Args>
-inline void str_printf_recursive(std::string *s, const char *fmt, T v,
+inline void string_format_recursive(std::string *s, const char *fmt, T v,
                                  Args... args) {
   std::string next_fmt = next_format(&fmt, s);
   *s += format_one(next_fmt.c_str(), v);
-  str_printf_recursive(s, fmt, args...);
+  string_format_recursive(s, fmt, args...);
 }
 
-/// @brief Special case of str_printf_recursive for float.
+/// @brief Special case of string_format_recursive for float.
 template <typename... Args>
-inline void str_printf_recursive(std::string *s, const char *fmt, float v,
+inline void string_format_recursive(std::string *s, const char *fmt, float v,
                                  Args... args) {
   std::string next_fmt = next_format(&fmt, s);
   if (next_fmt == "%f")
@@ -98,19 +98,19 @@ inline void str_printf_recursive(std::string *s, const char *fmt, float v,
     // No operation.
     *s += format_one(next_fmt.c_str(), v);
   // Go forth for next arg.
-  str_printf_recursive(s, fmt, args...);
+  string_format_recursive(s, fmt, args...);
 }
 
-/// @brief Special case of str_printf_recursive for float.
+/// @brief Special case of string_format_recursive for float.
 template <typename... Args>
-inline void str_printf_recursive(std::string *s, const char *fmt, double v,
+inline void string_format_recursive(std::string *s, const char *fmt, double v,
                                  Args... args) {
   std::string next_fmt = next_format(&fmt, s);
   if (next_fmt == "%f")
     *s += format_one("%.17g", v);
   else
     *s += format_one(next_fmt.c_str(), v);
-  str_printf_recursive(s, fmt, args...);
+  string_format_recursive(s, fmt, args...);
 }
 
 /**
@@ -119,9 +119,9 @@ inline void str_printf_recursive(std::string *s, const char *fmt, double v,
  *        precision.
  */
 template <typename... Args>
-inline std::string str_printf(const char *fmt, Args... args) {
+inline std::string string_format(const char *fmt, Args... args) {
   std::string ret;
-  str_printf_recursive(&ret, fmt, args...);
+  string_format_recursive(&ret, fmt, args...);
   return ret;
 }
 }  // namespace TRay

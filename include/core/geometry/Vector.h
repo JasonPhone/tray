@@ -165,10 +165,10 @@ inline Vector3f spherical_direction(Float sin_theta, Float cos_theta, Float phi,
   return sin_theta * std::cos(phi) * x + sin_theta * std::sin(phi) * y +
          cos_theta * z;
 }
-inline Float spherical_theta(const Vector3f &v) {
+inline Float spherical_theta_of(const Vector3f &v) {
   return std::acos(clamp(v.z, -1, 1));
 }
-inline Float spherical_phi(const Vector3f &v) {
+inline Float spherical_phi_of(const Vector3f &v) {
   Float p = std::atan2(v.y, v.x);
   return (p < 0) ? (p + 2 * PI) : p;
 }

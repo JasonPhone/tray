@@ -1,6 +1,6 @@
 #pragma once
 #include "core/TRay.h"
-#include "core/stringprint.h"
+#include "core/stringformat.h"
 
 namespace TRay {
 enum class SpectrumType { Reflectance, Illuminant };
@@ -144,7 +144,7 @@ class CoefficientSpectrum {
   std::string to_string() const {
     std::string str = "[";
     for (int i = 0; i < n_spec_samples; ++i) {
-      str += str_printf("%f", c[i]);
+      str += string_format("%f", c[i]);
       if (i + 1 < n_spec_samples) str += ", ";
     }
     str += "]";
