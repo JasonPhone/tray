@@ -116,8 +116,15 @@ class CoefficientSpectrum {
   /// @note This implies the SPD is linearly scaling a set of basis functions.
   Float operator[](int i) const { return c[i]; }
 
-  /// @brief Used by reflection models.
+  CoefficientSpectrum clamp(Float low = 0, Float high = Infinity) const {
+    CoefficientSpectrum ret;
+    for (int i = 0; i < n_spec_samples; ++i)
+      ret.c[i] = TRay::clamp(c[i], low, high);
+    ASSERT(!has_NaN());
+    return ret;
+  }
 
+  /// @brief Used by reflection models.
   friend CoefficientSpectrum sqrt(const CoefficientSpectrum &s) {
     CoefficientSpectrum ret;
     for (int i = 0; i < n_spec_samples; i++) ret.c[i] = std::sqrt(s.c[i]);
