@@ -3,6 +3,7 @@
 #include "core/Texture.h"
 
 namespace TRay {
+/// Take two different types of texture and return product of their evaluate().
 template <typename T1, typename T2>
 class ScaleTexture : public Texture<T2> {
  public:
