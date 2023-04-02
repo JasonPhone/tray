@@ -147,15 +147,28 @@ class LambertianReflection;
 class LambertianTransmission;
 // core/reflection/BSDF.h
 class BSDF;
+// core/Material.h
+class Material;
+// materials/MatteMaterial.h
+class MatteMaterial;
+// core/Texture.h
+class TextureMapping2D;
+class UVMapping2D;
+class SphericalMapping2D;
+class PlanarMapping2D;
+class TextureMapping3D;
+class TransformMapping3D;
+template <typename T>
+class Texture;
+// textures/ConstantTexture.h
+template <typename T>
+class ConstantTexture;
 
 // ---------------------
 // core/lights/Ligtht.h?
 class Light;
 class AreaLight;
-// core/materials/Material.h?
-class Material;
-// TODO This definition should be in Material.h
-enum class TransportMode { Radiance, Importance };
+enum class TransportMode;
 
 // Math constants.
 // ---------------
