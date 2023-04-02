@@ -163,6 +163,15 @@ class Texture;
 // textures/ConstantTexture.h
 template <typename T>
 class ConstantTexture;
+// textures/ScaleTexture.h
+template <typename T1, typename T2>
+class ScaleTexture;
+// textures/LerpTexture.h
+template <typename T>
+class LerpTexture;
+// textures/BiLerpTexture.h
+template <typename T>
+class BiLerpTexture;
 
 // ---------------------
 // core/lights/Ligtht.h?
