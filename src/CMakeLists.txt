@@ -59,6 +59,7 @@ add_library(TRay_material
   ${SOURCE_DIR}/core/reflection/OrenNayar.cpp
 
   ${SOURCE_DIR}/materials/MatteMaterial.cpp
+  ${SOURCE_DIR}/materials/PlasticMaterial.cpp
 )
 add_library(TRay_texture
   STATIC
