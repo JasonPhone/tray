@@ -4,13 +4,11 @@ set(EXTERN_DIR "${CMAKE_SOURCE_DIR}/extern")
 
 add_library(stb_image
   STATIC
-  # ${EXTERN_DIR}/stb_image.h
   stb_image.cpp
 )
 
 add_library(tiny_obj_loader
   STATIC
-  # ${EXTERN_DIR}/tiny_obj_loader.h
   tiny_obj_loader.cpp
 )
 
@@ -28,7 +26,6 @@ add_library(TRay_shapes
   STATIC
   ${SOURCE_DIR}/core/geometry/Interaction.cpp
   ${SOURCE_DIR}/core/geometry/Ray.cpp
-  # ${SOURCE_DIR}/core/geometry/Bound.cpp
   ${SOURCE_DIR}/shapes/Sphere.cpp
 )
 add_library(TRay_primitive
@@ -59,4 +56,11 @@ add_library(TRay_material
   ${SOURCE_DIR}/core/reflection/FresnelSpecular.cpp
   ${SOURCE_DIR}/core/reflection/Lambertian.cpp
   ${SOURCE_DIR}/core/reflection/BSDF.cpp
+  ${SOURCE_DIR}/core/reflection/OrenNayar.cpp
+
+  ${SOURCE_DIR}/materials/MatteMaterial.cpp
+)
+add_library(TRay_texture
+  STATIC
+  ${SOURCE_DIR}/core/Texture.cpp
 )
