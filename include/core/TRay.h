@@ -149,6 +149,7 @@ class LambertianTransmission;
 class BSDF;
 // core/Material.h
 class Material;
+enum class TransportMode;
 // materials/MatteMaterial.h
 class MatteMaterial;
 // core/Texture.h
@@ -172,12 +173,14 @@ class LerpTexture;
 // textures/BiLerpTexture.h
 template <typename T>
 class BiLerpTexture;
-
-// ---------------------
-// core/lights/Ligtht.h?
+// core/Ligtht.h
 class Light;
+class VisibilityTester;
+// core/Scene.h
+class Scene;
+// ---------------------
+
 class AreaLight;
-enum class TransportMode;
 
 // Math constants.
 // ---------------

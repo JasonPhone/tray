@@ -86,9 +86,8 @@ TRay for "yet another Ray Tracer".
   - [x] Interface
   - [ ] Checkerboard
 - [ ] Light
-  - [ ] Interface
-  - [ ] Point Light
-  - [ ] Distant(Directional) Light
+  - [x] Interface
+  - [ ] Distant (Directional) Light
   - [ ] Area Light
 - [ ] Integrator: Just basic
 - [ ] Surface Reflection: To implement the lights

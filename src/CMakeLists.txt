@@ -65,3 +65,11 @@ add_library(TRay_texture
   STATIC
   ${SOURCE_DIR}/core/Texture.cpp
 )
+add_library(TRay_light
+  STATIC
+  ${SOURCE_DIR}/core/Light.cpp
+)
+add_library(TRay_scene
+  STATIC
+  ${SOURCE_DIR}/core/Scene.cpp
+)
