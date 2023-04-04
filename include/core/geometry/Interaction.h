@@ -1,6 +1,7 @@
 #pragma once
 #include "core/TRay.h"
 #include "core/geometry/Point.h"
+#include "core/geometry/Ray.h"
 #include "core/geometry/Normal.h"
 
 namespace TRay {
@@ -13,8 +14,15 @@ class Interaction {
   Interaction(const Point3f &p, const Normal3f &n, const Vector3f &wo,
               Float time)
       : p(p), time(time), wo(normalize(wo)), n(n) {}
-  bool IsSurfaceInteraction() const { return n != Normal3f(); }
-
+  bool is_surface_interaction() const { return n != Normal3f(); }
+  Ray ray_along(const Vector3f &d) const { return Ray(p, d, TRAY_INF, time); }
+  Ray ray_to(const Point3f &p2) const {
+    Vector3f d = p2 - p;
+    return Ray(p, d, 1 - TRAY_EPS, time);
+  }
+  Ray ray_to(const Interaction &it) const {
+    return Ray(p, it.p - p, 1 - TRAY_EPS, time);
+  }
   /// @brief  Point interection happens.
   Point3f p;
   /// @brief  Time interection happens.
