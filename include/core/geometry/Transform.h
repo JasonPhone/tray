@@ -48,7 +48,7 @@ class Transform {
   bool operator==(const Transform &other) const;
   bool operator!=(const Transform &other) const { return !(*this == other); }
   bool is_identity() const;
-  // bool has_scale() const;
+  bool has_scale() const;
   bool will_swap_hand() const;
   Transform inverse() const;
   // Transform apply.

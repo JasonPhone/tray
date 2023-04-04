@@ -21,6 +21,14 @@ bool Transform::is_identity() const {
   }
   return true;
 }
+bool Transform::has_scale() const {
+  Float la2 = (*this)(Vector3f(1, 0, 0)).length2();
+  Float lb2 = (*this)(Vector3f(0, 1, 0)).length2();
+  Float lc2 = (*this)(Vector3f(0, 0, 1)).length2();
+#define NOT_ONE(x) ((x) < .999f || (x) > 1.001f)
+  return (NOT_ONE(la2) || NOT_ONE(lb2) || NOT_ONE(lc2));
+#undef NOT_ONE
+}
 bool Transform::will_swap_hand() const {
   Float det =
       m.val[0][0] * (m.val[1][1] * m.val[2][2] - m.val[1][2] * m.val[2][1]) +
@@ -44,9 +52,7 @@ Ray Transform::operator()(const Ray &r) const {
   // }
   return Ray(o, d, t_m, r.time);
 }
-Transform Transform::inverse() const {
-  return Transform(m_inv, m);
-}
+Transform Transform::inverse() const { return Transform(m_inv, m); }
 Bound3f Transform::operator()(const Bound3f &b) const {
   // Take every extreme element.
   // https://github.com/erich666/GraphicsGems/blob/master/gems/TransBox.c
@@ -68,22 +74,22 @@ Bound3f Transform::operator()(const Bound3f &b) const {
   return Bound3f(p1, p2);
 }
 SurfaceInteraction Transform::operator()(const SurfaceInteraction &si) const {
-    SurfaceInteraction ret;
-    const Transform &t = *this;
-    ret.p = t(si.p);
+  SurfaceInteraction ret;
+  const Transform &t = *this;
+  ret.p = t(si.p);
 
-    ret.n = normalize(t(si.n));
-    ret.wo = normalize(t(si.wo));
-    ret.time = si.time;
-    ret.uv = si.uv;
-    ret.shape = si.shape;
-    ret.dpdu = t(si.dpdu);
-    ret.dpdv = t(si.dpdv);
-    ret.shading.n = normalize(t(si.shading.n));
-    ret.shading.dpdu = t(si.shading.dpdu);
-    ret.shading.dpdv = t(si.shading.dpdv);
-    ret.shading.n = align_with(ret.shading.n, ret.n);
-    return ret;
+  ret.n = normalize(t(si.n));
+  ret.wo = normalize(t(si.wo));
+  ret.time = si.time;
+  ret.uv = si.uv;
+  ret.shape = si.shape;
+  ret.dpdu = t(si.dpdu);
+  ret.dpdv = t(si.dpdv);
+  ret.shading.n = normalize(t(si.shading.n));
+  ret.shading.dpdu = t(si.shading.dpdu);
+  ret.shading.dpdv = t(si.shading.dpdv);
+  ret.shading.n = align_with(ret.shading.n, ret.n);
+  return ret;
 }
 
 Transform Transform::operator*(const Transform &t) const {
@@ -227,6 +233,5 @@ Transform look_at(const Point3f &eye_pos, const Point3f &look,
 // -z_near));
 // }
 // Transform perspective(Float fov, Float znear, Float zfar);
-
 
 }  // namespace TRay
