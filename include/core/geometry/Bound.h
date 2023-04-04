@@ -64,6 +64,11 @@ class Bound3 {
     off.z /= d.z;
     return off;
   }
+  void bounding_sphere(Point3<T> *center, Float *radius) const {
+    *center = (p_min + p_max) / 2;
+    *radius =
+        point_in_bound_closed(*center, *this) ? distance(*center, p_max) : 0;
+  }
   bool intersect_test(const Ray &ray, Float *time0, Float *time1) const;
   // bool intersect_test(const Ray &ray, const Vector3f &inv_dir,
   //                     const int dir_is_neg[3]) const;
@@ -117,6 +122,11 @@ class Bound2 {
     off.x /= d.x;
     off.y /= d.y;
     return off;
+  }
+  void bounding_sphere(Point2<T> *center, Float *radius) const {
+    *center = (p_min + p_max) / 2;
+    *radius =
+        point_in_bound_closed(*center, *this) ? distance(*center, p_max) : 0;
   }
   Point2<T> p_min, p_max;
 };
