@@ -42,11 +42,9 @@ class SurfaceInteraction : public Interaction {
   SurfaceInteraction(const Point3f &p, const Point2f &uv, const Vector3f &wo,
                      const Vector3f &dpdu, const Vector3f &dpdv, Float time,
                      const Shape *sh_ptr);
-  // SurfaceInteraction(const Point3f &p, const Point2f &uv, const Vector3f &wo,
-  //                    const Vector3f &dpdu, const Vector3f &dpdv,
-  //                    const Normal3f &dndu, const Normal3f &dndv, Float time,
-  //                    const Shape *sh_ptr, int faceIndex = 0);
   void fill_scattering_func(bool allow_multi_lobes, TransportMode mode);
+  /// @brief Get the emitted radiance of area light (if have).
+  Spectrum Le(const Vector3f &w) const;
 
   Point2f uv;
   /// @brief Partial derivatives.
