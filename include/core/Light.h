@@ -35,7 +35,7 @@ class Light {
   virtual Float total_power() const = 0;
   /// @brief Preprocess before rendering, e.g compute the scene bound.
   /// @param scene
-  virtual void preprocess(const Scene &scene) const {}
+  virtual void preprocess(const Scene &scene) {}
   bool is_delta_light() const {
     return (m_type & LIGHT_DELTA_POSITION) || (m_type & LIGHT_DELTA_DIRECTION);
   }

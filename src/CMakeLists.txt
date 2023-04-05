@@ -68,6 +68,7 @@ add_library(TRay_texture
 add_library(TRay_light
   STATIC
   ${SOURCE_DIR}/core/Light.cpp
+  ${SOURCE_DIR}/lights/DistantLight.cpp
 )
 add_library(TRay_scene
   STATIC

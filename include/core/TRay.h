@@ -178,6 +178,8 @@ class Light;
 class VisibilityTester;
 // core/Scene.h
 class Scene;
+// lights/DistantLight.h
+class DistantLight;
 // ---------------------
 
 class AreaLight;
