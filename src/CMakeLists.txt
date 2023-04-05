@@ -69,6 +69,7 @@ add_library(TRay_light
   STATIC
   ${SOURCE_DIR}/core/Light.cpp
   ${SOURCE_DIR}/lights/DistantLight.cpp
+  ${SOURCE_DIR}/lights/DiffuseAreaLight.cpp
 )
 add_library(TRay_scene
   STATIC

@@ -32,7 +32,7 @@ class Light {
                              VisibilityTester *vis) const = 0;
   /// @brief Get the total power this light source emits.
   /// @details This may be useful for adaptive light resources computation.
-  virtual Float total_power() const = 0;
+  virtual Spectrum total_power() const = 0;
   /// @brief Preprocess before rendering, e.g compute the scene bound.
   /// @param scene
   virtual void preprocess(const Scene &scene) {}
@@ -54,12 +54,20 @@ class VisibilityTester {
  public:
   VisibilityTester(const Interaction &ref0, const Interaction &ref1)
       : m_ref0(ref0), m_ref1(ref1) {}
-  const Interaction &REF0() const {return m_ref0;}
-  const Interaction &REF1() const {return m_ref1;}
+  const Interaction &REF0() const { return m_ref0; }
+  const Interaction &REF1() const { return m_ref1; }
   bool blocked(const Scene &scene) const;
 
  private:
   // Two ends of a shadow ray.
   Interaction m_ref0, m_ref1;
+};
+
+class AreaLight : public Light {
+ public:
+  AreaLight(const Transform &LightToWorld, int nSamples)
+      : Light(LightType::LIGHT_AREA, LightToWorld, nSamples) {}
+  /// @brief Compute the emitted radiance from given point and direction.
+  virtual Spectrum L(const Interaction &inter, const Vector3f &w) const = 0;
 };
 }  // namespace TRay
