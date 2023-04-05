@@ -6,14 +6,15 @@
 
 namespace TRay {
 
-/// @brief Interaction interface decl.
-/// ----------------------------------
 class Interaction {
  public:
   Interaction() : time(0) {}
   Interaction(const Point3f &p, const Normal3f &n, const Vector3f &wo,
               Float time)
       : p(p), time(time), wo(normalize(wo)), n(n) {}
+  Interaction(const Point3f &p, const Vector3f &wo, Float time)
+      : p(p), time(time), wo(wo) {}
+  Interaction(const Point3f &p, Float time) : p(p), time(time) {}
   bool is_surface_interaction() const { return n != Normal3f(); }
   Ray ray_along(const Vector3f &d) const { return Ray(p, d, TRAY_INF, time); }
   Ray ray_to(const Point3f &p2) const {
