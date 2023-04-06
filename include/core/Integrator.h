@@ -9,9 +9,9 @@ class Integrator {
   virtual void render(const Scene &scene) = 0;
 };
 
-class SampleIntegrator : public Integrator {
+class SamplerIntegrator : public Integrator {
  public:
-  SampleIntegrator(std::shared_ptr<const Camera> &camera,
+  SamplerIntegrator(std::shared_ptr<const Camera> &camera,
                    std::shared_ptr<Sampler> &sampler)
       : m_camera(camera), m_sampler(sampler) {}
   void render(const Scene &scene) override;

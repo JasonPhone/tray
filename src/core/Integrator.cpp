@@ -6,7 +6,7 @@
 
 namespace TRay {
 
-void SampleIntegrator::render(const Scene &scene) {
+void SamplerIntegrator::render(const Scene &scene) {
   preprocess(scene, *m_sampler);
   // Render.
   // -------
