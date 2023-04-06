@@ -188,7 +188,7 @@ class DistantLight;
 class AreaLight;
 // core/Integrator.h
 class Integrator;
-class SampleIntegrator;
+class SamplerIntegrator;
 // integrators/WhittedIntegrator.h
 
 // ---------------------

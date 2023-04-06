@@ -18,11 +18,14 @@ class BSDF {
   /// @brief Transforms a local shading vector into world space.
   Vector3f local_to_world(const Vector3f v_local) const;
   Spectrum f(const Vector3f &wo_world, const Vector3f wi_world,
-             BxDFType flags) const;
+             BxDFType flags = BSDF_ALL) const;
   Spectrum rho(const Vector3f &wo_world, int nsamples, const Point2f *samples,
-               BxDFType flags) const;
+               BxDFType flags = BSDF_ALL) const;
   Spectrum rho(int n_samples, const Point2f *samples1, const Point2f *samples2,
-               BxDFType flags) const;
+               BxDFType flags = BSDF_ALL) const;
+  Spectrum sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &u,
+                    Float *pdf, BxDFType type = BSDF_ALL,
+                    BxDFType *sampled_type = nullptr) const;
 
   const Float m_eta;
 
@@ -32,6 +35,6 @@ class BSDF {
   // Normal in shading space and geometry space.
   const Normal3f m_normal_s, m_normal_g;
   const Vector3f m_s_tan, m_s_bitan;
-  std::vector<const BxDF*> m_BxDFs;
+  std::vector<const BxDF *> m_BxDFs;
 };
 }  // namespace TRay

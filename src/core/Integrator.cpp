@@ -3,9 +3,11 @@
 #include "core/Camera.h"
 #include "core/Film.h"
 #include "core/Sampler.h"
+#include "core/geometry/Interaction.h"
+#include "core/reflection/BSDF.h"
+#include "core/reflection/BxDF.h"
 
 namespace TRay {
-
 void SamplerIntegrator::render(const Scene &scene) {
   preprocess(scene, *m_sampler);
   // Render.
@@ -80,4 +82,38 @@ void SamplerIntegrator::render(const Scene &scene) {
   // --------------
   m_camera->m_film->write_image(1.0, nullptr);
 }
-} // namespace TRay
+Spectrum SamplerIntegrator::specular_reflect(const Ray &ray,
+                                             const SurfaceInteraction &si,
+                                             const Scene &scene,
+                                             Sampler &sampler,
+                                             int depth) const {
+  Vector3f wo = si.wo, wi;
+  Float pdf;
+  // Specular reflection direction and BSDF value.
+  Spectrum f = si.bsdf->sample_f(wo, &wi, sampler.sample_2D(), &pdf,
+                                 BxDFType(BSDF_SPECULAR | BSDF_REFLECTION));
+  // Contribution of specular reflection.
+  const Normal3f &ns = si.shading.n;
+  Spectrum L(0.0);
+  if (pdf > 0 && !f.is_black() && abs_dot(ns, wi) != 0)
+    L = f * Li(ray, scene, sampler, depth + 1) * abs_dot(ns, wi) / pdf;
+  return L;
+}
+Spectrum SamplerIntegrator::specular_transmit(const Ray &ray,
+                                              const SurfaceInteraction &si,
+                                              const Scene &scene,
+                                              Sampler &sampler,
+                                              int depth) const {
+  Vector3f wo = si.wo, wi;
+  Float pdf;
+  // Specular reflection direction and BSDF value.
+  Spectrum f = si.bsdf->sample_f(wo, &wi, sampler.sample_2D(), &pdf,
+                                 BxDFType(BSDF_SPECULAR | BSDF_TRANSMISSION));
+  // Contribution of specular reflection.
+  const Normal3f &ns = si.shading.n;
+  Spectrum L(0.0);
+  if (pdf > 0 && !f.is_black() && abs_dot(ns, wi) != 0)
+    L = f * Li(ray, scene, sampler, depth + 1) * abs_dot(ns, wi) / pdf;
+    return L;
+}
+}  // namespace TRay

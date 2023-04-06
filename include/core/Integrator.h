@@ -12,7 +12,7 @@ class Integrator {
 class SamplerIntegrator : public Integrator {
  public:
   SamplerIntegrator(std::shared_ptr<const Camera> &camera,
-                   std::shared_ptr<Sampler> &sampler)
+                    std::shared_ptr<Sampler> &sampler)
       : m_camera(camera), m_sampler(sampler) {}
   void render(const Scene &scene) override;
   virtual void preprocess(const Scene &scene, Sampler &sampler) {}
@@ -21,9 +21,15 @@ class SamplerIntegrator : public Integrator {
   /// @param scene The scene to be rendered.
   /// @param sampler The sample generator used by MCM to solve render equation.
   /// @param depth Number of ray bounces.
-  /// @return 
+  /// @return
   virtual Spectrum Li(const Ray &ray, const Scene &scene, Sampler &sampler,
                       int depth = 0) const = 0;
+  Spectrum specular_reflect(const Ray &ray, const SurfaceInteraction &si,
+                            const Scene &scene, Sampler &sampler,
+                            int depth) const;
+  Spectrum specular_transmit(const Ray &ray, const SurfaceInteraction &si,
+                             const Scene &scene, Sampler &sampler,
+                             int depth) const;
 
  protected:
  private:

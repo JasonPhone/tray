@@ -30,6 +30,8 @@ class Light {
   virtual Spectrum sample_Li(const Interaction &ref, const Point2f &u,
                              Vector3f *wi, Float *pdf,
                              VisibilityTester *vis) const = 0;
+  /// @brief Get radiance from the "environment".
+  Spectrum Le(const Ray &ray) const { return Spectrum(0.f); }
   /// @brief Get the total power this light source emits.
   /// @details This may be useful for adaptive light resources computation.
   virtual Spectrum total_power() const = 0;
@@ -52,6 +54,7 @@ class Light {
 ///        the reference point and light source can see each other.
 class VisibilityTester {
  public:
+  VisibilityTester() {}
   VisibilityTester(const Interaction &ref0, const Interaction &ref1)
       : m_ref0(ref0), m_ref1(ref1) {}
   const Interaction &REF0() const { return m_ref0; }

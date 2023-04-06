@@ -75,3 +75,8 @@ add_library(TRay_scene
   STATIC
   ${SOURCE_DIR}/core/Scene.cpp
 )
+add_library(TRay_integrator
+  STATIC
+  ${SOURCE_DIR}/core/Integrator.cpp
+  ${SOURCE_DIR}/integrators/WhittedIntegrator.cpp
+)

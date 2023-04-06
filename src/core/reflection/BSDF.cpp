@@ -69,4 +69,9 @@ Spectrum BSDF::rho(int n_samples, const Point2f *samples1,
   }
   return ret;
 }
+Spectrum BSDF::sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &u,
+                        Float *pdf, BxDFType type,
+                        BxDFType *sampled_type) const {
+  return Spectrum(0.0);
+}
 }  // namespace TRay
