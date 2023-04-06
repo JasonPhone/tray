@@ -26,5 +26,9 @@ class RGBSpectrum : public CoefficientSpectrum<3> {
     rgb[2] = c[2];
   }
   const RGBSpectrum &to_RGBSpectrum() const { return *this; }
+  Float y() const {
+    const Float y_w[3] = {0.212671f, 0.715160f, 0.072169f};
+    return y_w[0] * c[0] + y_w[1] * c[1] + y_w[2] * c[2];
+  }
 };
 }  // namespace TRay

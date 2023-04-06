@@ -72,6 +72,11 @@ class Bound3 {
   bool intersect_test(const Ray &ray, Float *time0, Float *time1) const;
   // bool intersect_test(const Ray &ray, const Vector3f &inv_dir,
   //                     const int dir_is_neg[3]) const;
+  std::string to_string() const {
+    return string_format(" {" + p_min.to_string() + ", " + p_max.to_string() +
+                         "} ");
+  }
+
   Point3<T> p_min, p_max;
 };
 template <typename T>
@@ -128,6 +133,11 @@ class Bound2 {
     *radius =
         point_in_bound_closed(*center, *this) ? distance(*center, p_max) : 0;
   }
+  std::string to_string() const {
+    return string_format(" {" + p_min.to_string() + ", " + p_max.to_string() +
+                         "} ");
+  }
+
   Point2<T> p_min, p_max;
 };
 
@@ -266,12 +276,12 @@ inline bool point_in_bound_open(const Point2<T> &p, const Bound2<T> &b) {
 
 template <typename T>
 inline std::ostream &operator<<(std::ostream &os, const Bound3<T> &b) {
-  os << " {" << b.p_min << ", " << b.p_max << "} ";
+  os << b.to_string();
   return os;
 }
 template <typename T>
 inline std::ostream &operator<<(std::ostream &os, const Bound2<T> &b) {
-  os << " {" << b.p_min << ", " << b.p_max << "} ";
+  os << b.to_string();
   return os;
 }
 }  // namespace TRay

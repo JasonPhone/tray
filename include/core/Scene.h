@@ -10,7 +10,6 @@ class Scene {
   Scene(std::shared_ptr<Primitive> aggregate,
         const std::vector<std::shared_ptr<Light>> &lights)
       : m_lights(lights), m_aggregate(aggregate) {
-    // Scene Constructor Implementation
     m_world_bound = aggregate->world_bound();
     for (const auto &light : lights) {
       light->preprocess(*this);

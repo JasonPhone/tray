@@ -38,10 +38,9 @@ class Film {
   /// @brief Get the area to be sampled.
   Bound2i sample_bound() const;
   // Bound2f physical_extent() const; // The physical area of film.
-  /**
-   * @brief Merge this tile into the film.
-   *        Note that the ownership is transferred.
-   */
+  std::unique_ptr<FilmTile> get_tile(const Bound2i &tile_bound);
+  /// @brief Merge this tile into the film.
+  ///        Note that the ownership is transferred.
   void merge_tile(std::unique_ptr<FilmTile> tile);
   /// @brief Set the whole (cropped) image.
   /// @param colors Spectrum array. The size should be equal to image area.

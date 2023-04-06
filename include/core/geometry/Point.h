@@ -1,5 +1,6 @@
 #pragma once
 #include "core/TRay.h"
+#include "core/stringformat.h"
 #include "core/geometry/Vector.h"
 
 namespace TRay {
@@ -69,11 +70,13 @@ class Point3 {
     ASSERT(i >= 0 && i <= 2);
     return (i == 0) ? x : (i == 1 ? y : z);
   }
+  std::string to_string() const {
+    return string_format(" [%f, %f, %f] ", p.x, p.y, p.z);
+  }
+
   T x, y, z;
 };
 
-template <typename T>
-Point3<T> operator*(Float s, Point2<T> p);
 /// @brief 2D point decl.
 /// ---------------------
 template <typename T>
@@ -133,6 +136,10 @@ class Point2 {
     ASSERT(i == 0 || i == 1);
     return i == 0 ? x : y;
   }
+  std::string to_string() const {
+    return string_format(" [%f, %f] ", p.x, p.y);
+  }
+
   T x, y;
 };
 
@@ -210,12 +217,12 @@ inline Point2<T> permute(const Point2<T> &p, int x, int y) {
 
 template <typename T>
 inline std::ostream &operator<<(std::ostream &os, const Point3<T> &p) {
-  os << " [" << p.x << ", " << p.y << ", " << p.z << "] ";
+  os << p.to_string();
   return os;
 }
 template <typename T>
 inline std::ostream &operator<<(std::ostream &os, const Point2<T> &p) {
-  os << " [" << p.x << ", " << p.y << "] ";
+  os << p.to_string();
   return os;
 }
 }  // namespace TRay
