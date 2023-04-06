@@ -76,6 +76,7 @@ TRay for "yet another Ray Tracer".
   - [ ] Cascaded Sobol'
   - [ ] Matbuilder
   - [x] Film and Filter
+  - [ ] JPEG and uint_8 Output Support
 - [ ] Reflection, Material
   - [x] Interface
   - [x] Specular
@@ -107,7 +108,6 @@ TRay for "yet another Ray Tracer".
     - [ ] Transformation
     - [ ] Material
   - [ ] Camera Roaming
-- [ ] Chinese Font
 - [ ] Window Docking with [imguiDock](https://github.com/BentleyBlanks/imguiDock)
 
 
