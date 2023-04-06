@@ -81,8 +81,8 @@ TRay for "yet another Ray Tracer".
   - [x] Interface
   - [x] Specular
   - [x] Lambertian
-  - [ ] Microfacet Models (basis for many material)
-  - [ ] BSDF
+  - [x] Microfacet Models (basis for many material)
+  - [x] BSDF
 - [ ] Texture
   - [x] Interface
   - [ ] Checkerboard
