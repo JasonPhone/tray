@@ -1,5 +1,5 @@
 /**
- * @file tray.h
+ * @file TRay.h
  * @author ja50n (zs_feng@qq.com)
  * @brief Global includes, defines, consts, inlines and types.
  * @version 0.1
@@ -25,6 +25,8 @@ using Float = float;
 // For compiling speed.
 #ifndef NDEBUG
 #include "spdlog/spdlog.h"
+#define SDebug(msg) spdlog::debug(msg)
+#define FDebug(fmt, msg...) spdlog::debug(fmt, ##msg)
 #define SInfo(msg) spdlog::info(msg)
 #define FInfo(fmt, msg...) spdlog::info(fmt, ##msg)
 #define SWarn(msg) spdlog::WARN(msg)
@@ -34,13 +36,15 @@ using Float = float;
 #define SCritical(msg) spdlog::critical(msg)
 #define FCritical(fmt, msg...) spdlog::critical(fmt, ##msg)
 #else
-#define SInfo(msg) std::cerr << msg << "\n";
+#define SDebug(msg) std::cerr << msg << "\n"
+#define FDebug(fmt, msg...) 
+#define SInfo(msg) std::cerr << msg << "\n"
 #define FInfo(fmt, msg...)
-#define SWarn(msg) std::cerr << msg << "\n";
+#define SWarn(msg) std::cerr << msg << "\n"
 #define FWarn(fmt, msg...)
-#define SError(msg) std::cerr << msg << "\n";
+#define SError(msg) std::cerr << msg << "\n"
 #define FError(fmt, msg...)
-#define SCritical(msg) std::cerr << msg << "\n";
+#define SCritical(msg) std::cerr << msg << "\n"
 #define FCritical(fmt, msg...)
 #endif
 
@@ -180,9 +184,14 @@ class VisibilityTester;
 class Scene;
 // lights/DistantLight.h
 class DistantLight;
-// ---------------------
-
+// lights/AreaLight.h
 class AreaLight;
+// core/Integrator.h
+class Integrator;
+class SampleIntegrator;
+// integrators/WhittedIntegrator.h
+
+// ---------------------
 
 // Math constants.
 // ---------------

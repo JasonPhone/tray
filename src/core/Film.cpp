@@ -44,6 +44,19 @@ Pixel &Film::pixel(const Point2i &p) {
   int offset = xwidth * (p.y - bound.p_min.y) + (p.x - bound.p_min.x);
   return m_pixels[offset];
 }
+std::unique_ptr<FilmTile> Film::get_tile(const Bound2i &tile_bound) {
+  Vector2f half_pxl = Vector2f(0.5f, 0.5f);
+  Bound2f float_bound = Bound2f(tile_bound);
+  Point2i p0 = (Point2i)ceil(float_bound.p_min - half_pxl - m_filter->m_radius);
+  Point2i p1 =
+      (Point2i)floor(float_bound.p_max - half_pxl + m_filter->m_radius);
+  p1 += Point2i(1, 1);
+  Bound2i tile_pixel_bound =
+      bound_intersect(Bound2i(p0, p1), m_cropped_pixel_bound);
+  return std::unique_ptr<FilmTile>(
+      new FilmTile(tile_pixel_bound, m_filter->m_radius, m_filter_table,
+                   filter_table_width));
+}
 void Film::merge_tile(std::unique_ptr<FilmTile> tile) {
   // TODO Need lock here if using multi-therads.
   Bound2iIterator pxl_range(tile->tile_bound());

@@ -7,7 +7,7 @@
 namespace TRay {
 class Sampler {
  public:
- virtual ~Sampler() {};
+  virtual ~Sampler(){};
   Sampler(int64_t sample_per_pixel);
   /// @brief Start sampling on a new pixel.
   /// @param p Position of the raster 'pixel'.
@@ -44,13 +44,14 @@ class Sampler {
   virtual bool set_sample_index(int64_t idx);
   /// @brief Clone a sampler with the same strategy but different random seed.
   virtual std::unique_ptr<Sampler> clone(int seed) const = 0;
+  int64_t current_sample_index() const { return m_idx_current_pixel_sample; }
 
   const int64_t m_spp;
 
  protected:
   std::vector<int> m_1D_array_sizes, m_2D_array_sizes;
   // Layout: m_sample_1D_array[this_arr_size][this_arr_size * m_spp].
-  // 2D layout in each array. Dimension goes first. 
+  // 2D layout in each array. Dimension goes first.
   std::vector<std::vector<Float>> m_sample_1D_array;
   std::vector<std::vector<Point2f>> m_sample_2D_array;
   Point2i m_current_pixel;
