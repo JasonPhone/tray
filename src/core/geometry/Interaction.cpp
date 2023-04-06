@@ -17,7 +17,7 @@ SurfaceInteraction::SurfaceInteraction(const Point3f &p, const Point2f &uv,
   shading.dpdu = dpdu;
   shading.dpdv = dpdv;
 }
-void SurfaceInteraction::fill_scattering_func(bool allow_multi_lobes,
+void SurfaceInteraction::fill_scattering_func(const Ray &ray, bool allow_multi_lobes,
                                               TransportMode mode) {
   primitive->fill_scattering_func(this, mode, allow_multi_lobes);
 }

@@ -3,6 +3,7 @@
 #include "core/geometry/Point.h"
 #include "core/geometry/Ray.h"
 #include "core/geometry/Normal.h"
+#include "core/Material.h"
 
 namespace TRay {
 
@@ -42,7 +43,8 @@ class SurfaceInteraction : public Interaction {
   SurfaceInteraction(const Point3f &p, const Point2f &uv, const Vector3f &wo,
                      const Vector3f &dpdu, const Vector3f &dpdv, Float time,
                      const Shape *sh_ptr);
-  void fill_scattering_func(bool allow_multi_lobes, TransportMode mode);
+  void fill_scattering_func(const Ray &ray, bool allow_multi_lobes = false,
+                            TransportMode mode = TransportMode::Radiance);
   /// @brief Get the emitted radiance of area light (if have).
   Spectrum Le(const Vector3f &w) const;
 
