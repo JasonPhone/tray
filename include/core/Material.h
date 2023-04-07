@@ -1,6 +1,5 @@
 #pragma once
 #include "core/TRay.h"
-#include "core/geometry/Interaction.h"
 
 namespace TRay {
 enum class TransportMode { Radiance, Importance };

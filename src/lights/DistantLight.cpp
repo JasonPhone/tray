@@ -1,4 +1,5 @@
 #include "lights/DistantLight.h"
+#include "core/Scene.h"
 
 namespace TRay {
 void DistantLight::preprocess(const Scene &scene) {

@@ -1,9 +1,6 @@
 #include "core/math/sampling.h"
 #include "core/math/RNG.h"
 namespace TRay {
-/// @brief Mapping a [0, 1)^2 point to 2D disk by concentric mapping.
-/// @param u
-/// @return
 Point2f square_to_disk_concentric(const Point2f &u) {
   // Map uniform random numbers to [-1,1]^2.
   Point2f u_offset = 2.0 * u - Vector2f(1, 1);

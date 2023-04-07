@@ -45,9 +45,9 @@ add_library(TRay_camera
 )
 add_library(TRay_sampler
   STATIC
+  ${SOURCE_DIR}/core/math/sampling.cpp
   ${SOURCE_DIR}/core/Sampler.cpp
   ${SOURCE_DIR}/samplers/StratifiedSampler.cpp
-  ${SOURCE_DIR}/core/math/sampling.cpp
 )
 add_library(TRay_material
   STATIC

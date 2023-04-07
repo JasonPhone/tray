@@ -47,7 +47,7 @@ Spectrum BSDF::f(const Vector3f &wo_world, const Vector3f wi_world,
   return ret;
 }
 Spectrum BSDF::rho(const Vector3f &wo_world, int nsamples,
-                   const Point2f *samples, BxDFType flags = BSDF_ALL) const {
+                   const Point2f *samples, BxDFType flags ) const {
   Vector3f wo = world_to_local(wo_world);
   Spectrum ret(0.0);
   for (const BxDF *bxdf : m_BxDFs) {
@@ -59,7 +59,7 @@ Spectrum BSDF::rho(const Vector3f &wo_world, int nsamples,
   return ret;
 }
 Spectrum BSDF::rho(int n_samples, const Point2f *samples1,
-                   const Point2f *samples2, BxDFType flags = BSDF_ALL) const {
+                   const Point2f *samples2, BxDFType flags ) const {
   Spectrum ret(0.0);
   for (const BxDF *bxdf : m_BxDFs) {
     if (bxdf->match_types(flags)) {

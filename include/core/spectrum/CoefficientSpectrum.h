@@ -116,7 +116,7 @@ class CoefficientSpectrum {
   /// @note This implies the SPD is linearly scaling a set of basis functions.
   Float operator[](int i) const { return c[i]; }
 
-  CoefficientSpectrum clamp(Float low = 0, Float high = Infinity) const {
+  CoefficientSpectrum clamp(Float low = 0, Float high = TRAY_INF) const {
     CoefficientSpectrum ret;
     for (int i = 0; i < n_spec_samples; ++i)
       ret.c[i] = TRay::clamp(c[i], low, high);

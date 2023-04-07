@@ -65,7 +65,7 @@ class Bound3 {
     return off;
   }
   void bounding_sphere(Point3<T> *center, Float *radius) const {
-    *center = (p_min + p_max) / 2;
+    *center = (p_min + p_max) * 0.5;
     *radius =
         point_in_bound_closed(*center, *this) ? distance(*center, p_max) : 0;
   }

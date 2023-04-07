@@ -71,7 +71,7 @@ class Point3 {
     return (i == 0) ? x : (i == 1 ? y : z);
   }
   std::string to_string() const {
-    return string_format(" [%f, %f, %f] ", p.x, p.y, p.z);
+    return string_format(" [%f, %f, %f] ", x, y, z);
   }
 
   T x, y, z;
@@ -137,7 +137,7 @@ class Point2 {
     return i == 0 ? x : y;
   }
   std::string to_string() const {
-    return string_format(" [%f, %f] ", p.x, p.y);
+    return string_format(" [%f, %f] ", x, y);
   }
 
   T x, y;

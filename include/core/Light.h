@@ -3,7 +3,6 @@
 #include "core/geometry/Transform.h"
 #include "core/spectrum/spectrum.h"
 #include "core/geometry/Interaction.h"
-#include "core/Scene.h"
 
 namespace TRay {
 enum LightType {

@@ -1,7 +1,8 @@
 #include "core/Light.h"
+#include "core/Scene.h"
 
 namespace TRay {
-Light::Light(LightType type, const Transform &light_to_world, int n_samples = 1)
+Light::Light(LightType type, const Transform &light_to_world, int n_samples)
     : m_type(type), m_n_samples(n_samples), m_light_to_world(light_to_world) {
   // Warn for scaling.
   if (m_light_to_world.has_scale())
