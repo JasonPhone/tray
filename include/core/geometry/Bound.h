@@ -134,8 +134,7 @@ class Bound2 {
         point_in_bound_closed(*center, *this) ? distance(*center, p_max) : 0;
   }
   std::string to_string() const {
-    return string_format(" {" + p_min.to_string() + ", " + p_max.to_string() +
-                         "} ");
+    return " {" + p_min.to_string() + ", " + p_max.to_string() + "} ";
   }
 
   Point2<T> p_min, p_max;

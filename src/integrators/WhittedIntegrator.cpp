@@ -9,7 +9,7 @@
 namespace TRay {
 
 Spectrum WhittedIntegrator::Li(const Ray &ray, const Scene &scene,
-                               Sampler &sampler, int depth = 0) const {
+                               Sampler &sampler, int depth) const {
   Spectrum L(0.0);
   // Find interaction or return backgorund color.
   // --------------------------------------------

@@ -124,7 +124,7 @@ class Point2 {
   Point2<T> operator+(const Point2<T> &p) const {
     return Point2<T>(x + p.x, y + p.y);
   }
-  Point2<T> operator+=(const Point2<T> &p) const {
+  Point2<T> operator+=(const Point2<T> &p) {
     x += p.x, y += p.y;
     return *this;
   }
