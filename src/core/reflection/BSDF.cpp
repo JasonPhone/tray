@@ -35,7 +35,7 @@ Spectrum BSDF::f(const Vector3f &wo_world, const Vector3f wi_world,
   Spectrum ret(0.0);
   for (const BxDF *bxdf : m_BxDFs) {
     if (bxdf->match_types(flags)) {
-      // Correct type of BxDF.
+      // Correct type of BxDF, reflection or transmission.
       if ((reflect && (bxdf->m_type & BSDF_REFLECTION)) ||
           (!reflect && (bxdf->m_type & BSDF_TRANSMISSION))) {
         // Is reflection and contains reflection,
