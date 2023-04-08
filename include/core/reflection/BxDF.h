@@ -92,7 +92,7 @@ class BxDF {
   /// @brief Samples a wi given wo and returns the value for them.
   /// @note Overriding sample_f() MUST override pdf() for consistent result.
   virtual Spectrum sample_f(const Vector3f &wo, Vector3f *wi,
-                            const Point2f &sample, Float *pdf_val,
+                            const Point2f &sample, Float *pdf_value,
                             BxDFType *sampled_type = nullptr) const;
   /// @brief hemispherical-directional reflectance (ratio of flux), rho_hd,
   ///        albedo. The total reflection in
@@ -103,7 +103,6 @@ class BxDF {
   /// @param wo Direction.
   /// @param n_samples Samples are used by MCM to compute an approx value.
   /// @param samples
-  // TODO The impl is in pbrt 14.1.5.
   virtual Spectrum rho(const Vector3f &wo, int n_samples,
                        const Point2f *samples) const;
   /// @brief hemisherical-hemispherical reflectance (ratio of flux), rho_hh. The
@@ -112,7 +111,6 @@ class BxDF {
   /// @param n_samples Samples are used by MCM to compute an approx value.
   /// @param samples1
   /// @param samples2
-  // TODO The impl is in pbrt 14.1.5.
   virtual Spectrum rho(int n_samples, const Point2f *samples1,
                        const Point2f *samples2) const;
 
@@ -140,7 +138,7 @@ class ScaledBxDF : public BxDF {
                const Point2f *samples2) const override;
   Spectrum f(const Vector3f &wo, const Vector3f &wi) const override;
   Spectrum sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample,
-                    Float *pdf_val, BxDFType *sampled_type) const override;
+                    Float *pdf_value, BxDFType *sampled_type) const override;
   Float pdf(const Vector3f &wo, const Vector3f &wi) const override;
   std::string to_string() const override;
 

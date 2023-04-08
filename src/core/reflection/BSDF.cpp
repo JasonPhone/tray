@@ -47,7 +47,7 @@ Spectrum BSDF::f(const Vector3f &wo_world, const Vector3f wi_world,
   return ret;
 }
 Spectrum BSDF::rho(const Vector3f &wo_world, int nsamples,
-                   const Point2f *samples, BxDFType flags ) const {
+                   const Point2f *samples, BxDFType flags) const {
   Vector3f wo = world_to_local(wo_world);
   Spectrum ret(0.0);
   for (const BxDF *bxdf : m_BxDFs) {
@@ -59,7 +59,7 @@ Spectrum BSDF::rho(const Vector3f &wo_world, int nsamples,
   return ret;
 }
 Spectrum BSDF::rho(int n_samples, const Point2f *samples1,
-                   const Point2f *samples2, BxDFType flags ) const {
+                   const Point2f *samples2, BxDFType flags) const {
   Spectrum ret(0.0);
   for (const BxDF *bxdf : m_BxDFs) {
     if (bxdf->match_types(flags)) {
@@ -69,9 +69,71 @@ Spectrum BSDF::rho(int n_samples, const Point2f *samples1,
   }
   return ret;
 }
-Spectrum BSDF::sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &u,
-                        Float *pdf_value, BxDFType type,
-                        BxDFType *sampled_type) const {
-  return Spectrum(0.0);
+Spectrum BSDF::sample_f(const Vector3f &wo_world, Vector3f *wi_world,
+                        const Point2f &u, Float *pdf_value,
+                        BxDFType type = BSDF_ALL,
+                        BxDFType *sampled_type = nullptr) const {
+  // Choose matched BxDF to sample.
+  int n_bxdf = num_BxDFs(type);
+  if (n_bxdf == 0) {
+    *pdf_value = 0;
+    return Spectrum(0.0);
+  }
+  const BxDF *chosen_bxdf = nullptr;
+  int idx = clamp(int(u[0] * n_bxdf), 0, n_bxdf - 1);
+  int cnt = idx;
+  for (const auto &bxdf : m_BxDFs) {
+    if (bxdf->match_types(type) && cnt-- == 0) {
+      chosen_bxdf = bxdf;
+      break;
+    }
+  }
+  // Recover a random variable since u[0] is used.
+  // Remap u[0] to the interval of discrete indices.
+  Point2f remap_u(u[0] * n_bxdf - idx, u[1]);
+  // Sample chosen BxDF.
+  Vector3f wi, wo = world_to_local(wo_world);
+  *pdf_value = 0;
+  if (sampled_type) *sampled_type = chosen_bxdf->m_type;
+  Spectrum f = chosen_bxdf->sample_f(wo, &wi, remap_u, pdf_value, sampled_type);
+  if (*pdf_value == 0) return Spectrum(0.0);
+  *wi_world = local_to_world(wi);
+  // Total pdf values of matched BxDFs.
+  // Perfectly specular should be skipped since
+  // delta distribution gives pdf value of one.
+  if (!(chosen_bxdf->m_type & BSDF_SPECULAR) && n_bxdf > 1)
+    for (const auto &bxdf : m_BxDFs)
+      if (bxdf->match_types(type)) *pdf_value += bxdf->pdf(wo, wi);
+  *pdf_value /= n_bxdf;
+  // BSDF value of sampled direction.
+  if (!(chosen_bxdf->m_type & BSDF_SPECULAR) && n_bxdf > 1) {
+    bool reflect = dot(*wi_world, m_normal_g) * dot(wo_world, m_normal_g) > 0;
+    f = 0.;
+    for (const auto &bxdf : m_BxDFs) {
+      if (bxdf->match_types(type) &&
+          ((reflect && (bxdf->m_type & BSDF_REFLECTION)) ||
+           (!reflect && (bxdf->m_type & BSDF_TRANSMISSION))))
+        f += bxdf->f(wo, wi);
+    }
+  }
+  SInfo("Total f = " + f.to_string() +
+        ", pdf =" + format_one(" %f, ", *pdf_value) + "ratio =" +
+        format_one(" %f \n",
+                   ((*pdf_value > 0) ? (f / *pdf_value) : Spectrum(0.))));
+  return f;
+}
+Float BSDF::pdf(const Vector3f &wo_world, const Vector3f &wi_world,
+                BxDFType flags) const {
+  if (m_BxDFs.empty()) return 0.f;
+  Vector3f wo = world_to_local(wo_world), wi = world_to_local(wi_world);
+  if (wo.z == 0) return 0.;
+  Float pdf = 0.f;
+  int n_matched = 0;
+  for (const auto &bxdf : m_BxDFs)
+    if (bxdf->match_types(flags)) {
+      n_matched++;
+      pdf += bxdf->pdf(wo, wi);
+    }
+  return n_matched ? pdf / n_matched : 0.0;
 }
 }  // namespace TRay
