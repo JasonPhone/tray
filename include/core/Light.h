@@ -20,14 +20,14 @@ class Light {
   Light(LightType type, const Transform &light_to_world, int n_samples = 1);
   /// @brief Compute the radiance arriving at the interaction time and
   ///        (reference) point from this light source. The incident direction
-  ///        wi, pdf and visibility tester will also be initialized.
+  ///        wi, pdf_value and visibility tester will also be initialized.
   /// @param ref Interaction.
   /// @param u Point on light source if MCM is used.
   /// @param wi Store the incident direction to the light source.
-  /// @param pdf Store the pdf.
+  /// @param pdf_value Store the pdf_value.
   /// @param vis Store the tester. Remain uninitialized if radiance is black.
   virtual Spectrum sample_Li(const Interaction &ref, const Point2f &u,
-                             Vector3f *wi, Float *pdf,
+                             Vector3f *wi, Float *pdf_value,
                              VisibilityTester *vis) const = 0;
   /// @brief Get radiance from the "environment".
   Spectrum Le(const Ray &ray) const { return Spectrum(0.f); }

@@ -7,10 +7,10 @@ void DistantLight::preprocess(const Scene &scene) {
 }
 
 Spectrum DistantLight::sample_Li(const Interaction &ref, const Point2f &u,
-                                 Vector3f *wi, Float *pdf,
+                                 Vector3f *wi, Float *pdf_value,
                                  VisibilityTester *vis) const {
   *wi = m_w_light;
-  *pdf = 1.0;
+  *pdf_value = 1.0;
   // Make sure the point is outside of scene.
   Point3f p_outside = ref.p + 2 * m_world_radius * m_w_light;
   *vis = VisibilityTester(ref, Interaction(p_outside, ref.time));

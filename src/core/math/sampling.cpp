@@ -108,7 +108,7 @@ Distribution1D::Distribution1D(const Float *values, int n_values)
     }
   }
 }
-Float Distribution1D::sample_continuous(Float xi, Float *pdf,
+Float Distribution1D::sample_continuous(Float xi, Float *pdf_value,
                                         int *offset = nullptr) const {
   // Inversion method.
   int off =
@@ -120,17 +120,17 @@ Float Distribution1D::sample_continuous(Float xi, Float *pdf,
   ASSERT(delta >= -TRAY_EPS);
   // Normalize in the range.
   if (cdf[off] < cdf[off + 1]) delta /= (cdf[off + 1] - cdf[off]);
-  if (pdf) *pdf = func[off] / integral;
+  if (pdf_value) *pdf_value = func[off] / integral;
   // Mapped back to x axis.
   return (off + delta) / count();
 }
-int Distribution1D::sample_discrete(Float xi, Float *pdf,
+int Distribution1D::sample_discrete(Float xi, Float *pdf_value,
                                     Float *relative) const {
   int off =
       binary_search(cdf.size(), [&](int index) { return cdf[index] <= xi; });
   // cdf[0] is always 0, else ths off should goes back one.
   if (off) off--;
-  if (pdf) *pdf = discrete_pdf(off);
+  if (pdf_value) *pdf_value = discrete_pdf(off);
   ASSERT(xi - cdf[off] >= -TRAY_EPS);
   if (relative) *relative = (xi - cdf[off]) / (cdf[off + 1] - cdf[off]);
   return off;

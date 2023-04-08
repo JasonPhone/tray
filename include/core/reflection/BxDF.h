@@ -89,10 +89,10 @@ class BxDF {
   /// @brief Return Spectrum value of the distribution function based on wi and
   ///        wo. Assuming the wavelengths are decoupled.
   virtual Spectrum f(const Vector3f &wo, const Vector3f &wi) const = 0;
-  /// @brief Computes wi based on given wo and returns the value for them.
-  // TODO The impl is in pbrt 14.1.
+  /// @brief Samples a wi given wo and returns the value for them.
+  /// @note Overriding sample_f() MUST override pdf() for consistent result.
   virtual Spectrum sample_f(const Vector3f &wo, Vector3f *wi,
-                            const Point2f &sample, Float *pdf,
+                            const Point2f &sample, Float *pdf_val,
                             BxDFType *sampled_type = nullptr) const;
   /// @brief hemispherical-directional reflectance (ratio of flux), rho_hd,
   ///        albedo. The total reflection in
@@ -116,6 +116,7 @@ class BxDF {
   virtual Spectrum rho(int n_samples, const Point2f *samples1,
                        const Point2f *samples2) const;
 
+  /// @note Overriding sample_f() MUST override pdf() for consistent result.
   virtual Float pdf(const Vector3f &wo, const Vector3f &wi) const;
   virtual std::string to_string() const = 0;
 
@@ -139,7 +140,7 @@ class ScaledBxDF : public BxDF {
                const Point2f *samples2) const override;
   Spectrum f(const Vector3f &wo, const Vector3f &wi) const override;
   Spectrum sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample,
-                    Float *pdf, BxDFType *sampled_type) const override;
+                    Float *pdf_val, BxDFType *sampled_type) const override;
   Float pdf(const Vector3f &wo, const Vector3f &wi) const override;
   std::string to_string() const override;
 

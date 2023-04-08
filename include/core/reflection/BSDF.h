@@ -24,7 +24,7 @@ class BSDF {
   Spectrum rho(int n_samples, const Point2f *samples1, const Point2f *samples2,
                BxDFType flags = BSDF_ALL) const;
   Spectrum sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &u,
-                    Float *pdf, BxDFType type = BSDF_ALL,
+                    Float *pdf_value, BxDFType type = BSDF_ALL,
                     BxDFType *sampled_type = nullptr) const;
 
   const Float m_eta;

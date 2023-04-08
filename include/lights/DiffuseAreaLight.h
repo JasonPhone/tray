@@ -14,7 +14,7 @@ class DiffuseAreaLight : public AreaLight {
         m_area(shape->area()) {}
   Spectrum L(const Interaction &inter, const Vector3f &w) const override;
   Spectrum sample_Li(const Interaction &ref, const Point2f &u, Vector3f *wi,
-                     Float *pdf, VisibilityTester *vis) const override;
+                     Float *pdf_value, VisibilityTester *vis) const override;
   Spectrum total_power() const override;
 
  protected:

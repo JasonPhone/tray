@@ -19,7 +19,7 @@ Point2f disk_concentric_sample(const Point2f &u);
 Float disk_uniform_pdf() { return PI_INV; }
 Vector3f hemisphere_uniform_sample(const Point2f &u);
 Float hemisphere_uniform_pdf() { return PI_INV2; }
-/// @brief Sample a point on hemishpere with pdf relative to cos(theta).
+/// @brief Sample a point on (0, 0, 1) hemishpere with cos(theta) distribution.
 Vector3f hemisphere_cosine_sample(const Point2f &u);
 Float hemisphere_cosine_pdf(Float cos_theta) { return cos_theta * PI_INV; }
 Vector3f sphere_uniform_sample(const Point2f &u);
@@ -61,17 +61,17 @@ struct Distribution1D {
   Distribution1D(const Float *values, int n_values);
   /// @brief Sample this function as a continuous distribution.
   /// @param u Uniform random sample.
-  /// @param pdf Store the result PDF value.
+  /// @param pdf_value Store the result PDF value.
   /// @param offset Store the largest index
   ///               by which CDF[index] <= u < CDF[index + 1].
   /// @return A sample value with the distribution of this function.
-  Float sample_continuous(Float u, Float *pdf, int *offset = nullptr) const;
+  Float sample_continuous(Float u, Float *pdf_value, int *offset = nullptr) const;
   /// @brief Discrete probability sample in 1, 2, ..., n with this distribution.
   /// @param u Uniform random sample.
-  /// @param pdf Store the result PDF value.
+  /// @param pdf_value Store the result PDF value.
   /// @param relative Store the relative distance in cdf range.
   /// @return The sampled value in i, 2, ..., n.
-  int sample_discrete(Float u, Float *pdf, Float *relative) const;
+  int sample_discrete(Float u, Float *pdf_value, Float *relative) const;
   Float discrete_pdf(int index) const;
   /// @brief Get number of pieces.
   int count() const;
