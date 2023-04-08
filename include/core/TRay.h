@@ -37,7 +37,7 @@ using Float = float;
 #define FCritical(fmt, msg...) spdlog::critical(fmt, ##msg)
 #else
 #define SDebug(msg) std::cerr << msg << "\n"
-#define FDebug(fmt, msg...) 
+#define FDebug(fmt, msg...)
 #define SInfo(msg) std::cerr << msg << "\n"
 #define FInfo(fmt, msg...)
 #define SWarn(msg) std::cerr << msg << "\n"
@@ -104,6 +104,8 @@ class Sphere;
 struct Mat4x4;
 // core/math/RNG.h
 class RNG;
+// core/math/sampling.h
+struct Distribution1D;
 // core/primitives/Primitive.h
 class Primitive;
 // core/primitives/GeometricPrimitive.h
@@ -190,6 +192,7 @@ class AreaLight;
 class Integrator;
 class SamplerIntegrator;
 // integrators/WhittedIntegrator.h
+class WhittedIntegrator;
 
 // ---------------------
 
@@ -246,5 +249,23 @@ inline bool solve_quadratic(Float a, Float b, Float c, Float *t0, Float *t1) {
 inline Float gamma_correct(Float value) {
   if (value <= 0.0031308f) return 12.92f * value;
   return 1.055f * std::pow(value, (Float)(1.f / 2.4f)) - 0.055f;
+}
+/// @tparam Test Lambda function.
+/// @param size Size of sequence.
+/// @param test Test function, accepts an index and returns boolean.
+///             array[index] < target to get lower bound and <= to get upper.
+template <typename Test>
+int binary_search(int size, const Test &test) {
+  int first = 0, len = size;
+  while (len > 0) {
+    int half = len >> 1, mid = first + half;
+    if (test(mid)) {
+      first = mid + 1;
+      len -= half + 1;
+    } else {
+      len = half;
+    }
+  }
+  return first;
 }
 }  // namespace TRay

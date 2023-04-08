@@ -32,7 +32,7 @@ Float PerspectiveCamera::ray_sample(const CameraSample &cam_sample,
   // Thin lens approx.
   if (m_lens_radius > 0) {
     Point2f p_on_lens =
-        m_lens_radius * square_to_disk_concentric(cam_sample.m_point_on_lens);
+        m_lens_radius * disk_concentric_sample(cam_sample.m_point_on_lens);
     Float focus_time = m_focal_distance / gen_ray->dir.z;
     Point3f focus_pos = (*gen_ray)(focus_time);
     // The real origin and directon of this ray.
