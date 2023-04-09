@@ -1,5 +1,5 @@
 #include "core/Film.h"
-#include "core/imageio.h"
+#include "core/image.h"
 
 namespace TRay {
 Film::Film(const Point2i &resolution, const Bound2f &crop_window,
@@ -68,6 +68,7 @@ void Film::merge_tile(std::unique_ptr<FilmTile> tile) {
     dst_pxl.rgb[2] += tile_pxl.contrib_sum[2];
     dst_pxl.filter_weight_sum += tile_pxl.filter_weight_sum;
   }
+  SInfo("Film::merge_tile: Tile merged.");
 }
 void Film::set_image(const Spectrum *colors) {
   int n_pixels = m_cropped_pixel_bound.area();

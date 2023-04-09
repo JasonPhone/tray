@@ -33,9 +33,9 @@ class LambertianTransmission : public BxDF {
     return m_scale;
   }
   // TODO impl later.
-  Spectrum sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &u,
-                    Float *pdf_value, BxDFType *sampledType) const override;
-  Float pdf(const Vector3f &wo, const Vector3f &wi) const override;
+  // Spectrum sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &u,
+  //                   Float *pdf_value, BxDFType *sampledType) const override;
+  // Float pdf(const Vector3f &wo, const Vector3f &wi) const override;
   std::string to_string() const override;
 
  private:

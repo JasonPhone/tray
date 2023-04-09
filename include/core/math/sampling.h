@@ -16,15 +16,15 @@ Point2f disk_uniform_sample(const Point2f &u);
 Point2f disk_concentric_sample(const Point2f &u);
 /// @brief Sample a 2D disk using a uniform RNG in [0, 1)^2.
 /// @param rng Random number generator.
-Float disk_uniform_pdf() { return PI_INV; }
+Float disk_uniform_pdf();
 Vector3f hemisphere_uniform_sample(const Point2f &u);
-Float hemisphere_uniform_pdf() { return PI_INV2; }
+Float hemisphere_uniform_pdf();
 /// @brief Sample a point on (0, 0, 1) hemishpere with cos(theta) distribution.
 Vector3f hemisphere_cosine_sample(const Point2f &u);
-Float hemisphere_cosine_pdf(Float cos_theta) { return cos_theta * PI_INV; }
+Float hemisphere_cosine_pdf(Float cos_theta);
 Vector3f sphere_uniform_sample(const Point2f &u);
 /// @brief Pdf value sampling UNIT sphere.
-Float sphere_uniform_pdf() { return PI_INV4; }
+Float sphere_uniform_pdf();
 /// @brief Uniform sample a cone of directions around (0, 0, 1).
 /// @param cos_theta_range Cosine of the max extent of angle.
 Vector3f cone_uniform_sample(const Point2f &u, Float cos_theta_range);
@@ -33,9 +33,7 @@ Vector3f cone_uniform_sample(const Point2f &u, Float cos_theta_range);
 Vector3f cone_uniform_sample(const Point2f &u, Float cos_theta_range,
                              const Vector3f &x, const Vector3f &y,
                              const Vector3f &z);
-Float cone_uniform_pdf(Float cos_theta_range) {
-  return 1 / (2 * PI * (1 - cos_theta_range));
-}
+Float cone_uniform_pdf(Float cos_theta_range);
 /// @brief Uniform sample a triangle area.
 /// @return Barycentric coord.
 Point2f triangle_uniform_sample(const Point2f &u);

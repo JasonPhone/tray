@@ -22,30 +22,18 @@ using Float = float;
 // Logging and assert warp
 #define ASSERT(x) assert((x))
 #define PEEK(x) std::cerr << #x << ": " << x << "\n";
-// For compiling speed.
 #ifndef NDEBUG
-#include "spdlog/spdlog.h"
-#define SDebug(msg) spdlog::debug(msg)
-#define FDebug(fmt, msg...) spdlog::debug(fmt, ##msg)
-#define SInfo(msg) spdlog::info(msg)
-#define FInfo(fmt, msg...) spdlog::info(fmt, ##msg)
-#define SWarn(msg) spdlog::WARN(msg)
-#define FWarn(fmt, msg...) spdlog::WARN(fmt, ##msg)
-#define SError(msg) spdlog::error(msg)
-#define FError(fmt, msg...) spdlog::error(fmt, ##msg)
-#define SCritical(msg) spdlog::critical(msg)
-#define FCritical(fmt, msg...) spdlog::critical(fmt, ##msg)
+#define SDebug(msg) std::cerr << msg << "\n"
+#define SInfo(msg) std::cerr << msg << "\n"
+#define SWarn(msg) std::cerr << msg << "\n"
+#define SError(msg) std::cerr << msg << "\n"
+#define SCritical(msg) std::cerr << msg << "\n"
 #else
 #define SDebug(msg) std::cerr << msg << "\n"
-#define FDebug(fmt, msg...)
 #define SInfo(msg) std::cerr << msg << "\n"
-#define FInfo(fmt, msg...)
 #define SWarn(msg) std::cerr << msg << "\n"
-#define FWarn(fmt, msg...)
 #define SError(msg) std::cerr << msg << "\n"
-#define FError(fmt, msg...)
 #define SCritical(msg) std::cerr << msg << "\n"
-#define FCritical(fmt, msg...)
 #endif
 
 // Memory management.

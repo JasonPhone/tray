@@ -1,6 +1,6 @@
+#include "core/Texture.h"
 #include "materials/MatteMaterial.h"
 #include "core/reflection/BSDF.h"
-#include "core/Texture.h"
 #include "core/reflection/Lambertian.h"
 #include "core/reflection/OrenNayar.h"
 

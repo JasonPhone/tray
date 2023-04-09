@@ -94,6 +94,8 @@ class BxDF {
   virtual Spectrum sample_f(const Vector3f &wo, Vector3f *wi,
                             const Point2f &sample, Float *pdf_value,
                             BxDFType *sampled_type = nullptr) const;
+  /// @note Overriding sample_f() MUST override pdf() for consistent result.
+  virtual Float pdf(const Vector3f &wo, const Vector3f &wi) const;
   /// @brief hemispherical-directional reflectance (ratio of flux), rho_hd,
   ///        albedo. The total reflection in
   ///        given direction when illumination is constant over the hemisphere.
@@ -114,8 +116,6 @@ class BxDF {
   virtual Spectrum rho(int n_samples, const Point2f *samples1,
                        const Point2f *samples2) const;
 
-  /// @note Overriding sample_f() MUST override pdf() for consistent result.
-  virtual Float pdf(const Vector3f &wo, const Vector3f &wi) const;
   virtual std::string to_string() const = 0;
 
   const BxDFType m_type;

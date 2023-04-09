@@ -22,12 +22,7 @@ Material *GeometricPrimitive::material() const { return m_material.get(); }
 void GeometricPrimitive::fill_scattering_func(SurfaceInteraction *si,
                                               TransportMode mode,
                                               bool allow_multi_lobes) const {
-  SError(
-      "GeometricPrimitive::fill_scattering_func: Class Material is not "
-      "implemented yet!");
-  ASSERT(0);
-  // if (m_material) m_material->fill_scattering_func(si, mode,
-  // allow_multi_lobes);
+  if (m_material) m_material->fill_scattering_func(si, mode, allow_multi_lobes);
 }
 
 }  // namespace TRay

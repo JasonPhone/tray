@@ -1,6 +1,6 @@
 #pragma once
 #include "core/spectrum/RGBSpectrum.h"
-#include "core/spectrum/CoefficientSpectrum.h"
+// #include "core/spectrum/CoefficientSpectrum.h"
 
 /**
  * Spectrum is switched by `using Spectrum = XXXSpectrum;`.
@@ -13,7 +13,7 @@ namespace TRay {
 /// @param n_lambdas Number of wavelength samples.
 /// @param T Temperature(Kelvin).
 /// @param Le Result emitted radiance.
-void blackbody(const Float lambdas[], int n_lambdas, Float T, Float *Le) {
+inline void blackbody(const Float lambdas[], int n_lambdas, Float T, Float *Le) {
   // Constants.
   const Float c = 299792458;       // Light speed(m/s) in vacuum.
   const Float h = 6.62606957e-34;  // Planck's constant(Js).
@@ -31,7 +31,7 @@ void blackbody(const Float lambdas[], int n_lambdas, Float T, Float *Le) {
 /// @param n_lambdas Number of wavelength samples.
 /// @param T Temperature(Kelvin).
 /// @param Le Result emitted radiance.
-void blackbody_normalized(const Float lambdas[], int n_lambdas, Float T,
+inline void blackbody_normalized(const Float lambdas[], int n_lambdas, Float T,
                           Float *Le) {
   blackbody(lambdas, n_lambdas, T, Le);
   Float lambda_max = 2.8977721e-3 / T * 1e9;  // Wien's displacement law.

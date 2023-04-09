@@ -61,5 +61,6 @@ template <typename T>
 class Texture {
  public:
   virtual T evaluate(const SurfaceInteraction &si) const = 0;
+  virtual ~Texture() {}
 };
 }  // namespace TRay

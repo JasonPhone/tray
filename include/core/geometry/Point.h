@@ -133,6 +133,8 @@ class Point2 {
     return i == 0 ? x : y;
   }
   std::string to_string() const {
+    PEEK(x);
+    PEEK(y);
     return string_format(" [%f, %f] ", x, y);
   }
 

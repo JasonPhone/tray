@@ -14,6 +14,7 @@ Point2f disk_uniform_sample(const Point2f &u) {
   Float theta = 2 * PI * u[1];
   return Point2f(r * std::cos(theta), r * std::sin(theta));
 }
+Float disk_uniform_pdf() { return PI_INV; }
 Point2f disk_concentric_sample(const Point2f &u) {
   // Map uniform random numbers to [-1,1]^2.
   Point2f u_offset = 2.0 * u - Vector2f(1, 1);
@@ -36,17 +37,20 @@ Vector3f hemisphere_uniform_sample(const Point2f &u) {
   Float phi = 2 * PI * u[1];
   return Vector3f(r * std::cos(phi), r * std::sin(phi), z);
 }
+Float hemisphere_uniform_pdf() { return PI_INV2; }
 Vector3f hemisphere_cosine_sample(const Point2f &u) {
   Point2f d = disk_concentric_sample(u);
   Float z = std::sqrt(std::max((Float)0, 1 - d.x * d.x - d.y * d.y));
   return Vector3f(d.x, d.y, z);
 }
+Float hemisphere_cosine_pdf(Float cos_theta) { return cos_theta * PI_INV; }
 Vector3f sphere_uniform_sample(const Point2f &u) {
   Float z = 1 - 2 * u.x;
   Float r = std::sqrt(std::max((Float)0, (Float)1 - z * z));
   Float phi = 2 * PI * u.y;
   return Vector3f(r * std::cos(phi), r * std::sin(phi), z);
 }
+Float sphere_uniform_pdf() { return PI_INV4; }
 Vector3f cone_uniform_sample(const Point2f &u, Float cos_theta_range) {
   Float cos_theta = lerp(cos_theta_range, 1.f, u[0]);
   Float sin_theta = std::sqrt((Float)1 - cos_theta * cos_theta);
@@ -60,9 +64,12 @@ Vector3f cone_uniform_sample(const Point2f &u, Float cos_theta_range,
   Vector3f dir = cone_uniform_sample(u, cos_theta_range);
   return dir[0] * x + dir[1] * y + dir[2] * z;
 }
+Float cone_uniform_pdf(Float cos_theta_range) {
+  return 1 / (2 * PI * (1 - cos_theta_range));
+}
 Point2f triangle_uniform_sample(const Point2f &u) {
- Float su0 = std::sqrt(u[0]);
- return Point2f(1 - su0, u[1] * su0);
+  Float su0 = std::sqrt(u[0]);
+  return Point2f(1 - su0, u[1] * su0);
 }
 
 void fill_stratified_1D(Float *array, int n_samples, RNG &rng, bool jitter) {
@@ -109,7 +116,7 @@ Distribution1D::Distribution1D(const Float *values, int n_values)
   }
 }
 Float Distribution1D::sample_continuous(Float xi, Float *pdf_value,
-                                        int *offset = nullptr) const {
+                                        int *offset) const {
   // Inversion method.
   int off =
       binary_search(cdf.size(), [&](int index) { return cdf[index] <= xi; });

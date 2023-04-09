@@ -121,6 +121,9 @@ inline void string_format_recursive(std::string *s, const char *fmt, double v,
 template <typename... Args>
 inline std::string string_format(const char *fmt, Args... args) {
   std::string ret;
+  printf("formatting ");
+  printf(fmt, args...);
+  printf("\n");
   string_format_recursive(&ret, fmt, args...);
   return ret;
 }

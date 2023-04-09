@@ -32,6 +32,10 @@ class Vector3 {
     return *this;
   }
   Vector3<T> operator*(T s) const { return Vector3<T>(x * s, y * s, z * s); }
+  bool operator==(const Vector3<T> v) const {
+    return z == v.z && y == v.y && z == v.z;
+  }
+  bool operator!=(const Vector3<T> v) const { return !(*this == v); }
   /**
    * @brief The friend template overloading:
    * https://stackoverflow.com/questions/4660123/

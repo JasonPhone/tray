@@ -8,7 +8,7 @@
 #include "core/reflection/BxDF.h"
 
 namespace TRay {
-void SamplerIntegrator::render(const Scene &scene) {
+void SamplerIntegrator::render(const Scene &scene, uint8_t *dst) {
   preprocess(scene, *m_sampler);
   // Render.
   // -------
@@ -30,7 +30,14 @@ void SamplerIntegrator::render(const Scene &scene) {
     int x1 = std::min(x0 + tile_size, sample_bound.p_max.x);
     int y0 = sample_bound.p_min.y + tile.y * tile_size;
     int y1 = std::min(y0 + tile_size, sample_bound.p_max.y);
+    PEEK(x0);
+    PEEK(y0);
+    PEEK(x1);
+    PEEK(y1);
     Bound2i tile_bound(Point2i(x0, y0), Point2i(x1, y1));
+    PEEK(tile_bound);
+    PEEK(tile_bound.p_min);
+    PEEK(tile_bound.p_max);
     // Take tile from film.
     std::unique_ptr<FilmTile> film_tile =
         m_camera->m_film->get_tile(tile_bound);
@@ -80,7 +87,7 @@ void SamplerIntegrator::render(const Scene &scene) {
     for (int x = 0; x < n_tiles.x; ++x) per_tile(Point2i(x, y));
   // Write to file.
   // --------------
-  m_camera->m_film->write_image(1.0, nullptr);
+  m_camera->m_film->write_image(1.0, dst);
 }
 Spectrum SamplerIntegrator::specular_reflect(const Ray &ray,
                                              const SurfaceInteraction &si,

@@ -70,9 +70,8 @@ Spectrum BSDF::rho(int n_samples, const Point2f *samples1,
   return ret;
 }
 Spectrum BSDF::sample_f(const Vector3f &wo_world, Vector3f *wi_world,
-                        const Point2f &u, Float *pdf_value,
-                        BxDFType type = BSDF_ALL,
-                        BxDFType *sampled_type = nullptr) const {
+                        const Point2f &u, Float *pdf_value, BxDFType type,
+                        BxDFType *sampled_type) const {
   // Choose matched BxDF to sample.
   int n_bxdf = num_BxDFs(type);
   if (n_bxdf == 0) {
