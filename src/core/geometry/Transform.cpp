@@ -230,6 +230,17 @@ Transform look_at(const Point3f &eye_pos, const Point3f &look,
 // return scale(1, 1, 1 / (z_far - z_near)) * translate(Vector3f(0, 0,
 // -z_near));
 // }
-// Transform perspective(Float fov, Float znear, Float zfar);
+Transform perspective(Float fov, Float znear, Float zfar) {
+  // Projective divide for perspective projection.
+  // clang-format off
+  Mat4x4 persp(1, 0,                     0,                              0,
+               0, 1,                     0,                              0,
+               0, 0, zfar / (zfar - znear), -zfar * znear / (zfar - znear),
+               0, 0,                     1,                              0);
+  // clang-format on
+  // Scale canonical perspective view to specified field of view
+  Float tan_ang_inv = 1 / std::tan(deg_to_rad(fov) / 2);
+  return scale(tan_ang_inv, tan_ang_inv, 1) * Transform(persp);
+}
 
 }  // namespace TRay

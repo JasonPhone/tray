@@ -18,6 +18,7 @@ void SamplerIntegrator::render(const Scene &scene, uint8_t *dst) {
   const int tile_size = 16;
   Point2i n_tiles((sample_extent.x + tile_size - 1) / tile_size,
                   (sample_extent.y + tile_size - 1) / tile_size);
+  SInfo("SampleIntegrator::render: Sample bound: " + sample_bound.to_string());
   // Iteration.
   auto per_tile = [&](Point2i tile) {
     // Memory allocation.
@@ -30,18 +31,13 @@ void SamplerIntegrator::render(const Scene &scene, uint8_t *dst) {
     int x1 = std::min(x0 + tile_size, sample_bound.p_max.x);
     int y0 = sample_bound.p_min.y + tile.y * tile_size;
     int y1 = std::min(y0 + tile_size, sample_bound.p_max.y);
-    PEEK(x0);
-    PEEK(y0);
-    PEEK(x1);
-    PEEK(y1);
     Bound2i tile_bound(Point2i(x0, y0), Point2i(x1, y1));
-    PEEK(tile_bound);
-    PEEK(tile_bound.p_min);
-    PEEK(tile_bound.p_max);
     // Take tile from film.
     std::unique_ptr<FilmTile> film_tile =
         m_camera->m_film->get_tile(tile_bound);
     // Loop over pixels in this FilmTile.
+    SInfo("SampleIntegrator::render:per_tile: Begin tile " +
+          tile_bound.to_string());
     Bound2iIterator bound_range(tile_bound);
     for (const Point2i &pxl : bound_range) {
       // Begin for this pixel.
@@ -78,8 +74,6 @@ void SamplerIntegrator::render(const Scene &scene, uint8_t *dst) {
         // TODO Update GUI here?
       } while (tile_sampler->next_sample());
     }
-    SInfo("SampleIntegrator::render:per_tile: Finished tile " +
-          tile_bound.to_string());
     m_camera->m_film->merge_tile(std::move(film_tile));
   };
   // No parallelism by now.
@@ -121,6 +115,6 @@ Spectrum SamplerIntegrator::specular_transmit(const Ray &ray,
   Spectrum L(0.0);
   if (pdf > 0 && !f.is_black() && abs_dot(ns, wi) != 0)
     L = f * Li(ray, scene, sampler, depth + 1) * abs_dot(ns, wi) / pdf;
-    return L;
+  return L;
 }
 }  // namespace TRay

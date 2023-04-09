@@ -25,8 +25,7 @@ class Film {
    * @brief Construct a new Film object.
    *
    * @param resolution Full resolution of image.
-   * @param crop_window Part of image needed to be stored and written, NDC
-   * space.
+   * @param crop_window Part of image to be stored and written, NDC space.
    * @param filter
    * @param diagonal
    * @param filename

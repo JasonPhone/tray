@@ -3,25 +3,11 @@
 
 namespace TRay {
 PerspectiveCamera::PerspectiveCamera(const AnimateTransform &cam_to_world,
-                                     const Transform &cam_to_screen,
                                      const Bound2f &screen, Float shutter_open,
                                      Float shutter_close, Float lens_r,
-                                     Float focal_d, Film *film)
-    : ProjectiveCamera(cam_to_world, cam_to_screen, screen, shutter_open,
-                       shutter_close, lens_r, focal_d, film) {}
-Transform PerspectiveCamera::perspective(Float fov, Float n, Float f) {
-  // Projective matrix.
-  // clang-format off
-  Mat4x4 persp(
-    1, 0,           0,                0,
-    0, 1,           0,                0,
-    0, 0, f / (f - n), -f * n / (f - n),
-    0, 0,           1,                0
-  );
-  // clang-format on
-  Float tan_inv = 1.0 / std::tan(deg_to_rad(fov) / 2);
-  return scale(tan_inv, tan_inv, 1) * Transform(persp);
-}
+                                     Float focal_d, Float fov, Film *film)
+    : ProjectiveCamera(cam_to_world, perspective(fov, 0.01, 1000.0), screen,
+                       shutter_open, shutter_close, lens_r, focal_d, film) {}
 Float PerspectiveCamera::ray_sample(const CameraSample &cam_sample,
                                     Ray *gen_ray) const {
   // From origin directly to point on near plane.

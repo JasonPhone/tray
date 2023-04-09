@@ -1,5 +1,6 @@
 #pragma once
 #include "core/TRay.h"
+#include "core/stringformat.h"
 namespace TRay {
 /// @brief The homogeneous matrix in row first.
 /// @note We may need a math library for clean work.
@@ -28,7 +29,7 @@ inline std::ostream &operator<<(std::ostream &os, const Mat4x4 &mat) {
   for (int i = 0; i < 4; i++) {
     os << "\t";
     for (int j = 0; j < 4; j++) {
-      os << mat.val[i][j] << " ";
+      os << format_one("%f ", mat.val[i][j]);
     }
     os << "\n";
   }

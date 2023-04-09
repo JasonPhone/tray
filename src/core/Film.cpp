@@ -68,7 +68,6 @@ void Film::merge_tile(std::unique_ptr<FilmTile> tile) {
     dst_pxl.rgb[2] += tile_pxl.contrib_sum[2];
     dst_pxl.filter_weight_sum += tile_pxl.filter_weight_sum;
   }
-  SInfo("Film::merge_tile: Tile merged.");
 }
 void Film::set_image(const Spectrum *colors) {
   int n_pixels = m_cropped_pixel_bound.area();
@@ -84,22 +83,38 @@ void Film::write_image(Float, uint8_t *dst) {
   ASSERT(dst != nullptr);
   int offset = 0;
   const Bound2i &bound = m_cropped_pixel_bound;
-  std::unique_ptr<Float[]> rgb(new Float[bound.area() * 3]);
+  std::unique_ptr<Float[]> rgb_arr(new Float[bound.area() * 3]);
   Bound2iIterator pxl_range(bound);
   for (const Point2i &pxl_pos : pxl_range) {
     const Pixel &pxl = pixel(pxl_pos);
-    rgb[offset * 3 + 0] = pxl.rgb[0];
-    rgb[offset * 3 + 1] = pxl.rgb[1];
-    rgb[offset * 3 + 2] = pxl.rgb[2];
+    rgb_arr[offset * 3 + 0] = pxl.rgb[0];
+    rgb_arr[offset * 3 + 1] = pxl.rgb[1];
+    rgb_arr[offset * 3 + 2] = pxl.rgb[2];
     if (pxl.filter_weight_sum) {
       Float w_inv = 1.0 / pxl.filter_weight_sum;
-      rgb[offset * 3 + 0] = std::max(Float(0), rgb[offset * 3 + 0] * w_inv);
-      rgb[offset * 3 + 1] = std::max(Float(0), rgb[offset * 3 + 1] * w_inv);
-      rgb[offset * 3 + 2] = std::max(Float(0), rgb[offset * 3 + 2] * w_inv);
+      rgb_arr[offset * 3 + 0] =
+          std::max(Float(0), rgb_arr[offset * 3 + 0] * w_inv);
+      rgb_arr[offset * 3 + 1] =
+          std::max(Float(0), rgb_arr[offset * 3 + 1] * w_inv);
+      rgb_arr[offset * 3 + 2] =
+          std::max(Float(0), rgb_arr[offset * 3 + 2] * w_inv);
     }
     offset++;
   }
-  image_to_array(&rgb[0], dst, bound.diagonal().x, bound.diagonal().y);
+  // image_to_array(&rgb_arr[0], dst, bound.diagonal().x, bound.diagonal().y);
+  Float *src = &rgb_arr[0];
+  int width = bound.diagonal().x, height = bound.diagonal().y;
+  for (int y = 0; y < height; y++) {
+    for (int x = 0; x < width; x++) {
+// Gamma correction and scale to [0, 255].
+#define uint8RGB(v) (uint8_t) clamp(255.0 * gamma_correct(v) + 0.5, 0.0, 255.0)
+      dst[0] = uint8RGB(src[(y * width + x) * 3 + 0]);
+      dst[1] = uint8RGB(src[(y * width + x) * 3 + 1]);
+      dst[2] = uint8RGB(src[(y * width + x) * 3 + 2]);
+#undef uint8RGB
+      dst += 3;
+    }
+  }
 }
 
 void FilmTile::add_sample(const Point2f &point_on_film, const Spectrum &L,

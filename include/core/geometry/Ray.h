@@ -18,14 +18,17 @@ class Ray {
       Float t_maxv = TRAY_INF)
       : ori(o), dir(d), t_max(t_maxv), time(t) {}
   Ray() : t_max(TRAY_INF), time(0.0) {}
+  /// @brief Get the position of Ray by given time.
   Point3f operator()(Float t) const;
+  std::string to_string() const {
+    return "ray o: " + ori.to_string() + ", d: " + dir.to_string();
+  }
 
   Point3f ori;
   Vector3f dir;
   Float time;
   /// @brief We need to restrict the extent of a Ray when testing intersection.
   mutable Float t_max;
-  /// @brief Get the position of Ray by given time.
 };
 
 }  // namespace TRay

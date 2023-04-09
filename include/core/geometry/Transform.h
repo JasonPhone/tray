@@ -8,6 +8,7 @@
 #pragma once
 #include "core/TRay.h"
 #include "core/math/Matrix.h"
+#include "core/stringformat.h"
 
 /**
  * Transform is a mapping. Here we consider transformations which are:
@@ -51,17 +52,18 @@ class Transform {
   // Transform apply.
   template <typename T>
   Point3<T> operator()(const Point3<T> &p) const {
-    T pv[4] = {p.x, p.y, p.z, 1.0};
-    T p_new[4] = {0, 0, 0, 0};
-    for (int i = 0; i < 4; i++) {
-      for (int j = 0; j < 4; j++) {
-        p_new[i] += m.val[i][j] * pv[j];
-      }
-    }
-    if (p_new[3] == 1)
-      return Point3<T>(p_new[0], p_new[1], p_new[2]);
+    T x = p.x, y = p.y, z = p.z;
+    // clang-format off
+    T xp = m.val[0][0] * x + m.val[0][1] * y + m.val[0][2] * z + m.val[0][3];
+    T yp = m.val[1][0] * x + m.val[1][1] * y + m.val[1][2] * z + m.val[1][3];
+    T zp = m.val[2][0] * x + m.val[2][1] * y + m.val[2][2] * z + m.val[2][3];
+    T wp = m.val[3][0] * x + m.val[3][1] * y + m.val[3][2] * z + m.val[3][3];
+    // clang-format on
+    ASSERT(wp != 0);
+    if (wp == 1)
+      return Point3<T>(xp, yp, zp);
     else
-      return 1.0 / p_new[3] * Point3<T>(p_new[0], p_new[1], p_new[2]);
+      return Point3<T>(xp, yp, zp) * (1.0 / wp);
   }
   template <typename T>
   Vector3<T> operator()(const Vector3<T> &v) const {
@@ -90,6 +92,10 @@ class Transform {
   Bound3f operator()(const Bound3f &b) const;
   SurfaceInteraction operator()(const SurfaceInteraction &si) const;
   Transform operator*(const Transform &t) const;
+  friend std::ostream &operator<<(std::ostream &os, const Transform &t) {
+    os << "t=" << t.m << ", inv=" << t.m_inv;
+    return os;
+  }
 
  private:
   Mat4x4 m, m_inv;
@@ -107,6 +113,6 @@ Transform rotate(Float theta, const Vector3f &axis);
 Transform look_at(const Point3f &eye_pos, const Point3f &look,
                   const Vector3f &up_dir);
 // Transform orthographic(Float z_near, Float z_far);
-// Transform perspective(Float fov, Float znear, Float zfar);
+Transform perspective(Float fov, Float znear, Float zfar);
 
 }  // namespace TRay

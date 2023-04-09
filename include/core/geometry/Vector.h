@@ -1,5 +1,6 @@
 #pragma once
 #include "core/TRay.h"
+#include "core/stringformat.h"
 
 namespace TRay {
 /// \note Maybe we can make this using Swizzle?
@@ -53,6 +54,10 @@ class Vector3 {
     ASSERT(i >= 0 && i <= 2);
     return (i == 0) ? x : (i == 1 ? y : z);
   }
+  std::string to_string() const {
+    return string_format(" [%f, %f, %f] ", x * 1.0, y * 1.0, z * 1.0);
+  }
+
   T x, y, z;
 };
 
