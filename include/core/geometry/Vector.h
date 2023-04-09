@@ -175,7 +175,7 @@ inline Float spherical_phi_of(const Vector3f &v) {
 
 /**
  * @brief Create a local coordinate system.
- *
+ *        w = cross(u, v), left-handed.
  * @param u Main basis. Supposed to be NORMALIZED.
  * @param v One of the basis.
  * @param w One of the basis.

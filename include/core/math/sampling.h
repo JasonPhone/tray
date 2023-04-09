@@ -23,6 +23,7 @@ Float hemisphere_uniform_pdf() { return PI_INV2; }
 Vector3f hemisphere_cosine_sample(const Point2f &u);
 Float hemisphere_cosine_pdf(Float cos_theta) { return cos_theta * PI_INV; }
 Vector3f sphere_uniform_sample(const Point2f &u);
+/// @brief Pdf value sampling UNIT sphere.
 Float sphere_uniform_pdf() { return PI_INV4; }
 /// @brief Uniform sample a cone of directions around (0, 0, 1).
 /// @param cos_theta_range Cosine of the max extent of angle.

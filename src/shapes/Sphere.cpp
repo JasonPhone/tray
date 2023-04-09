@@ -1,5 +1,6 @@
 #include "core/geometry/geometry.h"
 #include "shapes/Sphere.h"
+#include "core/math/sampling.h"
 
 namespace TRay {
 Bound3f Sphere::object_bound() const {
@@ -104,6 +105,66 @@ bool Sphere::intersect_test(const Ray &ray, bool test_alpha_texture) const {
       Vector3f(p_hit.z * cosPhi, p_hit.z * sinPhi, -radius * std::sin(theta));
 
   return true;
+}
+Interaction Sphere::sample_surface(const Point2f &u, Float *pdf_value) const {
+  Point3f p_surface = Point3f(0, 0, 0) + radius * sphere_uniform_sample(u);
+  Interaction inter;
+  inter.n =
+      normalize(obj_to_world(Normal3f(p_surface.x, p_surface.y, p_surface.z)));
+  if (flip_normal) inter.n *= -1;
+  inter.p = obj_to_world(p_surface);
+  if (pdf_value) *pdf_value = 1.0 / area();
+  return inter;
+}
+
+Interaction Sphere::sample_surface(const Interaction &ref, const Point2f &u,
+                                   Float *pdf_value) const {
+  // Coord frame for sampling.
+  Point3f p_center = obj_to_world(Point3f(0, 0, 0));
+  Vector3f fz = normalize(p_center - ref.p);
+  Vector3f fx, fy;
+  make_coord_system(fz, &fx, &fy);
+  if (distance2(ref.p, p_center) <= radius * radius) {
+    // Inside the sphere, sample all.
+    return sample_surface(u, pdf_value);
+  }
+  // Outside the sphere, sample the cone.
+  // theta and phi from the sample space.
+  Float sin2_theta_range = radius * radius / distance2(ref.p, p_center);
+  Float cos_theta_range = std::sqrt(std::max((Float)0, 1 - sin2_theta_range));
+  Float sample_cos_theta = (1 - u[0]) + u[0] * cos_theta_range;
+  Float sample_sin_theta =
+      std::sqrt(std::max((Float)0, 1 - sample_cos_theta * sample_cos_theta));
+  Float sample_phi = u[1] * 2 * PI;
+  // alpha the center angle of sphere.
+  Float dc = distance(ref.p, p_center);
+  Float ds = dc * sample_cos_theta -
+             std::sqrt(std::max(
+                 (Float)0, radius * radius -
+                               dc * dc * sample_sin_theta * sample_sin_theta));
+  Float cos_alpha = (dc * dc + radius * radius - ds * ds) / (2 * dc * radius);
+  Float sin_alpha = std::sqrt(std::max((Float)0, 1 - cos_alpha * cos_alpha));
+  // Sample point and normal in world space.
+  Vector3f n_world =
+      spherical_direction(sin_alpha, cos_alpha, sample_phi, -fx, -fy, -fz);
+  Point3f p_world =
+      p_center + radius * Point3f(n_world.x, n_world.y, n_world.z);
+  // Construct the interaction.
+  Interaction inter;
+  inter.p = p_world;
+  inter.n = Normal3f(n_world);
+  if (flip_normal) inter.n *= -1;
+  if (pdf_value) *pdf_value = cone_uniform_pdf(cos_theta_range);
+  return inter;
+}
+Float Sphere::pdf(const Interaction &ref, const Vector3f &wi) const {
+  Point3f p_center = obj_to_world(Point3f(0, 0, 0));
+  // If inside the sphere.
+  if (distance2(ref.p, p_center) <= radius * radius) return Shape::pdf(ref, wi);
+  // Outside the sphere, cone uniform sampling.
+  Float sin2_theta_range = radius * radius / distance2(ref.p, p_center);
+  Float cos_theta_range = std::sqrt(std::max((Float)0, 1 - sin2_theta_range));
+  return cone_uniform_pdf(cos_theta_range);
 }
 Float Sphere::area() const { return phi_max * radius * (z_max - z_min); }
 }  // namespace TRay
