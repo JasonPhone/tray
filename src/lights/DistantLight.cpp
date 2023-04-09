@@ -16,6 +16,9 @@ Spectrum DistantLight::sample_Li(const Interaction &ref, const Point2f &u,
   *vis = VisibilityTester(ref, Interaction(p_outside, ref.time));
   return m_L;
 }
+Float DistantLight::pdf_Li(const Interaction &ref, const Vector3f &wi) const {
+  return 0.0;
+}
 Spectrum DistantLight::total_power() const {
   return m_L * PI * m_world_radius * m_world_radius;
 }

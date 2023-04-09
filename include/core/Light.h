@@ -29,6 +29,7 @@ class Light {
   virtual Spectrum sample_Li(const Interaction &ref, const Point2f &u,
                              Vector3f *wi, Float *pdf_value,
                              VisibilityTester *vis) const = 0;
+  virtual Float pdf_Li(const Interaction &ref, const Vector3f &wi) const = 0;
   /// @brief Get radiance from the "environment".
   Spectrum Le(const Ray &ray) const { return Spectrum(0.f); }
   /// @brief Get the total power this light source emits.
@@ -37,9 +38,11 @@ class Light {
   /// @brief Preprocess before rendering, e.g compute the scene bound.
   /// @param scene
   virtual void preprocess(const Scene &scene) {}
+  /// @brief If the ligh is defined with delta distribution.
   bool is_delta_light() const {
     return (m_type & LIGHT_DELTA_POSITION) || (m_type & LIGHT_DELTA_DIRECTION);
   }
+
   // Type of light.
   const LightType m_type;
   // Number of samples taken for this light source.

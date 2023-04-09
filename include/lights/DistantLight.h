@@ -12,6 +12,7 @@ class DistantLight : public Light {
         m_w_light(normalize(light_to_world(w_light))) {}
   Spectrum sample_Li(const Interaction &ref, const Point2f &u, Vector3f *wi,
                      Float *pdf_value, VisibilityTester *vis) const override;
+  Float pdf_Li(const Interaction &ref, const Vector3f &wi) const override;
   Spectrum total_power() const override;
   void preprocess(const Scene &scene) override;
 
