@@ -201,11 +201,11 @@ Transform look_at(const Point3f &eye_pos, const Point3f &look,
   // First three columns of viewing matrix.
   Vector3f dir = normalize(look - eye_pos);
   if (cross(normalize(up_dir), dir).length() == 0) {
-    FError(
-        "TRay::look_at: Same direction of up vector (%f, %f, %f) "
-        "and viewing direction (%f, %f, %f). "
-        "Using identity transformation.",
-        up_dir.x, up_dir.y, up_dir.z, dir.x, dir.y, dir.z);
+    SError(
+        string_format("TRay::look_at: Same direction of up vector (%f, %f, %f) "
+                      "and viewing direction (%f, %f, %f). "
+                      "Using identity transformation.",
+                      up_dir.x, up_dir.y, up_dir.z, dir.x, dir.y, dir.z));
     return Transform();
   }
   Vector3f right = normalize(cross(normalize(up_dir), dir));

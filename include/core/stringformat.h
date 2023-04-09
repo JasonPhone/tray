@@ -79,7 +79,7 @@ inline std::string format_one(const char *fmt, T v) {
  */
 template <typename T, typename... Args>
 inline void string_format_recursive(std::string *s, const char *fmt, T v,
-                                 Args... args) {
+                                    Args... args) {
   std::string next_fmt = next_format(&fmt, s);
   *s += format_one(next_fmt.c_str(), v);
   string_format_recursive(s, fmt, args...);
@@ -88,7 +88,7 @@ inline void string_format_recursive(std::string *s, const char *fmt, T v,
 /// @brief Special case of string_format_recursive for float.
 template <typename... Args>
 inline void string_format_recursive(std::string *s, const char *fmt, float v,
-                                 Args... args) {
+                                    Args... args) {
   std::string next_fmt = next_format(&fmt, s);
   if (next_fmt == "%f")
     // Always use enough precision.
@@ -104,7 +104,7 @@ inline void string_format_recursive(std::string *s, const char *fmt, float v,
 /// @brief Special case of string_format_recursive for float.
 template <typename... Args>
 inline void string_format_recursive(std::string *s, const char *fmt, double v,
-                                 Args... args) {
+                                    Args... args) {
   std::string next_fmt = next_format(&fmt, s);
   if (next_fmt == "%f")
     *s += format_one("%.17g", v);
@@ -121,9 +121,6 @@ inline void string_format_recursive(std::string *s, const char *fmt, double v,
 template <typename... Args>
 inline std::string string_format(const char *fmt, Args... args) {
   std::string ret;
-  printf("formatting ");
-  printf(fmt, args...);
-  printf("\n");
   string_format_recursive(&ret, fmt, args...);
   return ret;
 }
