@@ -29,8 +29,6 @@ bool Mat4x4::operator==(const Mat4x4 &other) const {
   return true;
 }
 
-// Mat4x4 inlines.
-// ---------------
 Mat4x4 mat4x4_multiply(const Mat4x4 &l, const Mat4x4 &r) {
   Mat4x4 ans;
   for (int i = 0; i < 4; i++) {

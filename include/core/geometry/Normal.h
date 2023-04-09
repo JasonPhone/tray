@@ -2,10 +2,8 @@
 #include "core/TRay.h"
 #include "core/geometry/Vector.h"
 namespace TRay {
-template <typename T>
-Normal3<T> operator*(T s, const Normal3<T> &n);
-/// @brief 3D normal decl.
-/// ----------------------
+// template <typename T>
+// Normal3<T> operator*(T s, const Normal3<T> &n);
 template <typename T>
 class Normal3 {
  public:

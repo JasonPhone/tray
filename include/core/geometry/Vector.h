@@ -5,8 +5,6 @@ namespace TRay {
 /// \note Maybe we can make this using Swizzle?
 /// \see https://zhuanlan.zhihu.com/p/340119757
 
-/// @brief Vector3 decl.
-/// --------------------
 template <typename T>
 class Vector3 {
  public:
@@ -54,10 +52,8 @@ class Vector3 {
   T x, y, z;
 };
 
-template <typename T>
-Vector2<T> operator*(T s, const Vector2<T> &v);
-/// @brief Vector2 decl.
-/// --------------------
+// template <typename T>
+// Vector2<T> operator*(T s, const Vector2<T> &v);
 template <typename T>
 class Vector2 {
  public:

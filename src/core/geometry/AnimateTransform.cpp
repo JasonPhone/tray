@@ -7,9 +7,6 @@
 #include "core/geometry/Bound.h"
 
 namespace TRay {
-
-// Interval decl and impl.
-// -----------------------
 class Interval {
  public:
   // Interval Public Methods
@@ -85,9 +82,6 @@ void interval_find_zeros(Float c1, Float c2, Float c3, Float c4, Float c5,
     }
   }
 }
-
-// AnimateTransform impl.
-// ----------------------
 
 AnimateTransform::AnimateTransform(const Transform &_trans_st, Float _time_st,
                                    const Transform &_trans_ed, Float _time_ed)

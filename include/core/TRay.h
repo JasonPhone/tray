@@ -53,7 +53,6 @@ using Float = float;
 
 namespace TRay {
 // Forward decl.
-// -------------
 // core/geometry/Vector.h
 template <typename T>
 class Vector3;
@@ -246,6 +245,7 @@ inline bool solve_quadratic(Float a, Float b, Float c, Float *t0, Float *t1) {
 
 // Other inlines.
 // --------------
+/// @brief gamma correction for color value.
 inline Float gamma_correct(Float value) {
   if (value <= 0.0031308f) return 12.92f * value;
   return 1.055f * std::pow(value, (Float)(1.f / 2.4f)) - 0.055f;

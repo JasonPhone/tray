@@ -2,8 +2,6 @@
 #include "core/geometry/Point.h"
 #include "core/geometry/Ray.h"
 namespace TRay {
-// Bound2iIterator impl.
-// ---------------------
 Bound2iIterator &Bound2iIterator::operator++() {
   increase();
   return *this;

@@ -6,8 +6,6 @@
 #include "core/geometry/Interaction.h"
 
 namespace TRay {
-// Transform impl.
-// ---------------
 bool Transform::operator==(const Transform &other) const {
   return m == other.m;
 }

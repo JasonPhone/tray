@@ -6,8 +6,6 @@
 namespace TRay {
 // template <typename T>
 // Point3<T> operator*(Float s, Point3<T> p);
-/// @brief 3D point decl.
-/// ---------------------
 template <typename T>
 class Point3 {
  public:
@@ -77,8 +75,6 @@ class Point3 {
   T x, y, z;
 };
 
-/// @brief 2D point decl.
-/// ---------------------
 template <typename T>
 class Point2 {
  public:
@@ -143,8 +139,6 @@ class Point2 {
   T x, y;
 };
 
-/// @brief Point3 inlines.
-/// ----------------------
 template <typename T>
 inline Float distance(const Point3<T> &p1, const Point3<T> &p2) {
   return (p1 - p2).length();
@@ -180,8 +174,6 @@ inline Point3<T> permute(const Point3<T> &p, int x, int y, int z) {
   return Point3<T>(p[x], p[y], p[z]);
 }
 
-/// @brief Point2 inlines.
-/// ----------------------
 template <typename T>
 inline Float distance(const Point2<T> &p1, const Point2<T> &p2) {
   return (p1 - p2).length();

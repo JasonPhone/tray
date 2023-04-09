@@ -35,8 +35,6 @@ class Interaction {
   Normal3f n;
 };
 
-/// @brief SurfaceInteraction decl.
-/// -------------------------------
 class SurfaceInteraction : public Interaction {
  public:
   SurfaceInteraction() : Interaction() {}

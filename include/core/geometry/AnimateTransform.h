@@ -11,8 +11,6 @@
 #include "core/geometry/Quaternion.h"
 
 namespace TRay{
-// AnimateTransform decl.
-// ----------------------
 /// @brief M = TRS when decomposing.
 class AnimateTransform {
  public:

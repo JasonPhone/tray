@@ -28,9 +28,6 @@
  */
 
 namespace TRay {
-
-// Transform decl.
-// ---------------
 class Transform {
  public:
   Transform() {}
@@ -99,8 +96,7 @@ class Transform {
   friend class AnimateTransform;
   friend class Quaternion;
 };
-// Inlines decl.
-// -------------
+
 Transform translate(const Vector3f &delta);
 Transform scale(Float x, Float y, Float z);
 Transform rotate_x(Float theta);
