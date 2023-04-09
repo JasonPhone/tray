@@ -28,10 +28,10 @@ class Sphere : public Shape {
                  bool test_alpha_texture = true) const override;
   bool intersect_test(const Ray &ray,
                       bool test_alpha_texture = true) const override;
-
-  Interaction sample_surface(const Point2f &u, Float *pdf_value) const override;
+  Interaction sample_surface(const Point2f &u,
+                             Float *pdf_value = nullptr) const override;
   Interaction sample_surface(const Interaction &ref, const Point2f &u,
-                             Float *pdf_value) const override;
+                             Float *pdf_value = nullptr) const override;
   Float pdf(const Interaction &ref, const Vector3f &wi) const override;
   Float area() const override;
   /**

@@ -9,8 +9,14 @@ Spectrum DiffuseAreaLight::L(const Interaction &inter,
 Spectrum DiffuseAreaLight::sample_Li(const Interaction &ref, const Point2f &u,
                                      Vector3f *wi, Float *pdf_value,
                                      VisibilityTester *vis) const {
-  // TODO impl in 14.2
-  return Spectrum(0.0);
+  Interaction inter = m_shape->sample_surface(ref, u, pdf_value);
+  *wi = normalize(inter.p - ref.p);
+  *vis = VisibilityTester(ref, inter);
+  return L(inter, -*wi);
+}
+Float DiffuseAreaLight::pdf_Li(const Interaction &ref,
+                               const Vector3f &wi) const {
+  return m_shape->pdf(ref, wi);
 }
 Spectrum DiffuseAreaLight::total_power() const {
   return m_L_emit * m_area * PI;
