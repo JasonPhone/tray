@@ -76,7 +76,7 @@ class FilmTile {
     m_pixels = std::vector<FilmTilePixel>(std::max(0, m_pixel_bound.area()));
   }
 
-  void add_sample(const Point2f &point_on_film, const Spectrum &L,
+  void add_sample(const Point2f &point_film, const Spectrum &L,
                   Float sample_weight);
   /// @brief Get the pixel in film tile.
   /// @param p Position in film space.

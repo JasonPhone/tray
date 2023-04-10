@@ -9,6 +9,8 @@
 
 namespace TRay {
 void SamplerIntegrator::render(const Scene &scene, uint8_t *dst) {
+  int ray_cnt = 0;
+
   preprocess(scene, *m_sampler);
   // Render.
   // -------
@@ -48,8 +50,12 @@ void SamplerIntegrator::render(const Scene &scene, uint8_t *dst) {
         // Generate ray through this camera sample.
         Ray ray;
         Float ray_w = m_camera->ray_sample(cam_sample, &ray);
+        // SDebug("ray_sample: " + ray.to_string());
+        Point3f pp = ray(1 / ray.dir.z);
+        ray_cnt++;
         Spectrum L(0.0);
         if (ray_w > 0) L = Li(ray, scene, *tile_sampler);
+        ray_cnt++;
         // Check.
         if (L.has_NaN()) {
           SError(string_format(
@@ -70,7 +76,7 @@ void SamplerIntegrator::render(const Scene &scene, uint8_t *dst) {
               pxl.x, pxl.y, (int)tile_sampler->current_sample_index()));
           L = Spectrum(0.f);
         }
-        film_tile->add_sample(cam_sample.m_point_on_film, L, ray_w);
+        film_tile->add_sample(cam_sample.m_point_film, L, ray_w);
         // TODO Update GUI here?
       } while (tile_sampler->next_sample());
     }
@@ -82,6 +88,7 @@ void SamplerIntegrator::render(const Scene &scene, uint8_t *dst) {
   // Write to file.
   // --------------
   m_camera->m_film->write_image(1.0, dst);
+  PEEK(ray_cnt);
 }
 Spectrum SamplerIntegrator::specular_reflect(const Ray &ray,
                                              const SurfaceInteraction &si,

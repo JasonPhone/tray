@@ -79,14 +79,11 @@ class Transform {
   /// @brief Some linear transform can show this.
   template <typename T>
   Normal3<T> operator()(const Normal3<T> &n) const {
-    T pv[3] = {n.x, n.y, n.z};
-    T p_new[3] = {0, 0, 0};
-    for (int i = 0; i < 3; i++) {
-      for (int j = 0; j < 3; j++) {
-        p_new[i] += m_inv.val[j][i] * pv[j];
-      }
-    }
-    return Normal3<T>(p_new[0], p_new[1], p_new[2]);
+    T x = n.x, y = n.y, z = n.z;
+    return Normal3<T>(
+        m_inv.val[0][0] * x + m_inv.val[1][0] * y + m_inv.val[2][0] * z,
+        m_inv.val[0][1] * x + m_inv.val[1][1] * y + m_inv.val[2][1] * z,
+        m_inv.val[0][2] * x + m_inv.val[1][2] * y + m_inv.val[2][2] * z);
   }
   Ray operator()(const Ray &r) const;
   Bound3f operator()(const Bound3f &b) const;
