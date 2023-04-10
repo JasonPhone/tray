@@ -13,7 +13,7 @@ class Normal3 {
   bool has_NaN() const {
     return std::isnan(x) || std::isnan(y) || std::isnan(z);
   }
-  Float length2() const { return x * x + y * y * z * z; }
+  Float length2() const { return x * x + y * y + z * z; }
   Float length() const { return std::sqrt(length2()); }
   bool operator==(const Normal3<T> &other) const {
     return x == other.x && y == other.y && z == other.z;
@@ -111,7 +111,9 @@ inline Normal3<T> align_with(const Normal3<T> &n, const Normal3<T> &v) {
 
 template <typename T>
 inline std::ostream &operator<<(std::ostream &os, const Normal3<T> &n) {
-  os << " <" << n.x << ", " << n.y << ", " << n.z << "> ";
+  os << " <" << format_one("%f", 1.0 * n.x) << ", "
+     << format_one("%f", 1.0 * n.y) << ", " << format_one("%f", 1.0 * n.z)
+     << "> ";
   return os;
 }
 }  // namespace TRay

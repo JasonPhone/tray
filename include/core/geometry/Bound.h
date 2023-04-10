@@ -19,10 +19,11 @@ class Bound3 {
   Bound3(const Point3<T> &p1, const Point3<T> &p2)
       : p_min(min(p1, p2)), p_max(max(p1, p2)) {}
   Bound3() {
+    // Make this bound invalid.
     T maxv = std::numeric_limits<T>::max();
     T minv = std::numeric_limits<T>::lowest();
-    p_min = Point3<T>(minv, minv, minv);
-    p_max = Point3<T>(maxv, maxv, maxv);
+    p_min = Point3<T>(maxv, maxv, maxv);
+    p_max = Point3<T>(minv, minv, minv);
   }
   Bound3(const Point3<T> &p) : Bound3(p, p) {}
   bool is_valid() const {
@@ -87,8 +88,8 @@ class Bound2 {
   Bound2() {
     T maxv = std::numeric_limits<T>::max();
     T minv = std::numeric_limits<T>::lowest();
-    p_min = Point2<T>(minv, minv);
-    p_max = Point2<T>(maxv, maxv);
+    p_min = Point2<T>(maxv, maxv);
+    p_max = Point2<T>(minv, minv);
   }
   Bound2(const Point2<T> &p) : Bound2(p, p) {}
   template <typename U>

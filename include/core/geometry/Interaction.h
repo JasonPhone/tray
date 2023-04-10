@@ -17,14 +17,15 @@ class Interaction {
       : p(p), time(time), wo(wo) {}
   Interaction(const Point3f &p, Float time) : p(p), time(time) {}
   bool is_surface_interaction() const { return n != Normal3f(); }
-  Ray ray_along(const Vector3f &d) const { return Ray(p, d, TRAY_INF, time); }
+  Ray ray_along(const Vector3f &d) const { return Ray(p, d, time, TRAY_INF); }
   Ray ray_to(const Point3f &p2) const {
     Vector3f d = p2 - p;
-    return Ray(p, d, 1 - TRAY_EPS, time);
+    return Ray(p, d, time, 1 - TRAY_EPS);
   }
   Ray ray_to(const Interaction &it) const {
-    return Ray(p, it.p - p, 1 - TRAY_EPS, time);
+    return Ray(p, it.p - p, time, 1 - TRAY_EPS);
   }
+
   /// @brief  Point interection happens.
   Point3f p;
   /// @brief  Time interection happens.

@@ -50,10 +50,9 @@ Pixel &Film::pixel(const Point2i &p) {
 }
 std::unique_ptr<FilmTile> Film::get_tile(const Bound2i &tile_bound) {
   Vector2f half_pxl = Vector2f(0.5f, 0.5f);
-  Bound2f float_bound = Bound2f(tile_bound);
-  Point2i p0 = (Point2i)ceil(float_bound.p_min - half_pxl - m_filter->m_radius);
-  Point2i p1 =
-      (Point2i)floor(float_bound.p_max - half_pxl + m_filter->m_radius);
+  Bound2f fbound = Bound2f(tile_bound);
+  Point2i p0 = (Point2i)ceil(fbound.p_min - half_pxl - m_filter->m_radius);
+  Point2i p1 = (Point2i)floor(fbound.p_max - half_pxl + m_filter->m_radius);
   p1 += Point2i(1, 1);
   Bound2i tile_pixel_bound =
       bound_intersect(Bound2i(p0, p1), m_cropped_pixel_bound);
@@ -63,6 +62,7 @@ std::unique_ptr<FilmTile> Film::get_tile(const Bound2i &tile_bound) {
 }
 void Film::merge_tile(std::unique_ptr<FilmTile> tile) {
   // TODO Need lock here if using multi-therads.
+  SInfo("Film::merge_tile: Merging tile " + tile->tile_bound().to_string());
   Bound2iIterator pxl_range(tile->tile_bound());
   for (const Point2i &pxl_pos : pxl_range) {
     const FilmTilePixel &tile_pxl = tile->pixel(pxl_pos);
@@ -123,7 +123,7 @@ void Film::write_image(Float, uint8_t *dst) {
   }
 }
 
-void FilmTile::add_sample(const Point2f &point_on_film, const Spectrum &L,
+void FilmTile::add_sample(const Point2f &point_film, const Spectrum &L,
                           Float sample_weight) {
   // Find the influenced pixels.
   /**
@@ -133,7 +133,7 @@ void FilmTile::add_sample(const Point2f &point_on_film, const Spectrum &L,
    *    3. Pixels with center (x.5) still in the range will be influenced by
    *       this sample. d = floor(c) is done here.
    */
-  Point2f p_discrete = point_on_film - Vector2f(0.5, 0.5);
+  Point2f p_discrete = point_film - Vector2f(0.5, 0.5);
   Point2i p0 = (Point2i)ceil(p_discrete - m_filter_radius);
   // Open range.
   Point2i p1 = (Point2i)floor(p_discrete + m_filter_radius) + Vector2i(1, 1);
@@ -145,13 +145,13 @@ void FilmTile::add_sample(const Point2f &point_on_film, const Spectrum &L,
   for (int x = p0.x; x < p1.x; x++) {
     Float fx = std::abs((x - p_discrete.x)) * m_filter_radius_inv.x *
                m_filter_table_width;
-    offx[x - p0.x] = std::min((int)std::floor(fx), m_filter_table_width);
+    offx[x - p0.x] = std::min((int)std::floor(fx), m_filter_table_width - 1);
   }
   int *offy = ALLOCA(int, p1.y - p0.y);
   for (int y = p0.y; y < p1.y; y++) {
     Float fy = std::abs((y - p_discrete.y)) * m_filter_radius_inv.y *
                m_filter_table_width;
-    offy[y - p0.y] = std::min((int)std::floor(fy), m_filter_table_width);
+    offy[y - p0.y] = std::min((int)std::floor(fy), m_filter_table_width - 1);
   }
   for (int y = p0.y; y < p1.y; y++) {
     for (int x = p0.x; x < p1.x; x++) {
@@ -159,7 +159,7 @@ void FilmTile::add_sample(const Point2f &point_on_film, const Spectrum &L,
       Float filter_weight = m_filter_table[offset];
       FilmTilePixel &pxl = pixel(Point2i(x, y));
       pxl.contrib_sum += L * sample_weight * filter_weight;
-      pxl.filter_weight_sum = filter_weight;
+      pxl.filter_weight_sum += filter_weight;
     }
   }
 }
