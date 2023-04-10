@@ -16,6 +16,10 @@ Film::Film(const Point2i &resolution, const Bound2f &crop_window,
                       std::ceil(m_full_resolution.y * crop_window.p_min.y)),
               Point2i(std::ceil(m_full_resolution.x * crop_window.p_max.x),
                       std::ceil(m_full_resolution.y * crop_window.p_max.y)));
+  SInfo("Film:: created film with\n\tresolution " +
+        m_full_resolution.to_string() + "\n\tcrop window " +
+        crop_window.to_string() + "\n\tcropped pixel bound " +
+        m_cropped_pixel_bound.to_string());
   // Allocate the pixel array.
   m_pixels = std::unique_ptr<Pixel[]>(new Pixel[m_cropped_pixel_bound.area()]);
   // Precompute filter LUT.
@@ -104,6 +108,8 @@ void Film::write_image(Float, uint8_t *dst) {
   // image_to_array(&rgb_arr[0], dst, bound.diagonal().x, bound.diagonal().y);
   Float *src = &rgb_arr[0];
   int width = bound.diagonal().x, height = bound.diagonal().y;
+  PEEK(width);
+  PEEK(height);
   for (int y = 0; y < height; y++) {
     for (int x = 0; x < width; x++) {
 // Gamma correction and scale to [0, 255].

@@ -35,20 +35,17 @@ Mat4x4 mat4x4_multiply(const Mat4x4 &l, const Mat4x4 &r) {
     for (int j = 0; j < 4; j++) {
       ans.val[i][j] = 0;
       for (int k = 0; k < 4; k++) {
-        ans.val[i][j] += l.val[i][k] * r.val[j][k];
+        ans.val[i][j] += l.val[i][k] * r.val[k][j];
       }
     }
   }
   return ans;
 }
 Mat4x4 mat4x4_transpose(const Mat4x4 &mat) {
-  Mat4x4 ret;
-  for (int i = 0; i < 4; i++) {
-    for (int j = 0; j < 4; j++) {
-      ret.val[j][i] = mat.val[i][j];
-    }
-  }
-  return ret;
+  return Mat4x4(mat.val[0][0], mat.val[1][0], mat.val[2][0], mat.val[3][0],
+                mat.val[0][1], mat.val[1][1], mat.val[2][1], mat.val[3][1],
+                mat.val[0][2], mat.val[1][2], mat.val[2][2], mat.val[3][2],
+                mat.val[0][3], mat.val[1][3], mat.val[2][3], mat.val[3][3]);
 }
 Mat4x4 mat4x4_inverse(const Mat4x4 &mat) {
   Float m[4][4];                  // Operate on this.
@@ -61,15 +58,13 @@ Mat4x4 mat4x4_inverse(const Mat4x4 &mat) {
     Float maxv = 0.0;
     // Choose pivot.
     for (int j = 0; j < 4; j++) {
-      // if (piv_idx[j] != 1) {
-      if (!piv_idx[j]) {
+      if (piv_idx[j] != 1) {
         // This row has no pivot or over picked.
         for (int k = 0; k < 4; k++) {
-          // if (piv_idx[k] > 1) {
-          //   // Over picked.
-          //   SError("Singular matrix has no inversion!");
-          // } else
-          if (piv_idx[k] == 0) {
+          if (piv_idx[k] > 1) {
+            // Over picked.
+            SError("TRay::mat4x4_inverse: Trying to inverse singular matrix.");
+          } else if (piv_idx[k] == 0) {
             // This column has no pivot.
             // Seek maximum in this row.
             if (std::abs(m[j][k]) >= maxv) {
@@ -81,9 +76,6 @@ Mat4x4 mat4x4_inverse(const Mat4x4 &mat) {
         }
       }
     }
-    // Over picked.
-    if (piv_idx[icol])
-      SError("TRay::mat4x4_inverse: Trying to inverse singular matrix.");
     ++piv_idx[icol];
     // Swap to the diagonal for pivot.
     if (irow != icol) {
@@ -117,4 +109,4 @@ Mat4x4 mat4x4_inverse(const Mat4x4 &mat) {
   }
   return Mat4x4(m);
 }
-} // namespace TRay
+}  // namespace TRay

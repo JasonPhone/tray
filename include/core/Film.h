@@ -26,10 +26,10 @@ class Film {
    *
    * @param resolution Full resolution of image.
    * @param crop_window Part of image to be stored and written, NDC space.
-   * @param filter
-   * @param diagonal
+   * @param filter Filter used to recover pixel values from samples.
+   * @param diagonal Physical diagonal.
    * @param filename
-   * @param scale
+   * @param scale Scale factor for the colors.
    */
   Film(const Point2i &resolution, const Bound2f &crop_window,
        std::unique_ptr<Filter> filter, Float diagonal,

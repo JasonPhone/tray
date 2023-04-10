@@ -48,7 +48,7 @@ Ray Transform::operator()(const Ray &r) const {
   //   o += d * dt;
   //   t_m -= dt;
   // }
-  return Ray(o, d, t_m, r.time);
+  return Ray(o, d, r.time, t_m);
 }
 Transform Transform::inverse() const { return Transform(m_inv, m); }
 Bound3f Transform::operator()(const Bound3f &b) const {

@@ -22,18 +22,14 @@ using Float = float;
 // Logging and assert warp
 #define ASSERT(x) assert((x))
 #define PEEK(x) std::cerr << #x << ": " << x << "\n";
+#define SInfo(msg) std::cerr << msg << "\n"
+#define SWarn(msg) std::cerr << msg << "\n"
+#define SError(msg) std::cerr << msg << "\n"
+#define SCritical(msg) std::cerr << msg << "\n"
 #ifndef NDEBUG
 #define SDebug(msg) std::cerr << msg << "\n"
-#define SInfo(msg) std::cerr << msg << "\n"
-#define SWarn(msg) std::cerr << msg << "\n"
-#define SError(msg) std::cerr << msg << "\n"
-#define SCritical(msg) std::cerr << msg << "\n"
 #else
 #define SDebug(msg) std::cerr << msg << "\n"
-#define SInfo(msg) std::cerr << msg << "\n"
-#define SWarn(msg) std::cerr << msg << "\n"
-#define SError(msg) std::cerr << msg << "\n"
-#define SCritical(msg) std::cerr << msg << "\n"
 #endif
 
 // Memory management.

@@ -9,9 +9,9 @@ Sampler::Sampler(int64_t sample_per_pixel) : m_spp(sample_per_pixel) {}
 ///          2D for point on lens.
 CameraSample Sampler::camera_sample(const Point2i &p) {
   CameraSample cs;
-  cs.m_point_on_film = Point2f(p) + sample_2D();
+  cs.m_point_film = Point2f(p) + sample_2D();
   cs.m_time = sample_1D();
-  cs.m_point_on_lens = sample_2D();
+  cs.m_point_lens = sample_2D();
   return cs;
 }
 void Sampler::start_pixel(const Point2i &p) {

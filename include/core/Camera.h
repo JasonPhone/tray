@@ -22,9 +22,9 @@
 namespace TRay {
 struct CameraSample {
   // Sample point on film, in [0, 1)^2.
-  Point2f m_point_on_film;
+  Point2f m_point_film;
   // Sample point on lens, in [0, 1)^2.
-  Point2f m_point_on_lens;
+  Point2f m_point_lens;
   // Sample point on time, in [0, 1).
   Float m_time;
 };
