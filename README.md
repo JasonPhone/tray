@@ -76,7 +76,7 @@ TRay for "yet another Ray Tracer".
   - [ ] Cascaded Sobol'
   - [ ] Matbuilder
   - [x] Film and Filter
-  - [ ] JPEG and uint_8 Output Support
+  - [x] JPEG and uint_8 Output Support
 - [ ] Reflection, Material
   - [x] Interface
   - [x] Specular
@@ -88,7 +88,7 @@ TRay for "yet another Ray Tracer".
   - [ ] Checkerboard
 - [ ] Light
   - [x] Interface
-  - [ ] Distant (Directional) Light
+  - [x] Distant (Directional) Light
   - [ ] Area Light
 - [ ] Integrator: Just basic
 - [ ] Surface Reflection: To implement the lights
