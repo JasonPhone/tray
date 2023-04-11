@@ -55,6 +55,9 @@ Bound3f Transform::operator()(const Bound3f &b) const {
   // Take every extreme element.
   // https://github.com/erich666/GraphicsGems/blob/master/gems/TransBox.c
   Float pmin[3], pmax[3];
+  pmin[0] = pmax[0] = m.val[0][3];
+  pmin[1] = pmax[1] = m.val[1][3];
+  pmin[2] = pmax[2] = m.val[2][3];
   for (int i = 0; i < 3; i++) {
     for (int j = 0; j < 3; j++) {
       Float val1 = b.p_min[j] * m.val[i][j];

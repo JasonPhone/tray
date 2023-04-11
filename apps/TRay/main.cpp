@@ -6,12 +6,11 @@
 // using namespace TRay;
 using namespace std;
 
-
 int main() {
   int a = 1;
   int b = 2;
   cin >> a;
-  cout << a << endl;
+  cout << a << " " << b << endl;
 
   return 0;
 }

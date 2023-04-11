@@ -16,8 +16,8 @@ class Ray {
  public:
   Ray(const Point3f &o, const Vector3f &d, Float t = 0.0,
       Float t_maxv = TRAY_INF)
-      : ori(o), dir(d), t_max(t_maxv), time(t) {}
-  Ray() : t_max(TRAY_INF), time(0.0) {}
+      : ori(o), dir(d), time(t), t_max(t_maxv) {}
+  Ray() : time(0.0), t_max(TRAY_INF) {}
   /// @brief Get the position of Ray by given time.
   Point3f operator()(Float t) const;
   std::string to_string() const {

@@ -15,7 +15,9 @@ class SamplerIntegrator : public Integrator {
                     std::shared_ptr<Sampler> &sampler)
       : m_camera(camera), m_sampler(sampler) {}
   void render(const Scene &scene, uint8_t *dst) override;
-  virtual void preprocess(const Scene &scene, Sampler &sampler) {}
+  virtual void preprocess(const Scene &scene, Sampler &sampler) {
+    SInfo("SamplerIntegrator::preprocess: Start preprocessing.");
+  }
   /// @brief Evaluate the incident radiance.
   /// @param ray The ray along which the radiance should be evaluated.
   /// @param scene The scene to be rendered.

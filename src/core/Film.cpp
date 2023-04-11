@@ -85,6 +85,7 @@ void Film::set_image(const Spectrum *colors) {
 }
 void Film::write_image(Float, uint8_t *dst) {
   ASSERT(dst != nullptr);
+  SInfo("Film::write_image: Writing to uint8 array.");
   int offset = 0;
   const Bound2i &bound = m_cropped_pixel_bound;
   std::unique_ptr<Float[]> rgb_arr(new Float[bound.area() * 3]);

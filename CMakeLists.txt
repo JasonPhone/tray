@@ -6,6 +6,7 @@ project(TRay)
 # Options
 # -------
 option(TRAY_FLOAT_AS_DOUBLE "Use double instead of float" ON)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
 if(TRAY_FLOAT_AS_DOUBLE)
   add_definitions(-D TRAY_FLOAT_AS_DOUBLE)

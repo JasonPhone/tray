@@ -167,8 +167,8 @@ class Bound2iIterator {
  private:
   void increase();
 
-  Point2i pos;
   const Bound2i &bound;
+  Point2i pos;
 };
 
 // Bound3 inlines.

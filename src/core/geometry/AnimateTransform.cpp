@@ -852,7 +852,7 @@ Bound3f AnimateTransform::point_bound(const Point3f &p) const {
     interval_find_zeros(c1[c].eval(p), c2[c].eval(p), c3[c].eval(p),
                         c4[c].eval(p), c5[c].eval(p), theta, Interval(0., 1.),
                         zeros, &nZeros);
-    ASSERT(nZeros <= sizeof(zeros) / sizeof(zeros[0]));
+    ASSERT((unsigned long long)nZeros <= sizeof(zeros) / sizeof(zeros[0]));
 
     // Expand bounding box for any motion derivative zeros found.
     for (int i = 0; i < nZeros; ++i) {

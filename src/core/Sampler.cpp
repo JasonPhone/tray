@@ -76,7 +76,7 @@ bool PixelSampler::set_sample_index(int64_t idx) {
 }
 
 Float PixelSampler::sample_1D() {
-  if (m_idx_current_1D < m_sample_1D.size()) {
+  if ((size_t)m_idx_current_1D < m_sample_1D.size()) {
     return m_sample_1D[m_idx_current_1D++][m_idx_current_pixel_sample];
   } else {
     SWarn(
@@ -86,7 +86,7 @@ Float PixelSampler::sample_1D() {
   }
 }
 Point2f PixelSampler::sample_2D() {
-  if (m_idx_current_2D < m_sample_2D.size()) {
+  if ((size_t)m_idx_current_2D < m_sample_2D.size()) {
     return m_sample_2D[m_idx_current_2D++][m_idx_current_pixel_sample];
   } else {
     SWarn(
