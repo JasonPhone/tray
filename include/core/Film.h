@@ -81,7 +81,7 @@ class FilmTile {
   /// @brief Get the pixel in film tile.
   /// @param p Position in film space.
   FilmTilePixel &pixel(const Point2i &p);
-  Bound2i tile_bound() const;
+  const Bound2i &tile_bound() const;
 
  private:
   const Bound2i m_pixel_bound;

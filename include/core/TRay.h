@@ -26,6 +26,7 @@ using Float = float;
 #define SWarn(msg) std::cerr << msg << "\n"
 #define SError(msg) std::cerr << msg << "\n"
 #define SCritical(msg) std::cerr << msg << "\n"
+
 #ifndef NDEBUG
 #define SDebug(msg) std::cerr << msg << "\n"
 #else

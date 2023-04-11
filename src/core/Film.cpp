@@ -16,10 +16,12 @@ Film::Film(const Point2i &resolution, const Bound2f &crop_window,
                       std::ceil(m_full_resolution.y * crop_window.p_min.y)),
               Point2i(std::ceil(m_full_resolution.x * crop_window.p_max.x),
                       std::ceil(m_full_resolution.y * crop_window.p_max.y)));
-  SInfo("Film:: created film with\n\tresolution " +
+  SInfo("Film:: Created film with\n\tresolution " +
         m_full_resolution.to_string() + "\n\tcrop window " +
         crop_window.to_string() + "\n\tcropped pixel bound " +
         m_cropped_pixel_bound.to_string());
+  SInfo(string_format("Film:: Allocated %d Pixels.",
+                      m_cropped_pixel_bound.area()));
   // Allocate the pixel array.
   m_pixels = std::unique_ptr<Pixel[]>(new Pixel[m_cropped_pixel_bound.area()]);
   // Precompute filter LUT.
@@ -171,5 +173,5 @@ FilmTilePixel &FilmTile::pixel(const Point2i &p) {
       xwidth * (p.y - m_pixel_bound.p_min.y) + (p.x - m_pixel_bound.p_min.x);
   return m_pixels[offset];
 }
-Bound2i FilmTile::tile_bound() const { return m_pixel_bound; }
+const Bound2i &FilmTile::tile_bound() const { return m_pixel_bound; }
 }  // namespace TRay
