@@ -4,6 +4,9 @@ namespace TRay {
 
 LinearAccel::LinearAccel(std::vector<std::shared_ptr<Primitive>> primitives)
     : m_primitives(std::move(primitives)) {
+  SInfo(string_format(
+      "\nLinearAccel:: Construct an accelerator with %d primitives.",
+      (int)m_primitives.size()));
   for (const auto &prim : m_primitives) {
     m_world_bound = bound_union(m_world_bound, prim->world_bound());
   }

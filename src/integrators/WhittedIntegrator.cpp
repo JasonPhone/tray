@@ -18,6 +18,7 @@ Spectrum WhittedIntegrator::Li(const Ray &ray, const Scene &scene,
     for (const auto &light : scene.m_lights) L += light->Le(ray);
     return L;
   }
+  // Now we got a hit.
   // Evaluate emitted and reflected radiance at interaction point.
   // -------------------------------------------------------------
   // Prepare for Whitted.
@@ -26,7 +27,7 @@ Spectrum WhittedIntegrator::Li(const Ray &ray, const Scene &scene,
   // Find scattering function.
   si.fill_scattering_func(ray);
   if (si.bsdf == nullptr)
-    // Trace back.
+    // Trace through current intersection.
     return Li(si.ray_along(ray.dir), scene, sampler, depth);
   // Emitted light if hitted an area light.
   L += si.Le(wo);
@@ -42,8 +43,10 @@ Spectrum WhittedIntegrator::Li(const Ray &ray, const Scene &scene,
     if (Li.is_black() || pdf == 0) continue;
     // Shading.
     Spectrum f = si.bsdf->f(wo, wi);
-    if (!f.is_black() && !visibility.blocked(scene))
+    if (!f.is_black() && !visibility.blocked(scene)) {
+      // SDebug("found a visible light source");
       L += f * Li * abs_dot(wi, n) / pdf;
+    }
   }
   // Trace the ray.
   if (depth + 1 < m_max_depth) {

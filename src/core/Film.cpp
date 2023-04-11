@@ -16,7 +16,7 @@ Film::Film(const Point2i &resolution, const Bound2f &crop_window,
                       std::ceil(m_full_resolution.y * crop_window.p_min.y)),
               Point2i(std::ceil(m_full_resolution.x * crop_window.p_max.x),
                       std::ceil(m_full_resolution.y * crop_window.p_max.y)));
-  SInfo("Film:: Created film with\n\tresolution " +
+  SInfo("\nFilm:: Created film with\n\tresolution " +
         m_full_resolution.to_string() + "\n\tcrop window " +
         crop_window.to_string() + "\n\tcropped pixel bound " +
         m_cropped_pixel_bound.to_string());

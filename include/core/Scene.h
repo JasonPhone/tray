@@ -8,16 +8,11 @@ namespace TRay {
 class Scene {
  public:
   Scene(std::shared_ptr<Primitive> aggregate,
-        const std::vector<std::shared_ptr<Light>> &lights)
-      : m_lights(lights), m_aggregate(aggregate) {
-    m_world_bound = aggregate->world_bound();
-    for (const auto &light : lights) {
-      light->preprocess(*this);
-      if (light->m_type & LIGHT_INFINITE) m_infinite_lights.push_back(light);
-    }
-  }
+        const std::vector<std::shared_ptr<Light>> &lights);
   const Bound3f &world_bound() const { return m_world_bound; }
-  bool intersect(const Ray &ray, SurfaceInteraction *isect) const;
+  /// @brief Shoot the ray and find intersect with the aggregate member.
+  /// @param si Store the surface interaction.
+  bool intersect(const Ray &ray, SurfaceInteraction *si) const;
   bool intersect_test(const Ray &ray) const;
 
   std::vector<std::shared_ptr<Light>> m_lights;
