@@ -45,7 +45,10 @@ class SurfaceInteraction : public Interaction {
   void fill_scattering_func(const Ray &ray,
                             TransportMode mode = TransportMode::Radiance,
                             bool allow_multi_lobes = false);
-  /// @brief Get the emitted radiance of area light (if have).
+  /// @brief Get the emitted radiance of area light
+  ///        if this primitive is bound
+  /// with an area light.
+  /// @param w Light outgoing direction.
   Spectrum Le(const Vector3f &w) const;
 
   Point2f uv;

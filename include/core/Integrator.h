@@ -26,9 +26,11 @@ class SamplerIntegrator : public Integrator {
   /// @return
   virtual Spectrum Li(const Ray &ray, const Scene &scene, Sampler &sampler,
                       int depth = 0) const = 0;
+  /// @brief Procedure function for specular reflection.
   Spectrum specular_reflect(const Ray &ray, const SurfaceInteraction &si,
                             const Scene &scene, Sampler &sampler,
                             int depth) const;
+  /// @brief Procedure function for specular transmission.
   Spectrum specular_transmit(const Ray &ray, const SurfaceInteraction &si,
                              const Scene &scene, Sampler &sampler,
                              int depth) const;
@@ -38,4 +40,18 @@ class SamplerIntegrator : public Integrator {
   std::shared_ptr<const Camera> m_camera;
   std::shared_ptr<Sampler> m_sampler;
 };
+
+/// @brief Sample all light sources uniformly.
+/// @param inter Point to be lit.
+/// @param n_samples Number of samples for each light.
+Spectrum light_sample_uniform_all(const Interaction &inter, const Scene &scene,
+                                  Sampler &sampler,
+                                  const std::vector<int> &n_samples);
+/// @brief Take one sample from one light source randomly.
+/// @param inter Point to be lit.
+Spectrum light_sample_uniform_one(const Interaction &inter, const Scene &scene,
+                                  Sampler &sampler);
+/// @brief Estimate the dirct lighting using MIS of BSDF and light source.
+/// @param do_specular true to process perfect specular.
+Spectrum direct_lighting(const Interaction &inter, const Point2f &u_scatter, const Light &light, const Point2f &u_light, const Scene &scene, Sampler &sampler, bool do_specular = false);
 }  // namespace TRay

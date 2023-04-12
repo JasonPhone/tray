@@ -75,5 +75,7 @@ add_library(TRay_integrator
   STATIC
   ${SOURCE_DIR}/core/geometry/Bound.cpp
   ${SOURCE_DIR}/core/Integrator.cpp
+
   ${SOURCE_DIR}/integrators/WhittedIntegrator.cpp
+  ${SOURCE_DIR}/integrators/DirectIntegrator.cpp
 )

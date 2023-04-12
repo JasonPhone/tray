@@ -11,8 +11,8 @@ namespace TRay {
 Spectrum WhittedIntegrator::Li(const Ray &ray, const Scene &scene,
                                Sampler &sampler, int depth) const {
   Spectrum L(0.0);
-  // Find interaction or return backgorund color.
-  // --------------------------------------------
+  // Find intersection.
+  // ------------------
   SurfaceInteraction si;
   if (!scene.intersect(ray, &si)) {
     // Environment lighting.
@@ -20,17 +20,17 @@ Spectrum WhittedIntegrator::Li(const Ray &ray, const Scene &scene,
     return L;
   }
   // Now we got a hit.
-  // Evaluate emitted and reflected radiance at interaction point.
-  // -------------------------------------------------------------
+  // Local shading.
+  // ---------------------
   // Prepare for Whitted.
   Normal3f n = si.shading.n;
   Vector3f wo = si.wo;
-  // Find scattering function.
+  // Fill BSDF.
   si.fill_scattering_func(ray);
   if (si.bsdf == nullptr)
-    // Trace through current intersection.
+    // Skip current intersection.
     return Li(si.ray_along(ray.dir), scene, sampler, depth);
-  // Emitted light if hitted an area light.
+  // Self emissive.
   L += si.Le(wo);
   // Contribution of light source.
   for (const auto &light : scene.m_lights) {
@@ -49,7 +49,8 @@ Spectrum WhittedIntegrator::Li(const Ray &ray, const Scene &scene,
       L += f * Li * abs_dot(wi, n) / pdf;
     }
   }
-  // Trace the ray.
+  // Tracing for specular reflection and transmission.
+  // -------------------------------------------------
   if (depth + 1 < m_max_depth) {
     // Specular reflect.
     // SDebug("specular reflect");

@@ -3,9 +3,11 @@
 #include "core/Camera.h"
 #include "core/Film.h"
 #include "core/Sampler.h"
+#include "core/Scene.h"
 #include "core/geometry/Interaction.h"
 #include "core/reflection/BSDF.h"
 #include "core/reflection/BxDF.h"
+#include "core/math/sampling.h"
 
 namespace TRay {
 void SamplerIntegrator::render(const Scene &scene, uint8_t *dst) {
@@ -120,5 +122,128 @@ Spectrum SamplerIntegrator::specular_transmit(const Ray &ray,
   if (pdf_val > 0 && !f.is_black() && abs_dot(ns, wi) != 0)
     L = f * Li(ray, scene, sampler, depth + 1) * abs_dot(ns, wi) / pdf_val;
   return L;
+}
+
+Spectrum light_sample_uniform_all(const Interaction &inter, const Scene &scene,
+                                  Sampler &sampler,
+                                  const std::vector<int> &n_samples) {
+  Spectrum L(0.0);
+  ASSERT(scene.m_lights.size() == n_samples.size());
+  for (size_t i = 0; i < scene.m_lights.size(); i++) {
+    // Prepare light and sample array.
+    const std::shared_ptr<Light> &light = scene.m_lights[i];
+    int sample_num = n_samples[i];
+    const Point2f *u_light_arr = sampler.get_2D_array(sample_num);
+    const Point2f *u_scatter_arr = sampler.get_2D_array(sample_num);
+    if (u_light_arr == nullptr || u_scatter_arr == nullptr) {
+      // Arrays run out.
+      Point2f u_light = sampler.sample_2D();
+      Point2f u_scatter = sampler.sample_2D();
+      // Not handeling specuar here, they are indirect.
+      L += direct_lighting(inter, u_scatter, *light, u_light, scene, sampler);
+    } else {
+      Spectrum L_direct(0.0);
+      for (int j = 0; j < sample_num; j++) {
+        L_direct += direct_lighting(inter, u_scatter_arr[j], *light,
+                                    u_light_arr[j], scene, sampler);
+      }
+      L += L_direct / sample_num;
+    }
+  }
+  return L;
+}
+Spectrum light_sample_uniform_one(const Interaction &inter, const Scene &scene,
+                                  Sampler &sampler) {
+  if (scene.m_lights.empty()) return Spectrum(0.0);
+  Spectrum L(0.0);
+  int n_lights = int(scene.m_lights.size());
+  // Select a light source.
+  int light_idx = clamp(int(sampler.sample_1D() * n_lights), 0, n_lights - 1);
+  const std::shared_ptr<Light> &light = scene.m_lights[light_idx];
+  return 1.0 * n_lights *
+         direct_lighting(inter, sampler.sample_2D(), *light,
+                         sampler.sample_2D(), scene, sampler);
+}
+
+Spectrum direct_lighting(const Interaction &inter, const Point2f &u_bsdf,
+                         const Light &light, const Point2f &u_light,
+                         const Scene &scene, Sampler &sampler,
+                         bool do_specular = false) {
+  BxDFType flags =
+      do_specular ? BSDF_ALL : BxDFType(BSDF_ALL & (~BSDF_SPECULAR));
+  Spectrum Ld(0.0);
+  Float light_pdf = 0, bsdf_pdf = 0;
+  /**
+   * estimator =
+   *  1/nLi   sum( Li(x) BSDF(x) WLi(x)   / pdfLi(x)   ) +
+   *  1/nBSDF sum( Li(y) BSDF(y) WBSDF(y) / pdfBSDF(y) )
+   *
+   * We are dealing just one item in the sum.
+   */
+  // MIS for light sources.
+  Vector3f wi;
+  VisibilityTester vis;
+  Spectrum Li = light.sample_Li(inter, u_light, &wi, &light_pdf, &vis);
+  if (light_pdf > 0 && !Li.is_black()) {
+    Spectrum f;
+    // BSDF value for this light sample Li.
+    if (inter.is_surface_interaction()) {
+      // Safe cast.
+      const SurfaceInteraction &si = (const SurfaceInteraction &)inter;
+      f = si.bsdf->f(si.wo, wi, flags) * abs_dot(wi, si.shading.n);
+      bsdf_pdf = si.bsdf->pdf(si.wo, wi, flags);
+    }
+    if (!f.is_black()) {
+      // Visibility test.
+      if (vis.blocked(scene)) Li = Spectrum(0.0);
+      if (!Li.is_black()) {
+        // Add contribution.
+        if (light.is_delta_light()) {
+          Ld += f * Li / light_pdf;
+        } else {
+          Float weight = power_heuristic(1, light_pdf, 1, bsdf_pdf);
+          Ld += f * Li * weight / light_pdf;
+        }
+      }
+    }
+  }
+  // MIS for BSDF.
+  if (!light.is_delta_light()) {
+    bool specular_sampled = false;
+    Spectrum f;
+    if (inter.is_surface_interaction()) {
+      // Sample the direction wi.
+      BxDFType sampled_type;
+      const SurfaceInteraction &si = (const SurfaceInteraction &)inter;
+      f = si.bsdf->sample_f(si.wo, &wi, u_bsdf, &bsdf_pdf, flags,
+                            &sampled_type);
+      f *= abs_dot(wi, si.shading.n);
+      specular_sampled = (sampled_type & BSDF_SPECULAR);
+    }
+    if (bsdf_pdf > 0 && !f.is_black()) {
+      // Light contribution along wi.
+      Float weight = 1;
+      if (!specular_sampled) {
+        light_pdf = light.pdf_Li(inter, wi);
+        // All zeroed out if pdf for Li is zero.
+        if (light_pdf == 0) return Ld;
+        weight = power_heuristic(1, bsdf_pdf, 1, light_pdf);
+      }
+      // If the direction sampled from BSDF hits the light.
+      SurfaceInteraction light_si;
+      Ray ray = inter.ray_along(wi);
+      bool hitted = scene.intersect(ray, &light_si);
+      // Add contribution.
+      Spectrum Li(0.0);
+      if (hitted) {
+        if (light_si.primitive->area_light() == &light) Li = light_si.Le(-wi);
+      } else {
+        Li = light.Le(ray);
+      }
+      if (!Li.is_black()) {
+        Ld += f * Li * weight / bsdf_pdf;
+      }
+    }
+  }
 }
 }  // namespace TRay

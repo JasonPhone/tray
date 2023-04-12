@@ -24,8 +24,8 @@ SurfaceInteraction::SurfaceInteraction(const Point3f &p, const Point2f &uv,
   }
 }
 void SurfaceInteraction::fill_scattering_func(const Ray &ray,
-                                              bool allow_multi_lobes,
-                                              TransportMode mode) {
+                                              TransportMode mode,
+                                              bool allow_multi_lobes) {
   primitive->fill_scattering_func(this, mode, allow_multi_lobes);
 }
 Spectrum SurfaceInteraction::Le(const Vector3f &w) const {
