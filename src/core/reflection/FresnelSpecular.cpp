@@ -22,7 +22,7 @@ Float SpecularReflection::pdf(const Vector3f &wo, const Vector3f &wi) const {
 }
 std::string SpecularReflection::to_string() const {
   return "[ SpecularReflection scale: " + m_scale.to_string() +
-         " fresnel: " + m_fresnel->to_string() + " ]";
+         " fresnel: " + m_fresnel->to_string() + " SPECULAR | REFLECTION ]";
 }
 
 Spectrum SpecularTransmission::f(const Vector3f &wo, const Vector3f &wi) const {
@@ -56,7 +56,7 @@ std::string SpecularTransmission::to_string() const {
          " fresnel: " + m_fresnel.to_string() +
          " etaA: " + format_one("%f", m_eta_A) +
          " etaB: " + format_one("%f", m_eta_B) + " mode : " +
-         (m_mode == TransportMode::Radiance ? "RADIANCE" : "IMPORTANCE") + " ]";
+         (m_mode == TransportMode::Radiance ? "RADIANCE" : "IMPORTANCE") + " SPECULAR | TRANSMISSION ]";
 }
 
 Spectrum FresnelSpecular::f(const Vector3f &wo, const Vector3f &wi) const {

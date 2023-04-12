@@ -32,7 +32,7 @@ Spectrum WhittedIntegrator::Li(const Ray &ray, const Scene &scene,
     return Li(si.ray_along(ray.dir), scene, sampler, depth);
   // Emitted light if hitted an area light.
   L += si.Le(wo);
-  // Contribution of each light source.
+  // Contribution of light source.
   for (const auto &light : scene.m_lights) {
     // Normalized, from interaction point to point on light.
     Vector3f wi;

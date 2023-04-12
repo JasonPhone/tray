@@ -17,23 +17,25 @@ class BSDF {
   Vector3f world_to_local(const Vector3f v_world) const;
   /// @brief Transforms a local shading vector into world space.
   Vector3f local_to_world(const Vector3f v_local) const;
+  /// @brief The ordinary BSDF function.
   Spectrum f(const Vector3f &wo_world, const Vector3f wi_world,
              BxDFType flags = BSDF_ALL) const;
   Spectrum rho(const Vector3f &wo_world, int nsamples, const Point2f *samples,
                BxDFType flags = BSDF_ALL) const;
   Spectrum rho(int n_samples, const Point2f *samples1, const Point2f *samples2,
                BxDFType flags = BSDF_ALL) const;
+  /// @brief BSDF function in MC style.
   Spectrum sample_f(const Vector3f &wo_world, Vector3f *wi_world,
                     const Point2f &u, Float *pdf_value,
                     BxDFType type = BSDF_ALL,
                     BxDFType *sampled_type = nullptr) const;
   Float pdf(const Vector3f &wo_world, const Vector3f &wi_world,
             BxDFType flags) const;
+  /// @brief Get number of BxDFs covered by @param flags.
   int num_BxDFs(BxDFType flags) const {
     int cnt = 0;
-    for (const auto &bxdf : m_BxDFs) {
+    for (const auto &bxdf : m_BxDFs)
       if (bxdf->match_types(flags)) cnt++;
-    }
     return cnt;
   }
 

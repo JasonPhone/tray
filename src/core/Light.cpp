@@ -12,6 +12,7 @@ Light::Light(LightType type, const Transform &light_to_world, int n_samples)
 }
 
 bool VisibilityTester::blocked(const Scene &scene) const {
+  // SDebug("vis test from " + m_ref0.p.to_string() + " to " + m_ref1.p.to_string());
   return scene.intersect_test(m_ref0.ray_to(m_ref1));
 }
 }  // namespace TRay
