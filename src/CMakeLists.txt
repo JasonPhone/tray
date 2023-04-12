@@ -55,6 +55,7 @@ add_library(TRay_material
 
   ${SOURCE_DIR}/materials/MatteMaterial.cpp
   ${SOURCE_DIR}/materials/PlasticMaterial.cpp
+  ${SOURCE_DIR}/materials/MirrorMaterial.cpp
 )
 add_library(TRay_texture
   STATIC
