@@ -64,7 +64,8 @@ struct Distribution1D {
   /// @param offset Store the largest index
   ///               by which CDF[index] <= u < CDF[index + 1].
   /// @return A sample value with the distribution of this function.
-  Float sample_continuous(Float u, Float *pdf_value, int *offset = nullptr) const;
+  Float sample_continuous(Float u, Float *pdf_value,
+                          int *offset = nullptr) const;
   /// @brief Discrete probability sample in 1, 2, ..., n with this distribution.
   /// @param u Uniform random sample.
   /// @param pdf_value Store the result PDF value.
@@ -78,4 +79,32 @@ struct Distribution1D {
   std::vector<Float> func, cdf;
   Float integral;
 };
+
+/**
+ *  target intergrand: f(x)g(x)dx
+ * MIS estimator:
+ *  1/nf sum( f(x)g(x)wf(x) / pf(x) ) + 1/ng sum( f(y)g(y)wg(y) / pg(y) )
+ *  x, y: Partical samples.
+ *  n[fg]: Number of samples taken on that distribution.
+ *  w[fg]: Weighting function.
+ *  p[fg]: pdf function.
+ */
+
+/// @brief Balance heuristic weighting function used for MIS method.
+/// @param nf Number of samples taken on distribution f.
+/// @param pdff pdf value for this sample in distribution f.
+/// @param ng Number of samples taken on distribution g.
+/// @param pdfg pdf value for this sample in distribution g.
+inline Float balance_heuristic(int nf, Float pdff, int ng, Float pdfg) {
+  return (nf * pdff) / (nf * pdff + ng * pdfg);
+}
+/// @brief Power (of 2) heuristic weighting function used for MIS method.
+/// @param nf Number of samples taken on distribution f.
+/// @param pdff pdf value for this sample in distribution f.
+/// @param ng Number of samples taken on distribution g.
+/// @param pdfg pdf value for this sample in distribution g.
+inline Float power_heuristic(int nf, Float pdff, int ng, Float pdfg) {
+  Float f = nf * pdff, g = ng * pdfg;
+  return (f * f) / (f * f + g * g);
+}
 }  // namespace TRay
