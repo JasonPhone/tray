@@ -78,6 +78,7 @@ Spectrum BSDF::sample_f(const Vector3f &wo_world, Vector3f *wi_world,
     *pdf_value = 0;
     return Spectrum(0.0);
   }
+  // SDebug(string_format("sample from %d BxDF(s) ", n_bxdf));
   const BxDF *chosen_bxdf = nullptr;
   int idx = clamp(int(u[0] * n_bxdf), 0, n_bxdf - 1);
   int cnt = idx;
@@ -87,6 +88,7 @@ Spectrum BSDF::sample_f(const Vector3f &wo_world, Vector3f *wi_world,
       break;
     }
   }
+  // SDebug("choosed a BxDF " + chosen_bxdf->to_string());
   // Recover a random variable since u[0] is used.
   // Remap u[0] to the interval of discrete indices.
   Point2f remap_u(u[0] * n_bxdf - idx, u[1]);
@@ -96,6 +98,8 @@ Spectrum BSDF::sample_f(const Vector3f &wo_world, Vector3f *wi_world,
   if (sampled_type) *sampled_type = chosen_bxdf->m_type;
   Spectrum f = chosen_bxdf->sample_f(wo, &wi, remap_u, pdf_value, sampled_type);
   if (*pdf_value == 0) return Spectrum(0.0);
+  // SDebug(string_format("got spectrum %s with pdf value %f ",
+                      //  f.to_string().c_str(), *pdf_value));
   *wi_world = local_to_world(wi);
   // Total pdf values of matched BxDFs.
   // Perfectly specular should be skipped since
@@ -107,7 +111,7 @@ Spectrum BSDF::sample_f(const Vector3f &wo_world, Vector3f *wi_world,
   // BSDF value of sampled direction.
   if (!(chosen_bxdf->m_type & BSDF_SPECULAR) && n_bxdf > 1) {
     bool reflect = dot(*wi_world, m_normal_g) * dot(wo_world, m_normal_g) > 0;
-    f = 0.;
+    f = 0.0;
     for (const auto &bxdf : m_BxDFs) {
       if (bxdf->match_types(type) &&
           ((reflect && (bxdf->m_type & BSDF_REFLECTION)) ||
@@ -115,10 +119,8 @@ Spectrum BSDF::sample_f(const Vector3f &wo_world, Vector3f *wi_world,
         f += bxdf->f(wo, wi);
     }
   }
-  SInfo("Total f = " + f.to_string() +
-        ", pdf =" + format_one(" %f, ", *pdf_value) + "ratio =" +
-        format_one(" %f \n",
-                   ((*pdf_value > 0) ? (f / *pdf_value) : Spectrum(0.))));
+  // SInfo("Total f = " + f.to_string() +
+  //       ", pdf =" + format_one(" %f, ", *pdf_value));
   return f;
 }
 Float BSDF::pdf(const Vector3f &wo_world, const Vector3f &wi_world,

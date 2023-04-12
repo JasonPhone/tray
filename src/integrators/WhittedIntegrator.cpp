@@ -15,6 +15,7 @@ Spectrum WhittedIntegrator::Li(const Ray &ray, const Scene &scene,
   // --------------------------------------------
   SurfaceInteraction si;
   if (!scene.intersect(ray, &si)) {
+    // Environment lighting.
     for (const auto &light : scene.m_lights) L += light->Le(ray);
     return L;
   }
@@ -51,8 +52,10 @@ Spectrum WhittedIntegrator::Li(const Ray &ray, const Scene &scene,
   // Trace the ray.
   if (depth + 1 < m_max_depth) {
     // Specular reflect.
+    // SDebug("specular reflect");
     L += specular_reflect(ray, si, scene, sampler, depth);
     // Specular transmit.
+    // SDebug("specular transmit");
     L += specular_transmit(ray, si, scene, sampler, depth);
   }
 

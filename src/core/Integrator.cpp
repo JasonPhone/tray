@@ -92,15 +92,16 @@ Spectrum SamplerIntegrator::specular_reflect(const Ray &ray,
                                              Sampler &sampler,
                                              int depth) const {
   Vector3f wo = si.wo, wi;
-  Float pdf;
+  Float pdf_val;
   // Specular reflection direction and BSDF value.
-  Spectrum f = si.bsdf->sample_f(wo, &wi, sampler.sample_2D(), &pdf,
+  Spectrum f = si.bsdf->sample_f(wo, &wi, sampler.sample_2D(), &pdf_val,
                                  BxDFType(BSDF_SPECULAR | BSDF_REFLECTION));
   // Contribution of specular reflection.
   const Normal3f &ns = si.shading.n;
   Spectrum L(0.0);
-  if (pdf > 0 && !f.is_black() && abs_dot(ns, wi) != 0)
-    L = f * Li(ray, scene, sampler, depth + 1) * abs_dot(ns, wi) / pdf;
+  if (pdf_val > 0 && !f.is_black() && abs_dot(ns, wi) != 0)
+    L = f * Li(ray, scene, sampler, depth + 1) * abs_dot(ns, wi) / pdf_val;
+  // SDebug("integrator: got spectrum L " + L.to_string());
   return L;
 }
 Spectrum SamplerIntegrator::specular_transmit(const Ray &ray,
@@ -109,15 +110,15 @@ Spectrum SamplerIntegrator::specular_transmit(const Ray &ray,
                                               Sampler &sampler,
                                               int depth) const {
   Vector3f wo = si.wo, wi;
-  Float pdf;
+  Float pdf_val;
   // Specular reflection direction and BSDF value.
-  Spectrum f = si.bsdf->sample_f(wo, &wi, sampler.sample_2D(), &pdf,
+  Spectrum f = si.bsdf->sample_f(wo, &wi, sampler.sample_2D(), &pdf_val,
                                  BxDFType(BSDF_SPECULAR | BSDF_TRANSMISSION));
   // Contribution of specular reflection.
   const Normal3f &ns = si.shading.n;
   Spectrum L(0.0);
-  if (pdf > 0 && !f.is_black() && abs_dot(ns, wi) != 0)
-    L = f * Li(ray, scene, sampler, depth + 1) * abs_dot(ns, wi) / pdf;
+  if (pdf_val > 0 && !f.is_black() && abs_dot(ns, wi) != 0)
+    L = f * Li(ray, scene, sampler, depth + 1) * abs_dot(ns, wi) / pdf_val;
   return L;
 }
 }  // namespace TRay

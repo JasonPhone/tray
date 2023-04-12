@@ -18,7 +18,7 @@ Float fresnel_dielectric(Float cos_theta_i, Float eta_i, Float eta_t);
 Spectrum fresnel_conductor(Float cos_theta_i, const Spectrum &eta_i,
                            const Spectrum &eta_t, const Spectrum &k);
 
-/// @brief Interface to compute the Fresnel reflection coefficients.
+/// @brief Interface to compute the Fresnel coefficients.
 class Fresnel {
  public:
   /// @brief Get the coefficients.
@@ -26,6 +26,7 @@ class Fresnel {
   virtual Spectrum evaluate(Float cos_i) const = 0;
   virtual std::string to_string() const = 0;
 };
+/// @brief Interface to compute the Fresnel coefficients for conductor.
 class FresnelConductor : public Fresnel {
  public:
   /// @param etai Indices of refraction of incident material.
@@ -40,6 +41,7 @@ class FresnelConductor : public Fresnel {
  private:
   Spectrum m_eta_i, m_eta_t, m_k;
 };
+/// @brief Interface to compute the Fresnel coefficients for dielectric.
 class FresnelDielectric : public Fresnel {
  public:
   /// @param etai Index of refraction of incident material.
@@ -56,8 +58,6 @@ class FresnelDielectric : public Fresnel {
 class FresnelConst : public Fresnel {
  public:
   Spectrum evaluate(Float) const override { return Spectrum(1.0); }
-  std::string to_string() const override {
-    return "[ FresnelConst 1.0 ]";
-  }
+  std::string to_string() const override { return "[ FresnelConst 1.0 ]"; }
 };
 }  // namespace TRay

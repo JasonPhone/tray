@@ -17,7 +17,8 @@ class SpecularReflection : public BxDF {
   // No scattering is returned by f().
   Spectrum f(const Vector3f &wo, const Vector3f &wi) const override;
   Spectrum sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample,
-                    Float *pdf_value, BxDFType *sampled_type = nullptr) const override;
+                    Float *pdf_value,
+                    BxDFType *sampled_type = nullptr) const override;
   Float pdf(const Vector3f &wo, const Vector3f &wi) const override;
   std::string to_string() const override;
 
@@ -28,7 +29,9 @@ class SpecularReflection : public BxDF {
 };
 /**
  * @brief Specular transmission BTDF based on Fresnel formula.
- *        Almost the same as SpecularReflection.
+ *        Almost the same as SpecularReflection. Only dielectric
+ *        is considered, as conductor needs to be very thin to let
+ *        light pass through.
  */
 class SpecularTransmission : public BxDF {
  public:
@@ -46,7 +49,8 @@ class SpecularTransmission : public BxDF {
   // No scattering is returned by f().
   Spectrum f(const Vector3f &wo, const Vector3f &wi) const override;
   Spectrum sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample,
-                    Float *pdf_value, BxDFType *sampled_type = nullptr) const override;
+                    Float *pdf_value,
+                    BxDFType *sampled_type = nullptr) const override;
   Float pdf(const Vector3f &wo, const Vector3f &wi) const override;
   std::string to_string() const override;
 
@@ -77,7 +81,8 @@ class FresnelSpecular : public BxDF {
         m_mode(mode) {}
   Spectrum f(const Vector3f &wo, const Vector3f &wi) const override;
   Spectrum sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample,
-                    Float *pdf_value, BxDFType *sampled_type = nullptr) const override;
+                    Float *pdf_value,
+                    BxDFType *sampled_type = nullptr) const override;
   std::string to_string() const override;
 
  private:
