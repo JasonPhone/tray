@@ -6,6 +6,7 @@ namespace TRay {
 class DistantLight : public Light {
  public:
   /// @brief A light source infinite far away that emits parallel light.
+  ///        Has no geometric shape to attach.
   /// @param L Color of the light.
   /// @param w_light Light coming from this direction.
   DistantLight(const Transform &light_to_world, const Spectrum &L,

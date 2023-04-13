@@ -221,6 +221,8 @@ Spectrum direct_lighting(const Interaction &inter, const Point2f &u_bsdf,
       }
     }
   }
+  // Light sources with delta distribution is
+  // never likely to be sampled with "that" direction.
   if (!light.is_delta_light()) {
     // MIS for BSDF, f goes first.
     bool specular_sampled = false;

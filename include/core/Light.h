@@ -6,6 +6,7 @@
 
 namespace TRay {
 enum LightType {
+  // Has direction or position described using delta distribution.
   LIGHT_DELTA_POSITION = 1 << 0,
   LIGHT_DELTA_DIRECTION = 1 << 1,
   LIGHT_AREA = 1 << 2,
