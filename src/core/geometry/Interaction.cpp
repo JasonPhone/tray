@@ -28,6 +28,18 @@ void SurfaceInteraction::fill_scattering_func(const Ray &ray,
                                               bool allow_multi_lobes) {
   primitive->fill_scattering_func(this, mode, allow_multi_lobes);
 }
+
+void SurfaceInteraction::set_shading_geometry(const Vector3f sdpdu,
+                                              const Vector3f sdpdv,
+                                              bool is_robust) {
+  shading.n = Normal3f(normalize(cross(sdpdu, sdpdv)));
+  if (is_robust)
+    n = align_with(n, shading.n);
+  else
+    shading.n = align_with(shading.n, n);
+  shading.dpdu = sdpdu;
+  shading.dpdv = sdpdv;
+}
 Spectrum SurfaceInteraction::Le(const Vector3f &w) const {
   const AreaLight *light = primitive->area_light();
   // if (light) {

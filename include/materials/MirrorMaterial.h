@@ -3,6 +3,7 @@
 #include "core/Material.h"
 #include "core/reflection/FresnelSpecular.h"
 
+// TODO colored?
 namespace TRay {
 /// @brief Perfect mirror, reflect anything incident.
 class MirrorMaterial : public Material {

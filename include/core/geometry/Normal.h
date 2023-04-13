@@ -93,17 +93,16 @@ template <typename T>
 inline Normal3<T> normalize(const Normal3<T> &v) {
   return (1.0 / v.length()) * v;
 }
-/**
- * @brief Return the (maybe flipped) normal whose direction is aligned with
- * given vector.
- *
- * @param n Normal to flip.
- * @param v Vector to align with.
- */
+/// @brief Get normal with direction aligned with given vector.
+/// @param n Normal to flip.
+/// @param v Vector to align with.
 template <typename T>
 inline Normal3<T> align_with(const Normal3<T> &n, const Vector3<T> &v) {
   return (dot(n, v) < 0.0) ? -n : n;
 }
+/// @brief Get normal with direction aligned with given normal.
+/// @param n Normal to flip.
+/// @param v Normal to align with.
 template <typename T>
 inline Normal3<T> align_with(const Normal3<T> &n, const Normal3<T> &v) {
   return (dot(n, v) < 0.0) ? -n : n;

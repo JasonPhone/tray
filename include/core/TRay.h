@@ -38,6 +38,7 @@ using Float = float;
 
 namespace TRay {
 // Forward decl.
+// TODO reorder to show the structure
 // core/geometry/Vector.h
 template <typename T>
 class Vector3;
@@ -84,6 +85,9 @@ class SurfaceInteraction;
 class Shape;
 // shapes/Sphere.h
 class Sphere;
+// shapes/TriangleMesh.h
+class Triangle;
+class TriangleMesh;
 // core/math/Matrix.h
 struct Mat4x4;
 // core/math/RNG.h
@@ -142,6 +146,8 @@ class Material;
 enum class TransportMode;
 // materials/MatteMaterial.h
 class MatteMaterial;
+// materials/MirrorMaterial.h
+class MirrorMaterial;
 // core/Texture.h
 class TextureMapping2D;
 class UVMapping2D;
@@ -168,15 +174,19 @@ class Light;
 class VisibilityTester;
 // core/Scene.h
 class Scene;
+// core/Light.h
+class AreaLight;
+// lights/DiffuseAreaLight.h
+class DiffuseAreaLight;
 // lights/DistantLight.h
 class DistantLight;
-// lights/AreaLight.h
-class AreaLight;
 // core/Integrator.h
 class Integrator;
 class SamplerIntegrator;
 // integrators/WhittedIntegrator.h
 class WhittedIntegrator;
+// integrators/DirectIntegrator.h
+class DirectIntegrator;
 
 // ---------------------
 

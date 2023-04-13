@@ -23,19 +23,17 @@ class Shape {
    * @brief Get the first intersect in (0, t_max).
    *
    * @param ray Incoming ray.
-   * @param time Return first hit time.
+   * @param thit Return first hit parametric distance.
    * @param inter Return hit point interaction.
    * @param test_alpha_texture If test transparent texture.
    */
-  virtual bool intersect(const Ray &ray, Float *time, SurfaceInteraction *si,
+  virtual bool intersect(const Ray &ray, Float *thit, SurfaceInteraction *si,
                          bool test_alpha_texture = true) const = 0;
   /// @brief Just test without getting any detailed info.
   virtual bool intersect_test(const Ray &ray,
                               bool test_alpha_texture = true) const {
     // Should use better method.
-    Float t_hit = ray.t_max;
-    SurfaceInteraction inter;
-    return intersect(ray, &t_hit, &inter, test_alpha_texture);
+    return intersect(ray, nullptr, nullptr, test_alpha_texture);
   }
   /// @brief Sample a point on surface of the shape.
   /// @param u Uniform random values.
@@ -53,9 +51,9 @@ class Shape {
   virtual Float pdf(const Interaction &ref, const Vector3f &wi) const {
     // Visibility test here considers only this shape.
     Ray ray = ref.ray_along(wi);
-    Float time_hit;
+    Float thit;
     SurfaceInteraction si;
-    if (!intersect(ray, &time_hit, &si, false)) return 0;
+    if (!intersect(ray, &thit, &si, false)) return 0;
     // Transforming between area domain and direction domain.
     Float pdf_val = distance2(ref.p, si.p) / (abs_dot(si.n, -wi) * area());
     if (std::isinf(pdf_val)) pdf_val = 0.0;

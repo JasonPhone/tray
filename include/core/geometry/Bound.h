@@ -70,7 +70,7 @@ class Bound3 {
     *radius =
         point_in_bound_closed(*center, *this) ? distance(*center, p_max) : 0;
   }
-  bool intersect_test(const Ray &ray, Float *time0, Float *time1) const;
+  bool intersect_test(const Ray &ray, Float *thit0, Float *thit1) const;
   // bool intersect_test(const Ray &ray, const Vector3f &inv_dir,
   //                     const int dir_is_neg[3]) const;
   std::string to_string() const {
@@ -213,8 +213,8 @@ inline bool point_in_bound_open(const Point3<T> &p, const Bound3<T> &b) {
   return x && y && z;
 }
 template <typename T>
-inline bool Bound3<T>::intersect_test(const Ray &ray, Float *time0,
-                                      Float *time1) const {
+inline bool Bound3<T>::intersect_test(const Ray &ray, Float *thit0,
+                                      Float *thit1) const {
   Float t0 = 0, t1 = ray.t_max;
   for (int i = 0; i < 3; ++i) {
     // Update interval for bounding box slab i.
@@ -230,8 +230,8 @@ inline bool Bound3<T>::intersect_test(const Ray &ray, Float *time0,
     t1 = t_far < t1 ? t_far : t1;
     if (t0 > t1) return false;
   }
-  if (time0) *time0 = t0;
-  if (time1) *time1 = t1;
+  if (thit0) *thit0 = t0;
+  if (thit1) *thit1 = t1;
   return true;
 }
 

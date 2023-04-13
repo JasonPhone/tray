@@ -21,7 +21,9 @@ add_library(TRay_shape
   STATIC
   ${SOURCE_DIR}/core/geometry/Interaction.cpp
   ${SOURCE_DIR}/core/geometry/Ray.cpp
+
   ${SOURCE_DIR}/shapes/Sphere.cpp
+  ${SOURCE_DIR}/shapes/TriangleMesh.cpp
 )
 add_library(TRay_primitive
   STATIC

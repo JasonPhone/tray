@@ -67,6 +67,7 @@ Vector3f cone_uniform_sample(const Point2f &u, Float cos_theta_range,
 Float cone_uniform_pdf(Float cos_theta_range) {
   return 1 / (2 * PI * (1 - cos_theta_range));
 }
+/// @return Barycentric coords, get the third by substracting.
 Point2f triangle_uniform_sample(const Point2f &u) {
   Float su0 = std::sqrt(u[0]);
   return Point2f(1 - su0, u[1] * su0);

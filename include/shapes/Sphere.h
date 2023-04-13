@@ -24,7 +24,7 @@ class Sphere : public Shape {
         theta_max(PI),
         phi_max(deg_to_rad(360)) {}
   Bound3f object_bound() const override;
-  bool intersect(const Ray &ray, Float *time, SurfaceInteraction *si,
+  bool intersect(const Ray &ray, Float *thit, SurfaceInteraction *si,
                  bool test_alpha_texture = true) const override;
   bool intersect_test(const Ray &ray,
                       bool test_alpha_texture = true) const override;

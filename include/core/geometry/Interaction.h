@@ -45,6 +45,8 @@ class SurfaceInteraction : public Interaction {
   void fill_scattering_func(const Ray &ray,
                             TransportMode mode = TransportMode::Radiance,
                             bool allow_multi_lobes = false);
+  void set_shading_geometry(const Vector3f sdpdu, const Vector3f sdpdv,
+                            bool is_robust);
   /// @brief Get the emitted radiance of area light
   ///        if this primitive is bound
   /// with an area light.

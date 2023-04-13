@@ -10,12 +10,12 @@ Bound3f Sphere::object_bound() const {
 /**
  * Some points in doing intersection:
  *  1. Intersection after ray.t_max is ignored.
- *  2. Use *time to return time of the FIRST hit.
+ *  2. Use *t to return parametric distance of the FIRST hit.
  *  3. Interaction is used widely to separate geometry code and shading code.
  *  4. Ray is in world space, but intersection test is easier in object space,
  *     and the return interaction info should be in world space.
  */
-bool Sphere::intersect(const Ray &ray, Float *time, SurfaceInteraction *si,
+bool Sphere::intersect(const Ray &ray, Float *t, SurfaceInteraction *si,
                        bool test_alpha_texture) const {
   // SDebug("Sphere::intersect: testing ray " + ray.to_string());
   // SDebug("\twith sphere at " + obj_to_world(Point3f(0, 0, 0)).to_string() +
@@ -63,7 +63,7 @@ bool Sphere::intersect(const Ray &ray, Float *time, SurfaceInteraction *si,
       (theta_min - theta_max) *
       Vector3f(p_hit.z * cos_phi, p_hit.z * sin_phi, -radius * std::sin(theta));
   // Return values.
-  *time = t_hit;
+  *t = t_hit;
   *si = obj_to_world(SurfaceInteraction(p_hit, Point2f(u, v), -ray.dir, dpdu,
                                         dpdv, ray.time, this));
   return true;
