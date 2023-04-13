@@ -13,6 +13,7 @@ void DirectIntegrator::preprocess(const Scene &scene, Sampler &sampler) {
   // Preprocess is done once Integrator::render() is called,
   // so not all rays can get sufficient sample array, and will
   // take only one sample for each light.
+  m_n_light_samples.clear();
   if (m_light_sample == LightSample::UNIFORM_ALL) {
     // Number of lights for each light.
     for (const auto &light : scene.m_lights)
@@ -37,16 +38,15 @@ Spectrum DirectIntegrator::Li(const Ray &ray, const Scene &scene,
     for (const auto &light : scene.m_lights) L += light->Le(ray);
     return L;
   }
-  Normal3f n = si.shading.n;
-  Vector3f wo = si.wo;
   // Local shading.
   // --------------
   // Fill BSDF.
   si.fill_scattering_func(ray);
   if (si.bsdf == nullptr)
     return Li(si.ray_along(ray.dir), scene, sampler, depth);
-  Vector3f wo = si.wo;
   // Self emissive.
+  Normal3f n = si.shading.n;
+  Vector3f wo = si.wo;
   L += si.Le(wo);
   // **Direct lighting**
   if (!scene.m_lights.empty()) {

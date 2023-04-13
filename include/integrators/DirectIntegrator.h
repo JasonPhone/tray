@@ -11,6 +11,7 @@
  *     Fill BSDF.
  *     Self emissive.
  *     **Direct lighting**
+ *       MIS is used.
  *   Tracing for specular reflection and transmission.
  */
 

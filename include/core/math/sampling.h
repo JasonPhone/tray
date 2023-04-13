@@ -71,7 +71,7 @@ struct Distribution1D {
   /// @param pdf_value Store the result PDF value.
   /// @param relative Store the relative distance in cdf range.
   /// @return The sampled value in i, 2, ..., n.
-  int sample_discrete(Float u, Float *pdf_value, Float *relative) const;
+  int sample_discrete(Float u, Float *pdf_value, Float *relative = nullptr) const;
   Float discrete_pdf(int index) const;
   /// @brief Get number of pieces.
   int count() const;

@@ -134,17 +134,17 @@ Spectrum light_sample_uniform_all(const Interaction &inter, const Scene &scene,
     const std::shared_ptr<Light> &light = scene.m_lights[i];
     int sample_num = n_samples[i];
     const Point2f *u_light_arr = sampler.get_2D_array(sample_num);
-    const Point2f *u_scatter_arr = sampler.get_2D_array(sample_num);
-    if (u_light_arr == nullptr || u_scatter_arr == nullptr) {
+    const Point2f *u_bsdf_arr = sampler.get_2D_array(sample_num);
+    if (u_light_arr == nullptr || u_bsdf_arr == nullptr) {
       // Arrays run out.
       Point2f u_light = sampler.sample_2D();
-      Point2f u_scatter = sampler.sample_2D();
+      Point2f u_bsdf = sampler.sample_2D();
       // Not handeling specuar here, they are indirect.
-      L += direct_lighting(inter, u_scatter, *light, u_light, scene, sampler);
+      L += direct_lighting(inter, u_bsdf, *light, u_light, scene, sampler);
     } else {
       Spectrum L_direct(0.0);
       for (int j = 0; j < sample_num; j++) {
-        L_direct += direct_lighting(inter, u_scatter_arr[j], *light,
+        L_direct += direct_lighting(inter, u_bsdf_arr[j], *light,
                                     u_light_arr[j], scene, sampler);
       }
       L += L_direct / sample_num;
@@ -153,16 +153,26 @@ Spectrum light_sample_uniform_all(const Interaction &inter, const Scene &scene,
   return L;
 }
 Spectrum light_sample_uniform_one(const Interaction &inter, const Scene &scene,
-                                  Sampler &sampler) {
+                                  Sampler &sampler, Distribution1D *dist_1D) {
   if (scene.m_lights.empty()) return Spectrum(0.0);
   Spectrum L(0.0);
   int n_lights = int(scene.m_lights.size());
+  int light_idx = 0;
+  Float light_pdf = 0.0;
   // Select a light source.
-  int light_idx = clamp(int(sampler.sample_1D() * n_lights), 0, n_lights - 1);
-  const std::shared_ptr<Light> &light = scene.m_lights[light_idx];
-  return 1.0 * n_lights *
-         direct_lighting(inter, sampler.sample_2D(), *light,
-                         sampler.sample_2D(), scene, sampler);
+  if (dist_1D) {
+    light_idx = dist_1D->sample_discrete(sampler.sample_1D(), &light_pdf);
+  } else {
+    light_idx = clamp(int(sampler.sample_1D() * n_lights), 0, n_lights - 1);
+    light_pdf = 1.0 / n_lights;
+  }
+  // Compute lighting.
+  if (light_pdf > 0) {
+    const std::shared_ptr<Light> &light = scene.m_lights[light_idx];
+    L = direct_lighting(inter, sampler.sample_2D(), *light, sampler.sample_2D(),
+                        scene, sampler);
+  }
+  return L / light_pdf;
 }
 
 Spectrum direct_lighting(const Interaction &inter, const Point2f &u_bsdf,
@@ -171,21 +181,22 @@ Spectrum direct_lighting(const Interaction &inter, const Point2f &u_bsdf,
                          bool do_specular = false) {
   BxDFType flags =
       do_specular ? BSDF_ALL : BxDFType(BSDF_ALL & (~BSDF_SPECULAR));
-  Spectrum Ld(0.0);
+  Spectrum Ld(0.0);  // Final result.
   Float light_pdf = 0, bsdf_pdf = 0;
+  Vector3f wi;
+  // Light term and BSDF term.
+  Spectrum Li(0.0), f(0.0);
   /**
    * estimator =
-   *  1/nLi   sum( Li(x) BSDF(x) WLi(x)   / pdfLi(x)   ) +
-   *  1/nBSDF sum( Li(y) BSDF(y) WBSDF(y) / pdfBSDF(y) )
+   *  1/nLi   sum( BSDF(x) Li(x) WLi(x)   / pdfLi(x)   ) +
+   *  1/nBSDF sum( BSDF(y) Li(y) WBSDF(y) / pdfBSDF(y) )
    *
    * We are dealing just one item in the sum.
    */
-  // MIS for light sources.
-  Vector3f wi;
+  // MIS for light sources, Li goes first.
   VisibilityTester vis;
-  Spectrum Li = light.sample_Li(inter, u_light, &wi, &light_pdf, &vis);
+  Li = light.sample_Li(inter, u_light, &wi, &light_pdf, &vis);
   if (light_pdf > 0 && !Li.is_black()) {
-    Spectrum f;
     // BSDF value for this light sample Li.
     if (inter.is_surface_interaction()) {
       // Safe cast.
@@ -207,10 +218,11 @@ Spectrum direct_lighting(const Interaction &inter, const Point2f &u_bsdf,
       }
     }
   }
-  // MIS for BSDF.
   if (!light.is_delta_light()) {
+    // MIS for BSDF, f goes first.
     bool specular_sampled = false;
-    Spectrum f;
+    f = Spectrum(0.0);
+    Li = Spectrum(0.0);
     if (inter.is_surface_interaction()) {
       // Sample the direction wi.
       BxDFType sampled_type;
@@ -218,14 +230,14 @@ Spectrum direct_lighting(const Interaction &inter, const Point2f &u_bsdf,
       f = si.bsdf->sample_f(si.wo, &wi, u_bsdf, &bsdf_pdf, flags,
                             &sampled_type);
       f *= abs_dot(wi, si.shading.n);
-      specular_sampled = (sampled_type & BSDF_SPECULAR);
+      specular_sampled = (sampled_type & BSDF_SPECULAR) != 0;
     }
     if (bsdf_pdf > 0 && !f.is_black()) {
       // Light contribution along wi.
       Float weight = 1;
-      if (!specular_sampled) {
+      if (!specular_sampled) {  // Delta distribution cannot be sampled.
         light_pdf = light.pdf_Li(inter, wi);
-        // All zeroed out if pdf for Li is zero.
+        // Light term is not sampled.
         if (light_pdf == 0) return Ld;
         weight = power_heuristic(1, bsdf_pdf, 1, light_pdf);
       }
@@ -234,7 +246,6 @@ Spectrum direct_lighting(const Interaction &inter, const Point2f &u_bsdf,
       Ray ray = inter.ray_along(wi);
       bool hitted = scene.intersect(ray, &light_si);
       // Add contribution.
-      Spectrum Li(0.0);
       if (hitted) {
         if (light_si.primitive->area_light() == &light) Li = light_si.Le(-wi);
       } else {
@@ -245,5 +256,6 @@ Spectrum direct_lighting(const Interaction &inter, const Point2f &u_bsdf,
       }
     }
   }
+  return Ld;
 }
 }  // namespace TRay

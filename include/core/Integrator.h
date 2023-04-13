@@ -49,9 +49,14 @@ Spectrum light_sample_uniform_all(const Interaction &inter, const Scene &scene,
                                   const std::vector<int> &n_samples);
 /// @brief Take one sample from one light source randomly.
 /// @param inter Point to be lit.
+/// @param dist_1D Used for special light source selecting.
 Spectrum light_sample_uniform_one(const Interaction &inter, const Scene &scene,
-                                  Sampler &sampler);
+                                  Sampler &sampler,
+                                  Distribution1D *dist_1D = nullptr);
 /// @brief Estimate the dirct lighting using MIS of BSDF and light source.
 /// @param do_specular true to process perfect specular.
-Spectrum direct_lighting(const Interaction &inter, const Point2f &u_scatter, const Light &light, const Point2f &u_light, const Scene &scene, Sampler &sampler, bool do_specular = false);
+Spectrum direct_lighting(const Interaction &inter, const Point2f &u_scatter,
+                         const Light &light, const Point2f &u_light,
+                         const Scene &scene, Sampler &sampler,
+                         bool do_specular = false);
 }  // namespace TRay
