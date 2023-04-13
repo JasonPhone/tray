@@ -24,7 +24,7 @@ class DistantLight : public Light {
   const Spectrum m_L;
   // Light direction.
   const Vector3f m_w_light;
-  // Scene properties.
+  // Scene properties, a bounding sphere.
   Point3f m_world_center;
   Float m_world_radius;
 };

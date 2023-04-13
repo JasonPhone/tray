@@ -188,10 +188,13 @@ Spectrum direct_lighting(const Interaction &inter, const Point2f &u_bsdf,
   Spectrum Li(0.0), f(0.0);
   /**
    * estimator =
-   *  1/nLi   sum( BSDF(x) Li(x) WLi(x)   / pdfLi(x)   ) +
-   *  1/nBSDF sum( BSDF(y) Li(y) WBSDF(y) / pdfBSDF(y) )
+   *  1/nLi   sum( f(x) Li(x) WLi(x) / pdfLi(x) ) +
+   *  1/nBSDF sum( f(y) Li(y) Wf(y)  / pdff(y)  )
    *
    * We are dealing just one item in the sum.
+   * We have a sample of wi and need to choose Li or f to evaluate first.
+   * The order matters since one of them may often return small value,
+   * a nearly specular material and a big light for example.
    */
   // MIS for light sources, Li goes first.
   VisibilityTester vis;

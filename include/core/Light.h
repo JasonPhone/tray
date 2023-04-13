@@ -30,7 +30,7 @@ class Light {
                              Vector3f *wi, Float *pdf_value,
                              VisibilityTester *vis) const = 0;
   virtual Float pdf_Li(const Interaction &ref, const Vector3f &wi) const = 0;
-  /// @brief Get radiance from the "environment".
+  /// @brief Get radiance as the "environment".
   Spectrum Le(const Ray &ray) const { return Spectrum(0.f); }
   /// @brief Get the total power this light source emits.
   /// @details This may be useful for adaptive light resources computation.
