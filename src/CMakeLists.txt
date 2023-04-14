@@ -80,4 +80,5 @@ add_library(TRay_integrator
 
   ${SOURCE_DIR}/integrators/WhittedIntegrator.cpp
   ${SOURCE_DIR}/integrators/DirectIntegrator.cpp
+  ${SOURCE_DIR}/integrators/PathIntegrator.cpp
 )

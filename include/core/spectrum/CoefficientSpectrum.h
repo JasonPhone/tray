@@ -123,6 +123,11 @@ class CoefficientSpectrum {
     ASSERT(!has_NaN());
     return ret;
   }
+  Float max_component() const {
+    Float m = c[0];
+    for (int i = 1; i < n_spec_samples; i++) m = std::max(m, c[i]);
+    return m;
+  }
 
   /// @brief Used by reflection models.
   friend CoefficientSpectrum sqrt(const CoefficientSpectrum &s) {
