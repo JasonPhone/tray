@@ -5,8 +5,8 @@ namespace TRay {
 Scene::Scene(std::shared_ptr<Primitive> aggregate,
              const std::vector<std::shared_ptr<Light>> &lights)
     : m_lights(lights), m_aggregate(aggregate) {
-  SInfo(string_format("\nScene::Scene: Construct a scene with %d lights. ",
-                      (int)lights.size()));
+  SInfo("Scene:: Created scene with" +
+        string_format("\n\t%d lights", (int)lights.size()));
   m_world_bound = aggregate->world_bound();
   for (const auto &light : lights) {
     light->preprocess(*this);

@@ -9,7 +9,11 @@ StratifiedSampler::StratifiedSampler(int x_num, int y_num, int num_dim,
     : PixelSampler(x_num * y_num, num_dim),
       m_x_samples(x_num),
       m_y_samples(y_num),
-      m_jitter(jitter) {}
+      m_jitter(jitter) {
+  SInfo("StratifiedSampler:: Created stratified sampler" +
+        string_format("\n\tx strata %d, y strata %d, jitter %d", m_x_samples,
+                      m_y_samples, m_jitter));
+}
 void StratifiedSampler::start_pixel(const Point2i &p) {
   // Fill for sampling 1D.
   for (size_t i = 0; i < m_sample_1D.size(); i++) {

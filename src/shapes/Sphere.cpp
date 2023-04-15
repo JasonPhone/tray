@@ -63,9 +63,10 @@ bool Sphere::intersect(const Ray &ray, Float *t, SurfaceInteraction *si,
       (theta_min - theta_max) *
       Vector3f(p_hit.z * cos_phi, p_hit.z * sin_phi, -radius * std::sin(theta));
   // Return values.
-  *t = t_hit;
-  *si = obj_to_world(SurfaceInteraction(p_hit, Point2f(u, v), -ray.dir, dpdu,
-                                        dpdv, ray.time, this));
+  if (t) *t = t_hit;
+  if (si)
+    *si = obj_to_world(SurfaceInteraction(p_hit, Point2f(u, v), -ray.dir, dpdu,
+                                          dpdv, ray.time, this));
   return true;
 }
 /// @brief Same as intersect() but does not update interaction.

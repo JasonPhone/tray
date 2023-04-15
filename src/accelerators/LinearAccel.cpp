@@ -4,9 +4,8 @@ namespace TRay {
 
 LinearAccel::LinearAccel(std::vector<std::shared_ptr<Primitive>> primitives)
     : m_primitives(std::move(primitives)) {
-  SInfo(string_format(
-      "\nLinearAccel:: Construct an accelerator with %d primitives.",
-      (int)m_primitives.size()));
+  SInfo("LinearAccel:: Created an accelerator with" +
+        string_format("\n\t%d primitives.", (int)m_primitives.size()));
   for (const auto &prim : m_primitives) {
     m_world_bound = bound_union(m_world_bound, prim->world_bound());
   }
@@ -19,6 +18,7 @@ bool LinearAccel::intersect(const Ray &ray, SurfaceInteraction *si) const {
   return hitted;
 }
 bool LinearAccel::intersect_test(const Ray &ray) const {
+  // SDebug("linear accel intersect test");
   for (const auto &prim : m_primitives)
     if (prim->intersect_test(ray)) return true;
   return false;

@@ -9,7 +9,7 @@ PerspectiveCamera::PerspectiveCamera(const AnimateTransform &cam_to_world,
                                      Float focal_d, Float fov, Film *film)
     : ProjectiveCamera(cam_to_world, perspective(fov, 0.01, 1000.0), screen,
                        shutter_open, shutter_close, lens_r, focal_d, film) {
-  SInfo("\nPerspectiveCamera:: Created perspective camera \n\t" + to_string());
+  SInfo("PerspectiveCamera:: Created perspective camera \n\t" + to_string());
 }
 Float PerspectiveCamera::ray_sample(const CameraSample &cam_sample,
                                     Ray *gen_ray) const {

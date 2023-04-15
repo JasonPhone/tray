@@ -16,12 +16,11 @@ Film::Film(const Point2i &resolution, const Bound2f &crop_window,
                       std::ceil(m_full_resolution.y * crop_window.p_min.y)),
               Point2i(std::ceil(m_full_resolution.x * crop_window.p_max.x),
                       std::ceil(m_full_resolution.y * crop_window.p_max.y)));
-  SInfo("\nFilm:: Created film with\n\tresolution " +
+  SInfo("Film:: Created film with\n\tresolution " +
         m_full_resolution.to_string() + "\n\tcrop window " +
         crop_window.to_string() + "\n\tcropped pixel bound " +
-        m_cropped_pixel_bound.to_string());
-  SInfo(string_format("Film:: Allocated %d Pixels.",
-                      m_cropped_pixel_bound.area()));
+        m_cropped_pixel_bound.to_string() +
+        string_format("\n\t%d Pixels.", m_cropped_pixel_bound.area()));
   // Allocate the pixel array.
   m_pixels = std::unique_ptr<Pixel[]>(new Pixel[m_cropped_pixel_bound.area()]);
   // Precompute filter LUT.
@@ -64,7 +63,7 @@ std::unique_ptr<FilmTile> Film::get_tile(const Bound2i &tile_bound) {
 }
 void Film::merge_tile(std::unique_ptr<FilmTile> tile) {
   // TODO Need lock here if using multi-therads.
-  SInfo("Film::merge_tile: Merging tile " + tile->tile_bound().to_string());
+  SInfo("Film::merge_tile:\n\tMerging tile " + tile->tile_bound().to_string());
   Bound2iIterator pxl_range(tile->tile_bound());
   for (const Point2i &pxl_pos : pxl_range) {
     const FilmTilePixel &tile_pxl = tile->pixel(pxl_pos);

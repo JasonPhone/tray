@@ -133,7 +133,7 @@ class Point2 {
     return i == 0 ? x : y;
   }
   std::string to_string() const {
-    return string_format(" [%f, %f] ", x * 1.0, y * 1.0);
+    return string_format("[%f, %f]", x * 1.0, y * 1.0);
   }
 
   T x, y;

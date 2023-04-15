@@ -28,8 +28,8 @@ namespace TRay {
 class DirectIntegrator : public SamplerIntegrator {
  public:
   DirectIntegrator(const LightSample &light_sample_method, int max_depth,
-                   std::shared_ptr<const Camera> &camera,
-                   std::shared_ptr<Sampler> &sampler)
+                   std::shared_ptr<const Camera> camera,
+                   std::shared_ptr<Sampler> sampler)
       : SamplerIntegrator(camera, sampler),
         m_light_sample(light_sample_method),
         m_max_depth(max_depth) {}

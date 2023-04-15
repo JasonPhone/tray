@@ -39,8 +39,7 @@ void SamplerIntegrator::render(const Scene &scene, uint8_t *dst) {
     std::unique_ptr<FilmTile> film_tile =
         m_camera->m_film->get_tile(tile_bound);
     // Loop over pixels in this FilmTile.
-    SInfo("SampleIntegrator::render:per_tile: Begin tile " +
-          tile_bound.to_string());
+    SInfo("SampleIntegrator::render: \n\tBegin tile " + tile_bound.to_string());
     Bound2iIterator bound_range(tile_bound);
     for (const Point2i &pxl : bound_range) {
       // Begin for this pixel.
@@ -154,7 +153,11 @@ Spectrum light_sample_uniform_all(const Interaction &inter, const Scene &scene,
 }
 Spectrum light_sample_uniform_one(const Interaction &inter, const Scene &scene,
                                   Sampler &sampler, Distribution1D *dist_1D) {
-  if (scene.m_lights.empty()) return Spectrum(0.0);
+  // SDebug("sample one of lights");
+  if (scene.m_lights.empty()) {
+    // SDebug("no lights, return black");
+    return Spectrum(0.0);
+  }
   Spectrum L(0.0);
   int n_lights = int(scene.m_lights.size());
   int light_idx = 0;
@@ -166,12 +169,14 @@ Spectrum light_sample_uniform_one(const Interaction &inter, const Scene &scene,
     light_idx = clamp(int(sampler.sample_1D() * n_lights), 0, n_lights - 1);
     light_pdf = 1.0 / n_lights;
   }
-  // Compute lighting.
+  // SDebug(string_format("seleted light %d from %d lights", light_idx,
+  // n_lights)); Compute lighting.
   if (light_pdf > 0) {
     const std::shared_ptr<Light> &light = scene.m_lights[light_idx];
     L = direct_lighting(inter, sampler.sample_2D(), *light, sampler.sample_2D(),
                         scene, sampler);
   }
+  // SDebug("light sampling done");
   return L / light_pdf;
 }
 
@@ -179,6 +184,7 @@ Spectrum direct_lighting(const Interaction &inter, const Point2f &u_bsdf,
                          const Light &light, const Point2f &u_light,
                          const Scene &scene, Sampler &sampler,
                          bool do_specular) {
+  // SDebug("===========================\ndirect lighting begin");
   BxDFType flags =
       do_specular ? BSDF_ALL : BxDFType(BSDF_ALL & (~BSDF_SPECULAR));
   Spectrum Ld(0.0);  // Final result.
@@ -197,24 +203,36 @@ Spectrum direct_lighting(const Interaction &inter, const Point2f &u_bsdf,
    * a nearly specular material and a big light for example.
    */
   // MIS for light sources, Li goes first.
+  // SDebug("MIS for Li");
   VisibilityTester vis;
   Li = light.sample_Li(inter, u_light, &wi, &light_pdf, &vis);
   if (light_pdf > 0 && !Li.is_black()) {
-    // BSDF value for this light sample Li.
+    // SDebug("non-zero pdf and non-black Li");
+    //  BSDF value for this light sample Li.
     if (inter.is_surface_interaction()) {
-      // Safe cast.
+      // SDebug("surface interaction, evaluate BSDF");
+      //  Safe cast.
       const SurfaceInteraction &si = (const SurfaceInteraction &)inter;
       f = si.bsdf->f(si.wo, wi, flags) * abs_dot(wi, si.shading.n);
       bsdf_pdf = si.bsdf->pdf(si.wo, wi, flags);
     }
     if (!f.is_black()) {
-      // Visibility test.
-      if (vis.blocked(scene)) Li = Spectrum(0.0);
+      // SDebug("non-zero BSDF value");
+      //  Visibility test.
+      // SDebug("test blocking");
+      if (vis.blocked(scene)) {
+        // SDebug("this light is blocked by others! setting Li to black");
+        Li = Spectrum(0.0);
+      }
+      // SDebug("test black");
       if (!Li.is_black()) {
-        // Add contribution.
+        // SDebug("non-black Li");
+        //  Add contribution.
         if (light.is_delta_light()) {
+          // SDebug("delta light");
           Ld += f * Li / light_pdf;
         } else {
+          // SDebug("non-delta light");
           Float weight = power_heuristic(1, light_pdf, 1, bsdf_pdf);
           Ld += f * Li * weight / light_pdf;
         }
@@ -223,13 +241,16 @@ Spectrum direct_lighting(const Interaction &inter, const Point2f &u_bsdf,
   }
   // Light sources with delta distribution is
   // never likely to be sampled with "that" direction.
+  // SDebug("MIS for BSDF");
   if (!light.is_delta_light()) {
-    // MIS for BSDF, f goes first.
+    // SDebug("non-delta light, can sample f");
+    //  MIS for BSDF, f goes first.
     bool specular_sampled = false;
     f = Spectrum(0.0);
     Li = Spectrum(0.0);
     if (inter.is_surface_interaction()) {
       // Sample the direction wi.
+      // SDebug("surface interaction, sample BSDF");
       BxDFType sampled_type;
       const SurfaceInteraction &si = (const SurfaceInteraction &)inter;
       f = si.bsdf->sample_f(si.wo, &wi, u_bsdf, &bsdf_pdf, flags,
@@ -238,29 +259,44 @@ Spectrum direct_lighting(const Interaction &inter, const Point2f &u_bsdf,
       specular_sampled = (sampled_type & BSDF_SPECULAR) != 0;
     }
     if (bsdf_pdf > 0 && !f.is_black()) {
-      // Light contribution along wi.
+      // SDebug("non-zero pdf and non-zero bsdf");
+      //  Light contribution along wi.
       Float weight = 1;
       if (!specular_sampled) {  // Delta distribution cannot be sampled.
+        // SDebug("non-specular sample, evaluating Li");
         light_pdf = light.pdf_Li(inter, wi);
         // Light term is not sampled.
-        if (light_pdf == 0) return Ld;
+        if (light_pdf == 0) {
+          // SDebug("no chance to hit light, returning");
+          // SDebug("---------------------------");
+          return Ld;
+        }
         weight = power_heuristic(1, bsdf_pdf, 1, light_pdf);
       }
       // If the direction sampled from BSDF hits the light.
+      // SDebug("shoot the light");
       SurfaceInteraction light_si;
       Ray ray = inter.ray_along(wi);
       bool hitted = scene.intersect(ray, &light_si);
       // Add contribution.
       if (hitted) {
-        if (light_si.primitive->area_light() == &light) Li = light_si.Le(-wi);
+        // SDebug("hitted some light");
+        if (light_si.primitive->area_light() == &light) {
+          // SDebug("is current light");
+          Li = light_si.Le(-wi);
+        }
       } else {
+        // SDebug("no hit, evaluating environment light");
         Li = light.Le(ray);
       }
       if (!Li.is_black()) {
+        // SDebug("non-black Li");
         Ld += f * Li * weight / bsdf_pdf;
       }
     }
   }
+  // SDebug("done direct lighting, Ld is " + Ld.to_string());
+  // SDebug("---------------------------");
   return Ld;
 }
 }  // namespace TRay
