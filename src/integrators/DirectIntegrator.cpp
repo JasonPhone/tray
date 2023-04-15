@@ -45,7 +45,6 @@ Spectrum DirectIntegrator::Li(const Ray &ray, const Scene &scene,
   if (si.bsdf == nullptr)
     return Li(si.ray_along(ray.dir), scene, sampler, depth);
   // Self emissive.
-  Normal3f n = si.shading.n;
   Vector3f wo = si.wo;
   L += si.Le(wo);
   // **Direct lighting**
