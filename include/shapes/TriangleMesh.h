@@ -62,6 +62,7 @@ class Triangle : public Shape {
 std::vector<std::shared_ptr<Shape>> create_triangle_mesh(
     const Transform& obj_world, const Transform& world_obj, bool flip_normal,
     int n_triangles, const int* vertex_indices, int n_vertices,
-    const Point3f* vertices, const Vector3f* tan_vectors,
-    const Normal3f* vertex_normals, const Point2f* vertex_uv);
+    const Point3f* vertices, const Vector3f* tan_vectors = nullptr,
+    const Normal3f* vertex_normals = nullptr,
+    const Point2f* vertex_uv = nullptr);
 }  // namespace TRay

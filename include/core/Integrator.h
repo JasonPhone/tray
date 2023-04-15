@@ -55,7 +55,7 @@ Spectrum light_sample_uniform_one(const Interaction &inter, const Scene &scene,
                                   Distribution1D *dist_1D = nullptr);
 /// @brief Estimate the dirct lighting using MIS of BSDF and light source.
 /// @param do_specular true to process perfect specular.
-Spectrum direct_lighting(const Interaction &inter, const Point2f &u_scatter,
+Spectrum direct_lighting(const Interaction &inter, const Point2f &u_bsdf,
                          const Light &light, const Point2f &u_light,
                          const Scene &scene, Sampler &sampler,
                          bool do_specular = false);

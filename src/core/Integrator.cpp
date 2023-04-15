@@ -178,7 +178,7 @@ Spectrum light_sample_uniform_one(const Interaction &inter, const Scene &scene,
 Spectrum direct_lighting(const Interaction &inter, const Point2f &u_bsdf,
                          const Light &light, const Point2f &u_light,
                          const Scene &scene, Sampler &sampler,
-                         bool do_specular = false) {
+                         bool do_specular) {
   BxDFType flags =
       do_specular ? BSDF_ALL : BxDFType(BSDF_ALL & (~BSDF_SPECULAR));
   Spectrum Ld(0.0);  // Final result.

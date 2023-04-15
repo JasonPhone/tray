@@ -8,10 +8,9 @@
 namespace TRay {
 TriangleMesh::TriangleMesh(const Transform &obj_to_world, int n_triangles,
                            const int *vertex_indices, int n_vertices,
-                           const Point3f *vertices,
-                           const Vector3f *tan_vectors = nullptr,
-                           const Normal3f *vertex_normals = nullptr,
-                           const Point2f *vertex_uv = nullptr)
+                           const Point3f *vertices, const Vector3f *tan_vectors,
+                           const Normal3f *vertex_normals,
+                           const Point2f *vertex_uv)
     : n_triangles(n_triangles),
       n_vertices(n_vertices),
       vindex(vertex_indices, vertex_indices + 3 * n_triangles) {
@@ -52,7 +51,7 @@ Bound3f Triangle::world_bound() const {
   return bound_insert(Bound3f(p0, p1), p2);
 }
 bool Triangle::intersect(const Ray &ray, Float *thit, SurfaceInteraction *si,
-                         bool test_alpha_texture = true) const {
+                         bool test_alpha_texture) const {
   // Prepare.
   // --------
   const Point3f &p0 = m_parent_mesh->vpos[vidx[0]];

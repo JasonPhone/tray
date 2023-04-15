@@ -100,7 +100,7 @@ class CoefficientSpectrum {
     ASSERT(!ret.has_NaN());
     return ret;
   }
-  CoefficientSpectrum &operator/=(Float s) const {
+  CoefficientSpectrum &operator/=(Float s) {
     ASSERT(s != 0.0);
     for (int i = 0; i < n_spec_samples; i++) c[i] /= s;
     ASSERT(!has_NaN());

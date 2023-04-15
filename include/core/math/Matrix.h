@@ -6,6 +6,7 @@ namespace TRay {
 /// @note We may need a math library for clean work.
 struct Mat4x4 {
   Float val[4][4];
+  // Default an identity matrix.
   Mat4x4();
   Mat4x4(Float v[4][4]);
   Mat4x4(Float v00, Float v01, Float v02, Float v03, Float v10, Float v11,
@@ -14,10 +15,10 @@ struct Mat4x4 {
   bool operator==(const Mat4x4 &other) const;
   bool operator!=(const Mat4x4 &other) const { return !(*this == other); }
   bool has_NaN() const {
-    for (int i = 0; i < 4; i++) 
+    for (int i = 0; i < 4; i++)
       for (int j = 0; j < 4; j++)
         if (std::isnan(val[i][j])) return true;
-   return false;
+    return false;
   }
 };
 Mat4x4 mat4x4_multiply(const Mat4x4 &l, const Mat4x4 &r);
@@ -36,4 +37,4 @@ inline std::ostream &operator<<(std::ostream &os, const Mat4x4 &mat) {
   os << "}\n";
   return os;
 }
-} // namespace TRay
+}  // namespace TRay

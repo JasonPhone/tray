@@ -21,8 +21,8 @@
 namespace TRay {
 class PathIntegrator : public SamplerIntegrator {
  public:
-  PathIntegrator(int max_depth, std::shared_ptr<const Camera> &camera,
-                 std::shared_ptr<Sampler> &sampler)
+  PathIntegrator(int max_depth, std::shared_ptr<const Camera> camera,
+                 std::shared_ptr<Sampler> sampler)
       : SamplerIntegrator(camera, sampler), m_max_depth(max_depth) {}
   Spectrum Li(const Ray &ray, const Scene &scene, Sampler &sampler,
               int depth = 0) const override;
