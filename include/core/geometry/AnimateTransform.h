@@ -9,8 +9,9 @@
 #include "core/math/Matrix.h"
 #include "core/geometry/Vector.h"
 #include "core/geometry/Quaternion.h"
+#include "core/geometry/Transform.h"
 
-namespace TRay{
+namespace TRay {
 /// @brief M = TRS when decomposing.
 class AnimateTransform {
  public:
@@ -23,6 +24,12 @@ class AnimateTransform {
   Point3f operator()(const Point3f &p, Float time) const;
   Bound3f motion_bound(const Bound3f &b) const;
   Bound3f point_bound(const Point3f &p) const;
+  std::string to_string() const {
+    std::string str = "AnimateTransform from\n" + trans_st.to_string() +
+                      " to\n" + trans_ed.to_string() +
+                      string_format("in time [%f, %f] ", time_st, time_ed);
+    return str;
+  }
 
  private:
   const Transform &trans_st, &trans_ed;
@@ -45,4 +52,4 @@ class AnimateTransform {
   };
   DerivativeTerm c1[3], c2[3], c3[3], c4[3], c5[3];
 };
-} // namespace TRay
+}  // namespace TRay

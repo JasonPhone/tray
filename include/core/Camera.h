@@ -39,10 +39,13 @@ class Camera {
   /// @return The weight this ray contribute to the final image.
   virtual Float ray_sample(const CameraSample &cam_sample,
                            Ray *gen_ray) const = 0;
+  virtual std::string to_string() const {
+    return string_format(" shutter time [%f, %f] ", m_shutter_open,
+                         m_shutter_close);
+  }
   AnimateTransform m_cam_to_world;
   const Float m_shutter_open, m_shutter_close;
   Film *m_film;
-
 };
 
 /// @brief Cameras that uses a 4x4 projective matrix.
@@ -52,6 +55,12 @@ class ProjectiveCamera : public Camera {
                    const Transform &cam_to_screen, const Bound2f &screen,
                    Float shutter_open, Float shutter_close, Float lens_r,
                    Float focal_d, Film *film);
+  std::string to_string() const override {
+    std::string str = Camera::to_string();
+    str += string_format("lens radius %f, focal distance %f", m_lens_radius,
+                         m_focal_distance);
+    return str;
+  }
 
  protected:
   Transform m_raster_to_cam, m_cam_to_screen;

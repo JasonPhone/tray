@@ -1,5 +1,6 @@
 #include "cameras/PerspectiveCamera.h"
 #include "core/math/sampling.h"
+#include "core/stringformat.h"
 
 namespace TRay {
 PerspectiveCamera::PerspectiveCamera(const AnimateTransform &cam_to_world,
@@ -7,7 +8,9 @@ PerspectiveCamera::PerspectiveCamera(const AnimateTransform &cam_to_world,
                                      Float shutter_close, Float lens_r,
                                      Float focal_d, Float fov, Film *film)
     : ProjectiveCamera(cam_to_world, perspective(fov, 0.01, 1000.0), screen,
-                       shutter_open, shutter_close, lens_r, focal_d, film) {}
+                       shutter_open, shutter_close, lens_r, focal_d, film) {
+  SInfo("\nPerspectiveCamera:: Created perspective camera \n\t" + to_string());
+}
 Float PerspectiveCamera::ray_sample(const CameraSample &cam_sample,
                                     Ray *gen_ray) const {
   // From origin directly to point on near plane.

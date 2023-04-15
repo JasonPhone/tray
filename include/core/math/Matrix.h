@@ -20,21 +20,25 @@ struct Mat4x4 {
         if (std::isnan(val[i][j])) return true;
     return false;
   }
+  std::string to_string() const {
+    std::string str = "{";
+    for (int i = 0; i < 4; i++) {
+      str += "\t";
+      for (int j = 0; j < 4; j++) {
+        str += format_one("%f ", val[i][j]);
+      }
+      str += "\n";
+    }
+    str += "}\n";
+    return str;
+  }
 };
 Mat4x4 mat4x4_multiply(const Mat4x4 &l, const Mat4x4 &r);
 Mat4x4 mat4x4_transpose(const Mat4x4 &m);
 Mat4x4 mat4x4_inverse(const Mat4x4 &m);
 
 inline std::ostream &operator<<(std::ostream &os, const Mat4x4 &mat) {
-  os << "{\n";
-  for (int i = 0; i < 4; i++) {
-    os << "\t";
-    for (int j = 0; j < 4; j++) {
-      os << format_one("%f ", mat.val[i][j]);
-    }
-    os << "\n";
-  }
-  os << "}\n";
+  os << mat.to_string();
   return os;
 }
 }  // namespace TRay

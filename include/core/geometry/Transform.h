@@ -89,8 +89,12 @@ class Transform {
   Bound3f operator()(const Bound3f &b) const;
   SurfaceInteraction operator()(const SurfaceInteraction &si) const;
   Transform operator*(const Transform &t) const;
+  std::string to_string() const {
+    std::string str = "t = " + m.to_string() + ", inv = " + m_inv.to_string();
+    return to_string();
+  }
   friend std::ostream &operator<<(std::ostream &os, const Transform &t) {
-    os << "t=" << t.m << ", inv=" << t.m_inv;
+    os << t.to_string();
     return os;
   }
 
