@@ -33,7 +33,9 @@ class Shape {
   virtual bool intersect_test(const Ray &ray,
                               bool test_alpha_texture = true) const {
     // Should use better method.
-    return intersect(ray, nullptr, nullptr, test_alpha_texture);
+    Float t;
+    SurfaceInteraction si;
+    return intersect(ray, &t, &si, test_alpha_texture);
   }
   /// @brief Sample a point on surface of the shape.
   /// @param u Uniform random values.
