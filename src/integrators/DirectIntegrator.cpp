@@ -29,7 +29,7 @@ void DirectIntegrator::preprocess(const Scene &scene, Sampler &sampler) {
   }
 }
 Spectrum DirectIntegrator::Li(const Ray &ray, const Scene &scene,
-                              Sampler &sampler, int depth = 0) const {
+                              Sampler &sampler, int depth) const {
   Spectrum L(0.0);
   // Find Intersection.
   // ------------------
