@@ -17,12 +17,13 @@ Spectrum PathIntegrator::Li(const Ray &ray, const Scene &scene,
   // The first next is current ray.
   Ray ray_nxt(ray);
   // true if the last ray is from a specular reflection.
-  bool from_specular;
+  bool from_specular = false;
+  int bounce_cnt = 0;
   // TODO Improve the multi-refraction problem.
   // // Track the scale on throughput factor
   // // and remove it when doing Russian roulette.
   // Float refract_scale = 1;
-  for (int bounce_cnt = 0;; bounce_cnt++) {
+  for (bounce_cnt = 0;; bounce_cnt++) {
     // Extend the path one more point and add the contribution.
     // --------------------------------------------------------
     // Trace the ray for an intersection.
