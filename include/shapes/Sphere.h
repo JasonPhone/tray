@@ -25,7 +25,7 @@ class Sphere : public Shape {
         phi_max(deg_to_rad(360)) {
     SInfo("Sphere:: Created sphere with" +
           string_format("\n\tradius %f", radius) + "\n\tworld coord " +
-          obj_to_world(Point3f(0, 0, 0)).to_string());
+          (*obj_to_world)(Point3f(0, 0, 0)).to_string());
   }
   Bound3f object_bound() const override;
   bool intersect(const Ray &ray, Float *thit, SurfaceInteraction *si,

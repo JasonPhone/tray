@@ -14,12 +14,14 @@ class Shape {
  public:
   virtual ~Shape() {}
   Shape(const Transform &obj_world, const Transform &world_obj, bool flip_n)
-      : obj_to_world(obj_world),
-        world_to_obj(world_obj),
+      : obj_to_world(std::make_shared<Transform>(obj_world)),
+        world_to_obj(std::make_shared<Transform>(world_obj)),
         flip_normal(flip_n),
         swap_handness(obj_world.will_swap_hand()) {}
   virtual Bound3f object_bound() const = 0;
-  virtual Bound3f world_bound() const { return obj_to_world(object_bound()); }
+  virtual Bound3f world_bound() const {
+    return (*obj_to_world)(object_bound());
+  }
   /**
    * @brief Get the first intersect in (0, t_max).
    *
@@ -64,7 +66,8 @@ class Shape {
   }
   virtual Float area() const = 0;
 
-  const Transform &obj_to_world, &world_to_obj;
+  // const Transform obj_to_world, world_to_obj;
+  std::shared_ptr<const Transform> obj_to_world, world_to_obj;
   const bool flip_normal;
   const bool swap_handness;
 };

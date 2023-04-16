@@ -31,7 +31,7 @@
 namespace TRay {
 class Transform {
  public:
-  Transform() {}
+  Transform(): m(), m_inv() {}
   Transform(const Mat4x4 &_m, const Mat4x4 &_m_inv) : m(_m), m_inv(_m_inv) {
     ASSERT(!m.has_NaN() && !m_inv.has_NaN());
   }

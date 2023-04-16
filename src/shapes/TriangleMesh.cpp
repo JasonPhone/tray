@@ -43,7 +43,9 @@ Triangle::Triangle(const Transform &obj_world, const Transform &world_obj,
     : Shape(obj_world, world_obj, flip_normal),
       m_parent_mesh(parent_mesh),
       vidx(&(parent_mesh->vindex[3 * triangle_index])) {}
-Bound3f Triangle::object_bound() const { return world_to_obj(world_bound()); }
+Bound3f Triangle::object_bound() const {
+  return (*world_to_obj)(world_bound());
+}
 Bound3f Triangle::world_bound() const {
   const Point3f &p0 = m_parent_mesh->vpos[vidx[0]];
   const Point3f &p1 = m_parent_mesh->vpos[vidx[1]];
