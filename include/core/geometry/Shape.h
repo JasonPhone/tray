@@ -49,7 +49,19 @@ class Shape {
   virtual Interaction sample_surface(const Interaction &ref, const Point2f &u,
                                      Float *pdf_value) const {
     // Default impl, shuold be overrided.
-    return sample_surface(u, pdf_value);
+    Interaction inter = sample_surface(u, pdf_value);
+    Vector3f wi = inter.p - ref.p;
+    if (wi.length2() == 0) {
+      if (pdf_value) *pdf_value = 0;
+    } else {
+      wi = normalize(wi);
+      // From area to solid angle.
+      if (pdf_value) {
+        *pdf_value *= distance2(ref.p, inter.p) / abs_dot(inter.n, -wi);
+        if (std::isinf(*pdf_value)) *pdf_value = 0.f;
+      }
+    }
+    return inter;
   }
   virtual Float pdf(const Interaction &) const { return 1.0 / area(); }
   /// @brief Get pdf value of a ray, from @param ref and goes along @param wi.
