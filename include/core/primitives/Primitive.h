@@ -6,6 +6,7 @@
 namespace TRay {
 class Primitive {
  public:
+ virtual ~Primitive() {}
   /// @brief Get the world-space bound of the primivite's geometry.
   virtual Bound3f world_bound() const = 0;
   /**

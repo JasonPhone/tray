@@ -12,6 +12,7 @@ namespace TRay {
  */
 class Shape {
  public:
+  virtual ~Shape() {}
   Shape(const Transform &obj_world, const Transform &world_obj, bool flip_n)
       : obj_to_world(obj_world),
         world_to_obj(world_obj),

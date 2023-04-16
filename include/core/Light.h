@@ -15,6 +15,7 @@ enum LightType {
 
 class Light {
  public:
+  virtual ~Light() {}
   /// @param type Type of light source.
   /// @param light_to_world Transformation.
   /// @param n_samples Number of samples been taken.
