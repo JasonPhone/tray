@@ -21,7 +21,7 @@ void SamplerIntegrator::render(const Scene &scene, uint8_t *dst) {
   const int tile_size = 16;
   Point2i n_tiles((sample_extent.x + tile_size - 1) / tile_size,
                   (sample_extent.y + tile_size - 1) / tile_size);
-  SInfo("SampleIntegrator::render: Sample bound: " + sample_bound.to_string());
+  SInfo("SampleIntegrator::render:\n\tSample bound: " + sample_bound.to_string());
   // Iteration.
   auto per_tile = [&](Point2i tile) {
     // Memory allocation.

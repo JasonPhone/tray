@@ -91,7 +91,7 @@ class Transform {
   Transform operator*(const Transform &t) const;
   std::string to_string() const {
     std::string str = "t = " + m.to_string() + ", inv = " + m_inv.to_string();
-    return to_string();
+    return str;
   }
   friend std::ostream &operator<<(std::ostream &os, const Transform &t) {
     os << t.to_string();
@@ -100,7 +100,6 @@ class Transform {
 
  private:
   Mat4x4 m, m_inv;
-  friend class AnimateTransform;
   friend class Quaternion;
 };
 

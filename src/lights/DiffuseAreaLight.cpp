@@ -12,7 +12,7 @@ Spectrum DiffuseAreaLight::sample_Li(const Interaction &ref, const Point2f &u,
   Interaction inter = m_shape->sample_surface(ref, u, pdf_value);
   *wi = normalize(inter.p - ref.p);
   *vis = VisibilityTester(ref, inter);
-  return L(inter, -*wi);
+  return L(inter, -(*wi));
 }
 Float DiffuseAreaLight::pdf_Li(const Interaction &ref,
                                const Vector3f &wi) const {

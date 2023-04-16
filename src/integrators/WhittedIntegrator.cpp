@@ -45,7 +45,6 @@ Spectrum WhittedIntegrator::Li(const Ray &ray, const Scene &scene,
     // Shading.
     Spectrum f = si.bsdf->f(wo, wi);
     if (!f.is_black() && !visibility.blocked(scene)) {
-      // SDebug("found a visible light source");
       L += f * Li * abs_dot(wi, n) / pdf;
     }
   }

@@ -131,23 +131,34 @@ Interaction Sphere::sample_surface(const Interaction &ref, const Point2f &u,
                                    Float *pdf_value) const {
   // Coord frame for sampling.
   Point3f p_center = obj_to_world(Point3f(0, 0, 0));
-  Vector3f fz = normalize(p_center - ref.p);
-  Vector3f fx, fy;
-  make_coord_system(fz, &fx, &fy);
-  if (distance2(ref.p, p_center) <= radius * radius) {
+  if (distance2(ref.p, p_center) - radius * radius <= 0.0001) {
     // Inside the sphere, sample all.
-    return sample_surface(u, pdf_value);
+    Interaction inter = sample_surface(u, pdf_value);
+    Vector3f wi = inter.p - ref.p;
+    // From area domain to solid angle domain.
+    if (wi.length2() == 0) {
+      if (pdf_value) *pdf_value = 0;
+    } else {
+      if (pdf_value) *pdf_value *= wi.length2() / abs_dot(inter.n, -wi);
+      wi = normalize(wi);
+    }
+    if (std::isinf(*pdf_value)) *pdf_value = 0.0;
+    return inter;
   }
   // Outside the sphere, sample the cone.
   // theta and phi from the sample space.
-  Float sin2_theta_range = radius * radius / distance2(ref.p, p_center);
+  Float dc = distance(ref.p, p_center);
+  Float dc_inv = 1.0 / dc;
+  Vector3f fz = (p_center - ref.p) * dc_inv;
+  Vector3f fx, fy;
+  make_coord_system(fz, &fx, &fy);
+  Float sin2_theta_range = radius * radius * dc_inv * dc_inv;
   Float cos_theta_range = std::sqrt(std::max((Float)0, 1 - sin2_theta_range));
   Float sample_cos_theta = (1 - u[0]) + u[0] * cos_theta_range;
   Float sample_sin_theta =
       std::sqrt(std::max((Float)0, 1 - sample_cos_theta * sample_cos_theta));
   Float sample_phi = u[1] * 2 * PI;
   // alpha the center angle of sphere.
-  Float dc = distance(ref.p, p_center);
   Float ds = dc * sample_cos_theta -
              std::sqrt(std::max(
                  (Float)0, radius * radius -
@@ -155,14 +166,13 @@ Interaction Sphere::sample_surface(const Interaction &ref, const Point2f &u,
   Float cos_alpha = (dc * dc + radius * radius - ds * ds) / (2 * dc * radius);
   Float sin_alpha = std::sqrt(std::max((Float)0, 1 - cos_alpha * cos_alpha));
   // Sample point and normal in world space.
-  Vector3f n_world =
+  Vector3f n_obj =
       spherical_direction(sin_alpha, cos_alpha, sample_phi, -fx, -fy, -fz);
-  Point3f p_world =
-      p_center + radius * Point3f(n_world.x, n_world.y, n_world.z);
+  Point3f p_obj = radius * Point3f(n_obj.x, n_obj.y, n_obj.z);
   // Construct the interaction.
   Interaction inter;
-  inter.p = p_world;
-  inter.n = Normal3f(n_world);
+  inter.p = obj_to_world(p_obj);
+  inter.n = obj_to_world(Normal3f(n_obj));
   if (flip_normal) inter.n *= -1;
   if (pdf_value) *pdf_value = cone_uniform_pdf(cos_theta_range);
   return inter;
