@@ -47,6 +47,10 @@ class Normal3 {
     ASSERT(i >= 0 && i <= 2);
     return (i == 0) ? x : (i == 1 ? y : z);
   }
+  std::string to_string() const {
+    return string_format("<%f, %f, %f>", 1.0 * x, 1.0 * y, 1.0 * z);
+  }
+
   T x, y, z;
 };
 
@@ -110,9 +114,7 @@ inline Normal3<T> align_with(const Normal3<T> &n, const Normal3<T> &v) {
 
 template <typename T>
 inline std::ostream &operator<<(std::ostream &os, const Normal3<T> &n) {
-  os << " <" << format_one("%f", 1.0 * n.x) << ", "
-     << format_one("%f", 1.0 * n.y) << ", " << format_one("%f", 1.0 * n.z)
-     << "> ";
+  os << n.to_string();
   return os;
 }
 }  // namespace TRay

@@ -21,9 +21,9 @@ class Ray {
   /// @brief Get the position of Ray by given time.
   Point3f operator()(Float t) const;
   std::string to_string() const {
-    return "ray o: " + ori.to_string() + ", d: " + dir.to_string() +
-           ", t: " + format_one("%f ", time) +
-           ", t_max: " + format_one("%f ", t_max);
+    return "ray o: " + ori.to_string() + " d: " + dir.to_string() +
+           " t: " + format_one("%f", time) +
+           " t_max: " + format_one("%f ", t_max);
   }
 
   Point3f ori;

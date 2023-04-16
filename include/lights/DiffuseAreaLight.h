@@ -11,7 +11,10 @@ class DiffuseAreaLight : public AreaLight {
       : AreaLight(LightToWorld, nSamples),
         m_L_emit(Lemit),
         m_shape(shape),
-        m_area(shape->area()) {}
+        m_area(shape->area()) {
+    SInfo("DiffuseAreaLight:: Created light with:\n\tcolor " +
+          m_L_emit.to_string());
+  }
   Spectrum L(const Interaction &inter, const Vector3f &w) const override;
   Spectrum sample_Li(const Interaction &ref, const Point2f &u, Vector3f *wi,
                      Float *pdf_value, VisibilityTester *vis) const override;
