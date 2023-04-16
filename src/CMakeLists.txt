@@ -10,7 +10,6 @@ add_library(tiny_obj_loader
 add_library(TRay_geometry
   STATIC
   ${SOURCE_DIR}/core/math/Matrix.cpp
-  ${SOURCE_DIR}/core/geometry/AnimateTransform.cpp
   ${SOURCE_DIR}/core/geometry/Transform.cpp
   ${SOURCE_DIR}/core/geometry/Interaction.cpp
   ${SOURCE_DIR}/core/geometry/Ray.cpp
@@ -28,7 +27,6 @@ add_library(TRay_shape
 add_library(TRay_primitive
   STATIC
   ${SOURCE_DIR}/core/primitives/GeometricPrimitive.cpp
-  ${SOURCE_DIR}/core/primitives/TransformedPrimitive.cpp
   ${SOURCE_DIR}/core/primitives/Aggregate.cpp
   ${SOURCE_DIR}/accelerators/LinearAccel.cpp
 )

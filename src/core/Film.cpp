@@ -4,12 +4,11 @@
 namespace TRay {
 Film::Film(const Point2i &resolution, const Bound2f &crop_window,
            std::unique_ptr<Filter> filter, Float diagonal,
-           const std::string &filename, Float scale)
+           const std::string &filename)
     : m_full_resolution(resolution),
       m_diagonal(diagonal),
       m_filter(std::move(filter)),
-      m_filename(filename),
-      m_scale(scale) {
+      m_filename(filename) {
   // Calculate the actually stored image.
   m_cropped_pixel_bound =
       Bound2i(Point2i(std::ceil(m_full_resolution.x * crop_window.p_min.x),

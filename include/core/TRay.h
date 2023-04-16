@@ -74,8 +74,6 @@ using Bound2i = Bound2<int>;
 using Bound2f = Bound2<Float>;
 // core/geometry/Transform.h
 class Transform;
-// core/geometry/AnimateTransform.h
-class AnimateTransform;
 // core/geometry/Quaternion.h
 class Quaternion;
 // core/geometry/Interaction.h
@@ -87,7 +85,7 @@ class Shape;
 class Sphere;
 // shapes/TriangleMesh.h
 class Triangle;
-class TriangleMesh;
+struct TriangleMesh;
 // core/math/Matrix.h
 struct Mat4x4;
 // core/math/RNG.h
@@ -98,8 +96,6 @@ struct Distribution1D;
 class Primitive;
 // core/primitives/GeometricPrimitive.h
 class GeometricPrimitive;
-// core/primitives/TransformedPrimitive.h
-class TransformedPrimitive;
 // core/primitives/Aggregate.h
 class Aggregate;
 // accelerators/LinearAccel.h

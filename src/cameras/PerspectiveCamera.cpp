@@ -3,7 +3,7 @@
 #include "core/stringformat.h"
 
 namespace TRay {
-PerspectiveCamera::PerspectiveCamera(const AnimateTransform &cam_to_world,
+PerspectiveCamera::PerspectiveCamera(const Transform &cam_to_world,
                                      const Bound2f &screen, Float shutter_open,
                                      Float shutter_close, Float lens_r,
                                      Float focal_d, Float fov, Film *film)

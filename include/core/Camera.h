@@ -1,6 +1,5 @@
 #pragma once
 #include "core/TRay.h"
-#include "core/geometry/AnimateTransform.h"
 #include "core/geometry/Transform.h"
 #include "core/geometry/Point.h"
 #include "core/geometry/Bound.h"
@@ -31,7 +30,8 @@ struct CameraSample {
 /// @brief All camera types are based on Camera.
 class Camera {
  public:
-  Camera(const AnimateTransform &cam_to_world, Float shutter_open,
+  virtual ~Camera() {}
+  Camera(const Transform &cam_to_world, Float shutter_open,
          Float shutter_close, Film *film);
   /// @brief Get a ray based on the camera sample info.
   /// @param cam_sample Camera sample info.
@@ -43,7 +43,7 @@ class Camera {
     return string_format(" shutter time [%f, %f] ", m_shutter_open,
                          m_shutter_close);
   }
-  AnimateTransform m_cam_to_world;
+  Transform m_cam_to_world;
   const Float m_shutter_open, m_shutter_close;
   Film *m_film;
 };
@@ -51,7 +51,7 @@ class Camera {
 /// @brief Cameras that uses a 4x4 projective matrix.
 class ProjectiveCamera : public Camera {
  public:
-  ProjectiveCamera(const AnimateTransform &cam_to_world,
+  ProjectiveCamera(const Transform &cam_to_world,
                    const Transform &cam_to_screen, const Bound2f &screen,
                    Float shutter_open, Float shutter_close, Float lens_r,
                    Float focal_d, Film *film);

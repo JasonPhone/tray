@@ -12,7 +12,7 @@ class PerspectiveCamera : public ProjectiveCamera {
   /// @param focal_d Focal distance.
   /// @param fov Field of view, in degree, total angle.
   /// @param film Film to write.
-  PerspectiveCamera(const AnimateTransform &cam_to_world, const Bound2f &screen,
+  PerspectiveCamera(const Transform &cam_to_world, const Bound2f &screen,
                     Float shutter_open, Float shutter_close, Float lens_r,
                     Float focal_d, Float fov, Film *film);
   Float ray_sample(const CameraSample &cam_sample, Ray *gen_ray) const override;

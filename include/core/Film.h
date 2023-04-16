@@ -29,11 +29,10 @@ class Film {
    * @param filter Filter used to recover pixel values from samples.
    * @param diagonal Physical diagonal.
    * @param filename
-   * @param scale Scale factor for the colors.
    */
   Film(const Point2i &resolution, const Bound2f &crop_window,
        std::unique_ptr<Filter> filter, Float diagonal,
-       const std::string &filename, Float scale);
+       const std::string &filename);
   /// @brief Get the area to be sampled.
   Bound2i sample_bound() const;
   // Bound2f physical_extent() const; // The physical area of film.
@@ -57,7 +56,6 @@ class Film {
   Pixel &pixel(const Point2i &p);
   // Pointer to the pixel array.
   std::unique_ptr<Pixel[]> m_pixels;
-  const Float m_scale;
   static constexpr int filter_table_width = 16;
   /// @brief 1/4 part of the filter table, assuming that the other 3 parts are
   /// symmertric. The precision error of position is not significant.

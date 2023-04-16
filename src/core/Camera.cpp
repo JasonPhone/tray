@@ -3,14 +3,14 @@
 #include "core/Filter.h"
 
 namespace TRay {
-Camera::Camera(const AnimateTransform &cam_to_world, Float shutter_open,
+Camera::Camera(const Transform &cam_to_world, Float shutter_open,
                Float shutter_close, Film *film)
     : m_cam_to_world(cam_to_world),
       m_shutter_open(shutter_open),
       m_shutter_close(shutter_close),
       m_film(film) {}
 
-ProjectiveCamera::ProjectiveCamera(const AnimateTransform &cam_to_world,
+ProjectiveCamera::ProjectiveCamera(const Transform &cam_to_world,
                                    const Transform &cam_to_screen,
                                    const Bound2f &screen, Float shutter_open,
                                    Float shutter_close, Float lens_r,

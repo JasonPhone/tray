@@ -2,7 +2,6 @@
 #include "core/TRay.h"
 #include "core/primitives/Primitive.h"
 #include "core/primitives/GeometricPrimitive.h"
-#include "core/primitives/TransformedPrimitive.h"
 #include "core/primitives/Aggregate.h"
 
 /**

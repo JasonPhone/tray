@@ -30,7 +30,6 @@
 // ------------------
 #pragma once
 #include "core/TRay.h"
-#include "core/geometry/AnimateTransform.h"
 #include "core/geometry/Bound.h"
 #include "core/geometry/Interaction.h"
 #include "core/geometry/Normal.h"
