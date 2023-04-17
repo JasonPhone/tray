@@ -31,8 +31,7 @@ class Film {
    * @param filename
    */
   Film(const Point2i &resolution, const Bound2f &crop_window,
-       std::unique_ptr<Filter> filter, Float diagonal,
-       const std::string &filename);
+       std::unique_ptr<Filter> filter, const std::string &filename);
   /// @brief Get the area to be sampled.
   Bound2i sample_bound() const;
   // Bound2f physical_extent() const; // The physical area of film.
@@ -47,7 +46,6 @@ class Film {
   void write_image(Float, uint8_t *dst);
 
   Point2i m_full_resolution;
-  const Float m_diagonal;
   std::unique_ptr<Filter> m_filter;
   const std::string m_filename;
   Bound2i m_cropped_pixel_bound;
