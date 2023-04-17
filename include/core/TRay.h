@@ -12,6 +12,7 @@
 #include <assert.h>
 #include <memory>
 #include <vector>
+#include <string>
 
 #ifdef TRAY_FLOAT_AS_DOUBLE
 using Float = double;
