@@ -2,11 +2,6 @@ set(HEADER_DIR "${CMAKE_SOURCE_DIR}/include")
 set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/src")
 set(EXTERN_DIR "${CMAKE_SOURCE_DIR}/extern")
 
-add_library(tiny_obj_loader
-  STATIC
-  tiny_obj_loader.cpp
-)
-
 add_library(TRay_geometry
   STATIC
   ${SOURCE_DIR}/core/math/Matrix.cpp
@@ -79,4 +74,8 @@ add_library(TRay_integrator
   ${SOURCE_DIR}/integrators/WhittedIntegrator.cpp
   ${SOURCE_DIR}/integrators/DirectIntegrator.cpp
   ${SOURCE_DIR}/integrators/PathIntegrator.cpp
+)
+add_library(TRay_loader
+  STATIC
+  ${SOURCE_DIR}/loaders/ObjLoader.cpp
 )
