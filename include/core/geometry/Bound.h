@@ -74,8 +74,8 @@ class Bound3 {
   // bool intersect_test(const Ray &ray, const Vector3f &inv_dir,
   //                     const int dir_is_neg[3]) const;
   std::string to_string() const {
-    return string_format(" {" + p_min.to_string() + ", " + p_max.to_string() +
-                         "} ");
+    return " {" + p_min.to_string() + ", " + p_max.to_string() +
+                         "} ";
   }
 
   Point3<T> p_min, p_max;
@@ -178,6 +178,8 @@ inline Bound3<T> bound_insert(const Bound3<T> &b, const Point3<T> &p) {
 }
 template <typename T>
 inline Bound3<T> bound_union(const Bound3<T> &b1, const Bound3<T> &b2) {
+  PEEK(b1.to_string());
+  PEEK(b2.to_string());
   return Bound3<T>(min(b1.p_min, b2.p_min), max(b1.p_max, b2.p_max));
 }
 /**

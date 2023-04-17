@@ -4,6 +4,7 @@
 
 namespace TRay {
 Bound3f Sphere::object_bound() const {
+  SDebug("sphere obj bound");
   return Bound3f(Point3f(-radius, -radius, z_min),
                  Point3f(radius, radius, z_max));
 }
@@ -31,7 +32,6 @@ bool Sphere::intersect(const Ray &ray, Float *t, SurfaceInteraction *si,
   Float a = dx * dx + dy * dy + dz * dz;
   Float b = 2 * (dx * ox + dy * oy + dz * oz);
   Float c = ox * ox + oy * oy + oz * oz - radius * radius;
-  SDebug(string_format("a %f b %f c %f", a, b, c));
   // Solve formula.
   Float t0 = 0, t1 = 0;
   if (!solve_quadratic(a, b, c, &t0, &t1)) return false;
@@ -42,7 +42,6 @@ bool Sphere::intersect(const Ray &ray, Float *t, SurfaceInteraction *si,
     t_hit = t1;
     if (t_hit > obj_ray.t_max) return false;
   }
-  PEEK(t_hit);
   p_hit = obj_ray(t_hit);
   // Refine.
   p_hit *= radius / distance(p_hit, Point3f(0, 0, 0));
@@ -70,7 +69,6 @@ bool Sphere::intersect(const Ray &ray, Float *t, SurfaceInteraction *si,
   if (si)
     *si = (*obj_to_world)(SurfaceInteraction(p_hit, Point2f(u, v), -ray.dir,
                                              dpdu, dpdv, ray.time, this));
-  PEEK(si->p.to_string());
   return true;
 }
 /// @brief Same as intersect() but does not update interaction.
