@@ -77,5 +77,6 @@ add_library(TRay_integrator
 )
 add_library(TRay_loader
   STATIC
-  ${SOURCE_DIR}/loaders/ObjLoader.cpp
+  ${SOURCE_DIR}/loaders/sceneload.cpp
+  ${SOURCE_DIR}/loaders/meshload.cpp
 )
