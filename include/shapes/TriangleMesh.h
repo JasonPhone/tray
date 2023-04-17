@@ -12,20 +12,17 @@ struct TriangleMesh {
   /// @param vertex_indices Array of vertex indices, three for each triangle.
   ///                       Layout: [t0_0, t0_1, t0_2, t1_0, ...].
   /// @param vertices Array of vertices, access from index array only.
-  /// @param tan_vectors Array of tangent vectors, one for each vertex.
-  ///                    Optional. Used for computing shading space.
   /// @param vertex_normals Array of vertex normals. Optional.
   /// @param vertex_uv Array of vertex uv. Optional.
   TriangleMesh(const Transform& obj_to_world, int n_triangles,
                const int* vertex_indices, int n_vertices,
-               const Point3f* vertices, const Vector3f* tan_vectors = nullptr,
+               const Point3f* vertices,
                const Normal3f* vertex_normals = nullptr,
                const Point2f* vertex_uv = nullptr);
   const int n_triangles, n_vertices;
   /// @brief Vertex indices for triangles, three in a row.
   std::vector<int> vindex;
   std::unique_ptr<Point3f[]> vpos;
-  std::unique_ptr<Vector3f[]> vtangent;
   std::unique_ptr<Normal3f[]> vnormal;
   std::unique_ptr<Point2f[]> vuv;
 };
@@ -62,7 +59,6 @@ class Triangle : public Shape {
 std::vector<std::shared_ptr<Shape>> create_triangle_mesh(
     const Transform& obj_world, const Transform& world_obj, bool flip_normal,
     int n_triangles, const int* vertex_indices, int n_vertices,
-    const Point3f* vertices, const Vector3f* tan_vectors = nullptr,
-    const Normal3f* vertex_normals = nullptr,
+    const Point3f* vertices, const Normal3f* vertex_normals = nullptr,
     const Point2f* vertex_uv = nullptr);
 }  // namespace TRay

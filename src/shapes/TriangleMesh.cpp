@@ -8,7 +8,7 @@
 namespace TRay {
 TriangleMesh::TriangleMesh(const Transform &obj_to_world, int n_triangles,
                            const int *vertex_indices, int n_vertices,
-                           const Point3f *vertices, const Vector3f *tan_vectors,
+                           const Point3f *vertices,
                            const Normal3f *vertex_normals,
                            const Point2f *vertex_uv)
     : n_triangles(n_triangles),
@@ -17,12 +17,6 @@ TriangleMesh::TriangleMesh(const Transform &obj_to_world, int n_triangles,
   // Point3f* vertices.
   vpos.reset(new Point3f[n_vertices]);
   for (int i = 0; i < n_vertices; i++) vpos[i] = obj_to_world(vertices[i]);
-  // Optional Vector3f* tan_vectors.
-  if (tan_vectors) {
-    vtangent.reset(new Vector3f[n_vertices]);
-    for (int i = 0; i < n_vertices; ++i)
-      vtangent[i] = obj_to_world(tan_vectors[i]);
-  }
   // Optional Normal3f* vertex_normals.
   if (vertex_normals) {
     vnormal.reset(new Normal3f[n_vertices]);
@@ -147,7 +141,7 @@ bool Triangle::intersect(const Ray &ray, Float *thit, SurfaceInteraction *si,
   si->n = si->shading.n = Normal3f(normalize(cross(dp02, dp12)));
   if (flip_normal ^ swap_handness) si->n = si->shading.n = -(si->n);
   // Shadings.
-  if (m_parent_mesh->vnormal || m_parent_mesh->vtangent) {
+  if (m_parent_mesh->vnormal) {
     // Initialize shading geometry
     // Compute shading normal ns
     Normal3f ns;
@@ -160,28 +154,23 @@ bool Triangle::intersect(const Ray &ray, Float *thit, SurfaceInteraction *si,
       ns = normalize(ns);
     else
       ns = si->n;
-    // Shading tangent nst.
-    Vector3f nst;
-    if (m_parent_mesh->vtangent) {
-      nst = (b0 * m_parent_mesh->vtangent[vidx[0]] +
-             b1 * m_parent_mesh->vtangent[vidx[1]] +
-             b2 * m_parent_mesh->vtangent[vidx[2]]);
-    }
-    if (nst.length2() > 0)
-      nst = normalize(nst);
+    // Shading tangent.
+    Vector3f ns_tan;
+    if (ns_tan.length2() > 0)
+      ns_tan = normalize(ns_tan);
     else
-      nst = normalize(si->dpdu);
+      ns_tan = normalize(si->dpdu);
 
-    // Shading bitangent nsb and adjust nst.
-    Vector3f nsb = cross(nst, ns);
-    if (nsb.length2() > 0.f) {
-      nsb = normalize(nsb);
-      nst = cross(nsb, ns);
+    // Shading bitangent.
+    Vector3f ns_bitan = cross(ns_tan, ns);
+    if (ns_bitan.length2() > 0.f) {
+      ns_bitan = normalize(ns_bitan);
+      ns_tan = cross(ns_bitan, ns);
     } else {
-      make_coord_system((Vector3f)ns, &nst, &nsb);
+      make_coord_system((Vector3f)ns, &ns_tan, &ns_bitan);
     }
-    if (flip_normal) nsb = -nsb;
-    si->set_shading_geometry(nst, nsb, true);
+    if (flip_normal) ns_bitan = -ns_bitan;
+    si->set_shading_geometry(ns_tan, ns_bitan, true);
   }
   // Return.
   // -------
@@ -233,10 +222,10 @@ Float Triangle::area() const {
 std::vector<std::shared_ptr<Shape>> create_triangle_mesh(
     const Transform &obj_world, const Transform &world_obj, bool flip_normal,
     int n_triangles, const int *vertex_indices, int n_vertices,
-    const Point3f *vertices, const Vector3f *tan_vectors,
-    const Normal3f *vertex_normals, const Point2f *vertex_uv) {
+    const Point3f *vertices, const Normal3f *vertex_normals,
+    const Point2f *vertex_uv) {
   std::shared_ptr<TriangleMesh> mesh = std::make_shared<TriangleMesh>(
-      obj_world, n_triangles, vertex_indices, n_vertices, vertices, tan_vectors,
+      obj_world, n_triangles, vertex_indices, n_vertices, vertices,
       vertex_normals, vertex_uv);
   std::vector<std::shared_ptr<Shape>> triangle_shapes;
   // Avoid memory extending.
