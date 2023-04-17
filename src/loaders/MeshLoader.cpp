@@ -1,3 +1,3 @@
-#include "loaders/meshload.h"
+#include "loaders/MeshLoader.h"
 
 namespace TRay {}  // namespace TRay
