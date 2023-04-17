@@ -17,12 +17,14 @@ Scene::Scene(std::shared_ptr<Primitive> aggregate,
   }
 }
 bool Scene::intersect(const Ray &ray, SurfaceInteraction *si) const {
-  ASSERT(ray.dir != Vector3f(0, 0, 0));
+  ASSERT(ray.dir.length2() != 0);
+  ASSERT(!ray.dir.has_NaN());
   return m_aggregate->intersect(ray, si);
 }
 
 bool Scene::intersect_test(const Ray &ray) const {
-  ASSERT(ray.dir != Vector3f(0, 0, 0));
+  ASSERT(ray.dir.length2() != 0);
+  ASSERT(!ray.dir.has_NaN());
   return m_aggregate->intersect_test(ray);
 }
 
