@@ -27,7 +27,6 @@ class Film {
    * @param resolution Full resolution of image.
    * @param crop_window Part of image to be stored and written, NDC space.
    * @param filter Filter used to recover pixel values from samples.
-   * @param diagonal Physical diagonal.
    * @param filename
    */
   Film(const Point2i &resolution, const Bound2f &crop_window,
