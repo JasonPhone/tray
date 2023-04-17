@@ -4,7 +4,7 @@
 
 namespace TRay {
 Camera::Camera(const Transform &cam_to_world, Float shutter_open,
-               Float shutter_close, Film *film)
+               Float shutter_close, std::shared_ptr<Film> film)
     : m_cam_to_world(cam_to_world),
       m_shutter_open(shutter_open),
       m_shutter_close(shutter_close),
@@ -14,7 +14,7 @@ ProjectiveCamera::ProjectiveCamera(const Transform &cam_to_world,
                                    const Transform &cam_to_screen,
                                    const Bound2f &screen, Float shutter_open,
                                    Float shutter_close, Float lens_r,
-                                   Float focal_d, Film *film)
+                                   Float focal_d, std::shared_ptr<Film> film)
     : Camera(cam_to_world, shutter_open, shutter_close, film),
       m_cam_to_screen(cam_to_screen),
       m_lens_radius(lens_r),

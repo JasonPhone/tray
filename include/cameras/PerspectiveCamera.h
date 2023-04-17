@@ -14,7 +14,7 @@ class PerspectiveCamera : public ProjectiveCamera {
   /// @param film Film to write.
   PerspectiveCamera(const Transform &cam_to_world, const Bound2f &screen,
                     Float shutter_open, Float shutter_close, Float lens_r,
-                    Float focal_d, Float fov, Film *film);
+                    Float focal_d, Float fov, std::shared_ptr<Film> film);
   Float ray_sample(const CameraSample &cam_sample, Ray *gen_ray) const override;
   std::string to_string() const override {
     std::string str = ProjectiveCamera::to_string();

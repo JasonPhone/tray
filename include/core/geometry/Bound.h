@@ -178,8 +178,6 @@ inline Bound3<T> bound_insert(const Bound3<T> &b, const Point3<T> &p) {
 }
 template <typename T>
 inline Bound3<T> bound_union(const Bound3<T> &b1, const Bound3<T> &b2) {
-  PEEK(b1.to_string());
-  PEEK(b2.to_string());
   return Bound3<T>(min(b1.p_min, b2.p_min), max(b1.p_max, b2.p_max));
 }
 /**

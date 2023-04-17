@@ -31,8 +31,8 @@ struct CameraSample {
 class Camera {
  public:
   virtual ~Camera() {}
-  Camera(const Transform &cam_to_world, Float shutter_open,
-         Float shutter_close, Film *film);
+  Camera(const Transform &cam_to_world, Float shutter_open, Float shutter_close,
+         std::shared_ptr<Film> film);
   /// @brief Get a ray based on the camera sample info.
   /// @param cam_sample Camera sample info.
   /// @param gen_ray For return value.
@@ -45,7 +45,7 @@ class Camera {
   }
   Transform m_cam_to_world;
   const Float m_shutter_open, m_shutter_close;
-  Film *m_film;
+  std::shared_ptr<Film> m_film;
 };
 
 /// @brief Cameras that uses a 4x4 projective matrix.
@@ -54,7 +54,7 @@ class ProjectiveCamera : public Camera {
   ProjectiveCamera(const Transform &cam_to_world,
                    const Transform &cam_to_screen, const Bound2f &screen,
                    Float shutter_open, Float shutter_close, Float lens_r,
-                   Float focal_d, Film *film);
+                   Float focal_d, std::shared_ptr<Film> film);
   std::string to_string() const override {
     std::string str = Camera::to_string();
     str += string_format("lens radius %f, focal distance %f", m_lens_radius,
