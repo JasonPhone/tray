@@ -112,7 +112,11 @@
       "shared_mutex": "cpp",
       "stack": "cpp",
       "unordered_set": "cpp",
-      "variant": "cpp"
+      "variant": "cpp",
+      "any": "cpp",
+      "ranges": "cpp",
+      "span": "cpp",
+      "valarray": "cpp"
     }
   }
 }

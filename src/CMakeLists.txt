@@ -77,6 +77,8 @@ add_library(TRay_integrator
 )
 add_library(TRay_loader
   STATIC
+  ${SOURCE_DIR}/filters/BoxFilter.cpp
+  ${SOURCE_DIR}/integrators/PathIntegrator.cpp
   ${SOURCE_DIR}/loaders/SceneLoader.cpp
   ${SOURCE_DIR}/loaders/MeshLoader.cpp
 )

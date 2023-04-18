@@ -49,14 +49,14 @@ void Sampler::request_2D_array(int n) {
 }
 const Float *Sampler::get_1D_array(int n) {
   if (m_1D_array_offset >= m_1D_array_sizes.size()) return nullptr;
-  ASSERT(m_1D_array_sizes[m_1D_array_offset] == 0);
+  ASSERT(m_1D_array_sizes[m_1D_array_offset] == n);
   ASSERT(m_idx_current_pixel_sample < m_spp);
   return &m_sample_1D_array[m_1D_array_offset++]
                            [m_idx_current_pixel_sample * n];
 }
 const Point2f *Sampler::get_2D_array(int n) {
   if (m_2D_array_offset >= m_2D_array_sizes.size()) return nullptr;
-  ASSERT(m_2D_array_sizes[m_2D_array_offset] == 0);
+  ASSERT(m_2D_array_sizes[m_2D_array_offset] == n);
   ASSERT(m_idx_current_pixel_sample < m_spp);
   return &m_sample_2D_array[m_2D_array_offset++]
                            [m_idx_current_pixel_sample * n];
