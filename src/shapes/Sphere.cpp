@@ -4,7 +4,6 @@
 
 namespace TRay {
 Bound3f Sphere::object_bound() const {
-  SDebug("sphere obj bound");
   return Bound3f(Point3f(-radius, -radius, z_min),
                  Point3f(radius, radius, z_max));
 }
@@ -119,11 +118,12 @@ bool Sphere::intersect_test(const Ray &ray, bool test_alpha_texture) const {
   // return true;
 }
 Interaction Sphere::sample_surface(const Point2f &u, Float *pdf_value) const {
-  Point3f p_surface = Point3f(0, 0, 0) + radius * sphere_uniform_sample(u);
+  Point3f p_surface = Point3f{0, 0, 0} + radius * sphere_uniform_sample(u);
   Interaction inter;
-  inter.n =
-      normalize((*obj_to_world)(Normal3f(p_surface.x, p_surface.y, p_surface.z)));
+  inter.n = normalize(
+      (*obj_to_world)(Normal3f(p_surface.x, p_surface.y, p_surface.z)));
   if (flip_normal) inter.n *= -1;
+  p_surface *= radius / distance(p_surface, Point3f{0, 0, 0});
   inter.p = (*obj_to_world)(p_surface);
   if (pdf_value) *pdf_value = 1.0 / area();
   return inter;

@@ -80,6 +80,7 @@ class Shape {
 
   // const Transform obj_to_world, world_to_obj;
   std::shared_ptr<const Transform> obj_to_world, world_to_obj;
+  // Should the normal be flipped. AreaLights always emit light along normals.
   const bool flip_normal;
   const bool swap_handness;
 };

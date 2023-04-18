@@ -10,6 +10,10 @@ Spectrum DiffuseAreaLight::sample_Li(const Interaction &ref, const Point2f &u,
                                      Vector3f *wi, Float *pdf_value,
                                      VisibilityTester *vis) const {
   Interaction inter = m_shape->sample_surface(ref, u, pdf_value);
+  if ((pdf_value && *pdf_value == 0) || (inter.p - ref.p).length2() == 0) {
+    *pdf_value = 0;
+    return Spectrum{0.0};
+  }
   *wi = normalize(inter.p - ref.p);
   *vis = VisibilityTester(ref, inter);
   return L(inter, -(*wi));

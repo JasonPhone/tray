@@ -82,13 +82,13 @@ void fill_stratified_1D(Float *array, int n_samples, RNG &rng, bool jitter) {
 }
 void fill_stratified_2D(Point2f *array, int n_x, int n_y, RNG &rng,
                         bool jitter) {
-  Float dx = (Float)1 / n_x, dy = (Float)1 / n_y;
+  Float nx_inv = (Float)1 / n_x, ny_inv = (Float)1 / n_y;
   for (int y = 0; y < n_y; ++y)
     for (int x = 0; x < n_x; ++x) {
       Float jx = jitter ? rng.uniform_float() : 0.5f;
       Float jy = jitter ? rng.uniform_float() : 0.5f;
-      array->x = std::min((x + jx) * dx, ONE_M_EPS);
-      array->y = std::min((y + jy) * dy, ONE_M_EPS);
+      array->x = std::min((x + jx) * nx_inv, ONE_M_EPS);
+      array->y = std::min((y + jy) * ny_inv, ONE_M_EPS);
       ++array;
     }
 }

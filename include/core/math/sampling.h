@@ -45,11 +45,12 @@ void fill_stratified_2D(Point2f *array, int n_x, int n_y, RNG &rng,
 /// @brief Shuffer array with multiple dimensions.
 ///        Layout should be dimension first.
 template <typename T>
-void shuffle(T *array, int count, int n_dim, RNG &rng) {
-  for (int i = 0; i < count; ++i) {
-    int other = i + rng.uniform_uint32(count - i);
-    for (int j = 0; j < n_dim; ++j)
-      std::swap(array[n_dim * i + j], array[n_dim * other + j]);
+void shuffle(T *array, int n_samples, int n_dims, RNG &rng) {
+  for (int i = 0; i < n_samples; ++i) {
+    int other = i + rng.uniform_uint32(n_samples - i);
+    for (int j = 0; j < n_dims; ++j) {
+      std::swap(array[n_dims * i + j], array[n_dims * other + j]);
+    }
   }
 }
 
@@ -71,7 +72,8 @@ struct Distribution1D {
   /// @param pdf_value Store the result PDF value.
   /// @param relative Store the relative distance in cdf range.
   /// @return The sampled value in i, 2, ..., n.
-  int sample_discrete(Float u, Float *pdf_value, Float *relative = nullptr) const;
+  int sample_discrete(Float u, Float *pdf_value,
+                      Float *relative = nullptr) const;
   Float discrete_pdf(int index) const;
   /// @brief Get number of pieces.
   int count() const;
