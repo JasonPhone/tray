@@ -183,7 +183,7 @@ Interaction Triangle::sample_surface(const Point2f &u, Float *pdf_value) const {
   const Point3f &p1 = m_parent_mesh->vpos[vidx[1]];
   const Point3f &p2 = m_parent_mesh->vpos[vidx[2]];
   Interaction inter;
-  inter.p = bary[0] * p0 + bary[0] * p1 + (1 - bary[0] - bary[1]) * p2;
+  inter.p = bary[0] * p0 + bary[1] * p1 + (1 - bary[0] - bary[1]) * p2;
   inter.n = Normal3f(normalize(cross(p1 - p0, p2 - p0)));
   if (m_parent_mesh->vnormal) {
     // Geometric normal should stay with geometric representation.
