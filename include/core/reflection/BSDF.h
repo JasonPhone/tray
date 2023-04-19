@@ -8,6 +8,10 @@ namespace TRay {
 /// @brief Collection of BRDF and BTDF.
 class BSDF {
  public:
+  ~BSDF() {
+    for (const BxDF *bxdf : m_BxDFs)
+      if (bxdf) delete bxdf;
+  }
   /// @param si Surface infomation.
   /// @param eta RELATIVE eta of the interface. 1.0 for obaque materials.
   BSDF(const SurfaceInteraction &si, Float eta = 1.0);

@@ -101,6 +101,7 @@ Spectrum PathIntegrator::Li(const Ray &ray, const Scene &scene,
       }
       thorughput_factor /= (1 - p);
     }
+    delete si.bsdf;
   }
   // SDebug("current Li returned " + L.to_string() + "\n");
   return L;
