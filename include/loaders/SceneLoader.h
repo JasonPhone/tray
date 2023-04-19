@@ -24,15 +24,16 @@ class SceneLoader {
   std::shared_ptr<Integrator> m_integrator = nullptr;
   int m_width, m_height;
 
+#define VEC_OF_SHARED(T) std::vector<std::shared_ptr<T>>
   std::map<std::string, std::shared_ptr<Transform>> transforms;
   std::map<std::string, std::shared_ptr<Spectrum>> colors;
   std::map<std::string, std::shared_ptr<Texture<Spectrum>>> spectrum_textures;
   std::map<std::string, std::shared_ptr<Texture<Float>>> float_textures;
   std::map<std::string, std::shared_ptr<Material>> materials;
-  std::map<std::string, std::shared_ptr<Shape>> shapes;
-  std::map<std::string, std::shared_ptr<std::vector<std::shared_ptr<Shape>>>>
-      shape_lists;
-  std::map<std::string, std::shared_ptr<DiffuseAreaLight>> dalights;
+  std::map<std::string, std::shared_ptr<VEC_OF_SHARED(Shape)>> shapes;
+  std::map<std::string, std::shared_ptr<VEC_OF_SHARED(DiffuseAreaLight)>> dalights;
+#undef VEC_OF_SHARED
+
   using json = nlohmann::json;
   bool do_transforms(const json& scene_file);
   bool do_colors(const json& scene_file);

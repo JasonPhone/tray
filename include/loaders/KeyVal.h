@@ -13,6 +13,8 @@ const std::string Sequence = "sequence";
 const std::string Position = "position";
 const std::string Look = "look";
 const std::string Up = "up";
+const std::string Theta = "theta";
+const std::string Axis = "axis";
 const std::string Shape = "shape";
 // Colors.
 const std::string Colors = "colors";
@@ -66,6 +68,7 @@ namespace Val {
 // Common.
 // Transforms
 const std::string Translate = "translate";
+const std::string Rotate = "rotate";
 const std::string LookAt = "look_at";
 // Colors.
 const std::string RGB = "RGB";

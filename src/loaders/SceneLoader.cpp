@@ -12,6 +12,7 @@
 #include "samplers/samplers.h"
 #include "integrators/integrators.h"
 #include "core/Film.h"
+#define VEC_OF_SHARED(T) std::vector<std::shared_ptr<T>>
 
 using json = nlohmann::json;
 void get_xyz(const json &js, Float *x, Float *y, Float *z) {
@@ -64,8 +65,10 @@ bool SceneLoader::reload() {
   stat = stat && do_materials(scene_file);
   stat = stat && do_shapes(scene_file);
   stat = stat && do_lights(scene_file);
-  for (const auto &[name, light] : dalights) {
-    light_list.push_back(light);
+  for (const auto &[name, light_vec] : dalights) {
+    for (const auto &light : *light_vec) {
+      light_list.push_back(light);
+    }
   }
 
   stat = stat && do_primitives(scene_file);
@@ -88,6 +91,7 @@ bool SceneLoader::do_transforms(const json &scene_file) {
   //   return false;
   // }
   // "transforms"
+  SInfo("Loading transforms");
   for (const auto &trans : scene_file[Key::Transforms]) {
     std::string name = trans[Key::Name].get<std::string>();
     std::string seq = "";
@@ -95,19 +99,27 @@ bool SceneLoader::do_transforms(const json &scene_file) {
     for (const auto &m : trans[Key::Sequence]) {
       std::string tp = m[Key::Type].get<std::string>();
       if (tp == Val::Translate) {
-        seq = "translate " + seq;
+        seq = Val::Translate + " " + seq;
         Float x = 0, y = 0, z = 0;
         get_xyz(m[Key::Value], &x, &y, &z);
         M = translate(Vector3f(x, y, z));
         T = M * T;
       } else if (tp == Val::LookAt) {
-        seq = "look_at " + seq;
+        seq = Val::LookAt + " " + seq;
         Point3f pos(0, 0, 0), look(0, 0, 1);
         Vector3f up(0, 1, 0);
         get_xyz(m[Key::Value][Key::Position], &pos.x, &pos.y, &pos.z);
         get_xyz(m[Key::Value][Key::Look], &look.x, &look.y, &look.z);
         get_xyz(m[Key::Value][Key::Up], &up.x, &up.y, &up.z);
         M = look_at(pos, look, up);
+        T = M * T;
+      } else if (tp == Val::Rotate) {
+        seq = Val::Rotate + " " + seq;
+        Float theta = 0;
+        theta = m[Key::Value][Key::Theta].get<Float>();
+        Vector3f axis{0, 1, 0};
+        get_xyz(m[Key::Value][Key::Axis], &axis.x, &axis.y, &axis.z);
+        M = rotate(theta, axis);
         T = M * T;
       } else {
         SWarn("Unknow Transform type " + tp);
@@ -116,10 +128,12 @@ bool SceneLoader::do_transforms(const json &scene_file) {
     SInfo("Got Transform " + name + " with:\n\tsequence (" + seq + ")");
     transforms[name] = std::make_shared<Transform>(T);
   }
+  SInfo("Transforms loaded");
   return true;
 }
 bool SceneLoader::do_colors(const json &scene_file) {
   // "colors"
+  SInfo("Loading colors");
   for (const auto &clr : scene_file[Key::Colors]) {
     std::string name = clr[Key::Name].get<std::string>();
     std::string tp = clr[Key::Type].get<std::string>();
@@ -134,10 +148,12 @@ bool SceneLoader::do_colors(const json &scene_file) {
     SInfo("Got Spectrum " + name + " with:\n\t value " + c.to_string());
     colors[name] = std::make_shared<Spectrum>(c);
   }
+  SInfo("Colors loaded");
   return true;
 }
 bool SceneLoader::do_textures(const json &scene_file) {
   // "textures"
+  SInfo("Loading textures");
   // Two lists but share names.
   for (const auto &tex : scene_file[Key::Textures]) {
     std::string name = tex[Key::Name].get<std::string>();
@@ -162,10 +178,12 @@ bool SceneLoader::do_textures(const json &scene_file) {
     SInfo("Got Texture " + name + " with:\n\ttype " + tp + "\n\treturn type " +
           rtp);
   }
+  SInfo("Textures loaded");
   return true;
 }
 bool SceneLoader::do_materials(const json &scene_file) {
   // "materials"
+  SInfo("Loading materials");
   for (const auto &mat : scene_file[Key::Materials]) {
     std::string name = mat[Key::Name].get<std::string>();
     std::string tp = mat[Key::Type].get<std::string>();
@@ -181,9 +199,11 @@ bool SceneLoader::do_materials(const json &scene_file) {
       SWarn("Unknown Material type " + tp);
     }
   }
+  SInfo("Materials loaded");
   return true;
 }
 bool SceneLoader::do_shapes(const json &scene_file) {
+  SInfo("Loading shapes");
   for (const auto &shp : scene_file[Key::Shapes]) {
     std::string name = shp[Key::Name].get<std::string>();
     std::string tp = shp[Key::Type].get<std::string>();
@@ -192,13 +212,21 @@ bool SceneLoader::do_shapes(const json &scene_file) {
       std::shared_ptr<Transform> trans = transforms[trans_name];
       bool flip = shp[Key::FlipNormal].get<bool>();
       Float radius = shp[Key::Radius].get<Float>();
-      Sphere s{*trans, trans->inverse(), flip, radius};
-      shapes[name] = std::make_shared<Sphere>(s);
+      if (shapes.find(name) == shapes.end())
+        shapes[name] = std::make_shared<VEC_OF_SHARED(Shape)>();
+      shapes[name]->push_back(std::make_shared<Sphere>(
+          Sphere{*trans, trans->inverse(), flip, radius}));
       SInfo("Got Shape " + name + " with:\n\ttype " + tp + "\n\tradius " +
             string_format("%f ", radius));
     } else if (tp == Val::MeshPlain) {
-      bool flip = shp[Key::FlipNormal].get<bool>();
       Transform trans;
+      if (shp.contains(Key::Transform)) {
+        std::string trans_name = shp[Key::Transform].get<std::string>();
+        SInfo("applying transform " + trans_name);
+        std::shared_ptr<Transform> transs = transforms[trans_name];
+        trans = trans * (*transs);
+      }
+      bool flip = shp[Key::FlipNormal].get<bool>();
       int n_triangles = 0, n_vertices = 0;
       std::vector<int> vertex_indices;
       std::vector<Point3f> vertices;
@@ -218,8 +246,10 @@ bool SceneLoader::do_shapes(const json &scene_file) {
       std::vector<std::shared_ptr<Shape>> triangles =
           create_triangle_mesh(trans, trans.inverse(), flip, n_triangles,
                                &vertex_indices[0], n_vertices, &vertices[0]);
-      shape_lists[name] =
-          std::make_shared<std::vector<std::shared_ptr<Shape>>>(triangles);
+      if (shapes.find(name) == shapes.end())
+        shapes[name] = std::make_shared<VEC_OF_SHARED(Shape)>();
+      auto &vec = shapes[name];
+      for (const auto &tri : triangles) vec->push_back(tri);
       SInfo("Got Shape " + name + " with:\n\ttype " + tp +
             "\n\tnumber of triangles " + string_format("%d ", n_triangles) +
             "\n\tnumber of vertices " + string_format("%d ", n_vertices));
@@ -227,12 +257,16 @@ bool SceneLoader::do_shapes(const json &scene_file) {
       SWarn("Unknown Shape type " + tp);
     }
   }
+  SInfo("Shapes loaded");
   return true;
 }
 bool SceneLoader::do_lights(const json &scene_file) {
+  SInfo("Loading lights");
   for (const auto &lit : scene_file[Key::Lights]) {
     std::string name = lit[Key::Name].get<std::string>();
     std::string tp = lit[Key::Type].get<std::string>();
+    PEEK(name);
+    PEEK(tp);
     if (tp == Val::DiffuseArea) {
       std::string trans_name = lit[Key::Transform].get<std::string>();
       std::shared_ptr<Transform> trans = transforms[trans_name];
@@ -240,9 +274,13 @@ bool SceneLoader::do_lights(const json &scene_file) {
       std::shared_ptr<Spectrum> emit = colors[emit_name];
       int n_samples = lit[Key::NSamples].get<int>();
       std::string shape_name = lit[Key::Shape].get<std::string>();
-      std::shared_ptr<Shape> shape = shapes[shape_name];
-      DiffuseAreaLight light{*trans, *emit, n_samples, shape};
-      dalights[name] = std::make_shared<DiffuseAreaLight>(light);
+      const auto &shape_list = shapes[shape_name];
+      for (const auto &shape : *shape_list) {
+        DiffuseAreaLight light{*trans, *emit, n_samples, shape};
+        if (dalights.find(name) == dalights.end())
+          dalights[name] = std::make_shared<VEC_OF_SHARED(DiffuseAreaLight)>();
+        dalights[name]->push_back(std::make_shared<DiffuseAreaLight>(light));
+      }
       SInfo("Got Light " + name + " with:\n\ttype " + tp + "\n\temit " +
             emit_name + "\n\tshape " + shape_name);
     } else {
@@ -250,46 +288,52 @@ bool SceneLoader::do_lights(const json &scene_file) {
       SWarn("Unknown Light type " + tp);
     }
   }
+  SInfo("Lights loaded");
   return true;
 }
 bool SceneLoader::do_primitives(const json &scene_file) {
-  SInfo("Parsing primitives");
+  SInfo("Loading primitives");
   for (const auto &pri : scene_file[Key::Primitives]) {
     std::string tp = pri[Key::Type].get<std::string>();
     if (tp == Val::Geometric) {
       std::string shape_name = pri[Key::Shape].get<std::string>();
       std::string mat_name = pri[Key::Material].get<std::string>();
-      std::shared_ptr<DiffuseAreaLight> light =
-          pri.contains(Key::Light)
-              ? dalights[pri[Key::Light].get<std::string>()]
-              : nullptr;
       std::shared_ptr<Material> mat = materials[mat_name];
-      if (shapes.count(shape_name)) {
-        std::shared_ptr<Shape> shape = shapes[shape_name];
-        primitive_list.push_back(std::make_shared<GeometricPrimitive>(
-            GeometricPrimitive{shape, mat, light}));
-        SInfo("Got Primitive with:\n\ttype " + tp + "\n\tshape " + shape_name +
-              "\n\tmaterial " + mat_name);
-      } else if (shape_lists.count(shape_name)) {
-        std::shared_ptr<std::vector<std::shared_ptr<Shape>>> shape_vec =
-            shape_lists[shape_name];
-        for (const auto &s : *shape_vec) {
-          primitive_list.push_back(std::make_shared<GeometricPrimitive>(
-              GeometricPrimitive{s, mat, light}));
+      const auto &shape_list = shapes[shape_name];
+      if (pri.contains(Key::Light)) {
+        // Primitive with lights.
+        std::string light_name = pri[Key::Light].get<std::string>();
+        const auto &light_list = dalights[light_name];
+        SInfo("Got Primitive light with:\n\ttype " + tp + "\n\tshape " +
+              shape_name + "\n\tmaterial " + mat_name + "\n\tlight " +
+              light_name);
+        if (shape_list->size() == light_list->size()) {
+          for (size_t i = 0; i < shape_list->size(); i++) {
+            primitive_list.push_back(std::make_shared<GeometricPrimitive>(
+                GeometricPrimitive{(*shape_list)[i], mat, (*light_list)[i]}));
+          }
+        } else {
+          SWarn("Number of lights and shapes cannot match.");
         }
+      } else {
+        // Primitive without lights.
         SInfo("Got Primitive list with:\n\ttype " + tp + "\n\tshape " +
               shape_name + "\n\tmaterial " + mat_name);
-      } else {
-        SWarn("Unknown Shape/Shape array name " + tp);
+        for (const auto &shape : *shape_list) {
+          primitive_list.push_back(std::make_shared<GeometricPrimitive>(
+              GeometricPrimitive{shape, mat, nullptr}));
+        }
       }
     } else {
       SWarn("Unknown Primitive type " + tp);
     }
   }
+  SInfo("Primitives loaded");
   return true;
 }
 bool SceneLoader::do_accel(const json &accel_file) {
   // "accelerator"
+  SInfo("Loading accelerator");
   std::string accel_type = accel_file[Key::Type].get<std::string>();
   if (accel_type == Val::LinearAccel) {
     m_accel = std::make_shared<LinearAccel>(primitive_list);
@@ -297,11 +341,12 @@ bool SceneLoader::do_accel(const json &accel_file) {
     SWarn("Unknown Aggregate name " + accel_type);
     return false;
   }
-  SDebug("done parsing accel");
+  SInfo("Accelerator loaded");
   return true;
 }
 bool SceneLoader::do_camera(const json &camera_file) {
   // "camera"
+  SInfo("Loading camera");
   std::string camera_type = camera_file[Key::Type].get<std::string>();
   std::shared_ptr<Camera> camera = nullptr;
   if (camera_type == Val::PerspectiveCamera) {
@@ -354,10 +399,11 @@ bool SceneLoader::do_camera(const json &camera_file) {
     SWarn("Unknown Camera type " + camera_type);
     return false;
   }
-  SDebug("done parsing camera");
+  SDebug("Camera loaded");
   return true;
 }
 bool SceneLoader::do_sampler(const json &sampler_file) {
+  SDebug("Loading sampler");
   std::string sam_type = sampler_file[Key::Type].get<std::string>();
   if (sam_type == Val::StratifiedSampler) {
     Float sppx = 0, sppy = 0, sdim = 0;
@@ -374,10 +420,11 @@ bool SceneLoader::do_sampler(const json &sampler_file) {
     SWarn("Unknown Sampler type " + sam_type);
     return false;
   }
-  SDebug("done parsing sampler");
+  SDebug("Sampler loaded");
   return true;
 }
 bool SceneLoader::do_integrator(const json &integrator_file) {
+  SDebug("Loading integrator");
   std::string itr_type = integrator_file[Key::Type].get<std::string>();
   if (itr_type == Val::PathIntegrator) {
     int max_depth = 0;
@@ -390,7 +437,8 @@ bool SceneLoader::do_integrator(const json &integrator_file) {
     SWarn("Unknown Sampler type " + itr_type);
     return false;
   }
-  SDebug("done parsing integrator");
+  SDebug("Integrator loaded");
   return true;
 }
 }  // namespace TRay
+#undef VEC_OF_SHARED
