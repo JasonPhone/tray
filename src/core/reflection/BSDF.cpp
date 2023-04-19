@@ -8,7 +8,7 @@ BSDF::BSDF(const SurfaceInteraction &si, Float eta)
     : m_eta(eta),
       m_normal_s(si.shading.n),
       m_normal_g(si.n),
-      m_s_tan(si.shading.dpdu),
+      m_s_tan(normalize(si.shading.dpdu)),
       m_s_bitan(cross(m_normal_s, m_s_tan)) {}
 void BSDF::add_BxDF(BxDF &b) { m_BxDFs.push_back(&b); }
 int BSDF::count_BxDF(BxDFType flags = BSDF_ALL) const {
@@ -93,14 +93,16 @@ Spectrum BSDF::sample_f(const Vector3f &wo_world, Vector3f *wi_world,
   // Remap u[0] to the interval of discrete indices.
   Point2f remap_u(u[0] * n_bxdf - idx, u[1]);
   // Sample chosen BxDF.
+
   Vector3f wi, wo = world_to_local(wo_world);
+
   *pdf_value = 0;
   if (sampled_type) *sampled_type = chosen_bxdf->m_type;
   Spectrum f = chosen_bxdf->sample_f(wo, &wi, remap_u, pdf_value, sampled_type);
   if (*pdf_value == 0) return Spectrum(0.0);
-  // SDebug(string_format("got spectrum %s with pdf value %f ",
-                      //  f.to_string().c_str(), *pdf_value));
+
   *wi_world = local_to_world(wi);
+
   // Total pdf values of matched BxDFs.
   // Perfectly specular should be skipped since
   // delta distribution gives pdf value of one.
