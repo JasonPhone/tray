@@ -6,9 +6,9 @@ namespace TRay {
 /// @brief Uniform spatial and directional radiance. Light goes along normals.
 class DiffuseAreaLight : public AreaLight {
  public:
-  DiffuseAreaLight(const Transform &LightToWorld, const Spectrum &Lemit,
+  DiffuseAreaLight(const Transform &light_to_world, const Spectrum &Lemit,
                    int nSamples, const std::shared_ptr<Shape> &shape)
-      : AreaLight(LightToWorld, nSamples),
+      : AreaLight(light_to_world, nSamples),
         m_L_emit(Lemit),
         m_shape(shape),
         m_area(shape->area()) {

@@ -109,10 +109,10 @@ Transform rotate_x(Float theta);
 Transform rotate_y(Float theta);
 Transform rotate_z(Float theta);
 Transform rotate(Float theta, const Vector3f &axis);
-/// @brief OpenGL-style viewing matrix.
+/// @brief OpenGL-style viewing matrix, from world space to camera space.
 Transform look_at(const Point3f &eye_pos, const Point3f &look,
                   const Vector3f &up_dir);
-// Transform orthographic(Float z_near, Float z_far);
+Transform orthographic(Float znear, Float zfar);
 Transform perspective(Float fov, Float znear, Float zfar);
 
 }  // namespace TRay

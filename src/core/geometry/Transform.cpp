@@ -227,13 +227,11 @@ Transform look_at(const Point3f &eye_pos, const Point3f &look,
   camera_to_world.val[1][2] = dir.y;
   camera_to_world.val[2][2] = dir.z;
   camera_to_world.val[3][2] = 0.;
-  // return Transform(mat4x4_inverse(camera_to_world), camera_to_world);
-  return Transform(camera_to_world, mat4x4_inverse(camera_to_world));
+  return Transform(mat4x4_inverse(camera_to_world), camera_to_world);
 }
-// Transform orthographic(Float z_near, Float z_far) {
-// return scale(1, 1, 1 / (z_far - z_near)) * translate(Vector3f(0, 0,
-// -z_near));
-// }
+Transform orthographic(Float znear, Float zfar) {
+  return scale(1, 1, 1 / (zfar - znear)) * translate(Vector3f(0, 0, -znear));
+}
 Transform perspective(Float fov, Float znear, Float zfar) {
   // Projective divide for perspective projection.
   // clang-format off

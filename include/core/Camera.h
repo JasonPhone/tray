@@ -40,7 +40,7 @@ class Camera {
   virtual Float ray_sample(const CameraSample &cam_sample,
                            Ray *gen_ray) const = 0;
   virtual std::string to_string() const {
-    return string_format(" shutter time [%f, %f] ", m_shutter_open,
+    return string_format(" shutter time [%f, %f]\n\t", m_shutter_open,
                          m_shutter_close);
   }
   Transform m_cam_to_world;
