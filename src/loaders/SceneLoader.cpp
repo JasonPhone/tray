@@ -391,7 +391,7 @@ bool SceneLoader::do_camera(const json &camera_file) {
       SWarn("Unknown Filter type " + filter_type);
     }
     PerspectiveCamera camera = PerspectiveCamera{
-        *trans, screen, shutter0, shutter1, lensr, focald, fov, film};
+        trans->inverse(), screen, shutter0, shutter1, lensr, focald, fov, film};
     m_camera = std::make_shared<PerspectiveCamera>(camera);
     SInfo("Got PerspectiveCamera with:\n\tresolution " +
           resolution.to_string());
