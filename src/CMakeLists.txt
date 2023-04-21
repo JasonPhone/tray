@@ -86,6 +86,6 @@ add_library(TRay_loader
   ${SOURCE_DIR}/shapes/Sphere.cpp
   ${SOURCE_DIR}/shapes/TriangleMesh.cpp
 
+  ${SOURCE_DIR}/loaders/meshloading.cpp
   ${SOURCE_DIR}/loaders/SceneLoader.cpp
-  ${SOURCE_DIR}/loaders/MeshLoader.cpp
 )

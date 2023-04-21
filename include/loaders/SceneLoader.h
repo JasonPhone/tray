@@ -1,6 +1,7 @@
 #pragma once
 #include "core/TRay.h"
 #include "core/Scene.h"
+#include "loaders/meshloading.h"
 #include <nlohmann/json_fwd.hpp>
 
 namespace TRay {

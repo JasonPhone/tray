@@ -98,11 +98,25 @@ bool SceneLoader::do_transforms(const json &scene_file) {
     Transform T, M;
     for (const auto &m : trans[Key::Sequence]) {
       std::string tp = m[Key::Type].get<std::string>();
-      if (tp == Val::Translate) {
+      if (tp == Val::Rotate) {
+        seq = Val::Rotate + " " + seq;
+        Float theta = 0;
+        theta = m[Key::Value][Key::Theta].get<Float>();
+        Vector3f axis{0, 1, 0};
+        get_xyz(m[Key::Value][Key::Axis], &axis.x, &axis.y, &axis.z);
+        M = rotate(theta, axis);
+        T = M * T;
+      } else if (tp == Val::Translate) {
         seq = Val::Translate + " " + seq;
         Float x = 0, y = 0, z = 0;
         get_xyz(m[Key::Value], &x, &y, &z);
         M = translate(Vector3f(x, y, z));
+        T = M * T;
+      } else if (tp == Val::Scale) {
+        seq = Val::Scale + " " + seq;
+        Float x = 0, y = 0, z = 0;
+        get_xyz(m[Key::Value], &x, &y, &z);
+        M = scale(x, y, z);
         T = M * T;
       } else if (tp == Val::LookAt) {
         seq = Val::LookAt + " " + seq;
@@ -112,14 +126,6 @@ bool SceneLoader::do_transforms(const json &scene_file) {
         get_xyz(m[Key::Value][Key::Look], &look.x, &look.y, &look.z);
         get_xyz(m[Key::Value][Key::Up], &up.x, &up.y, &up.z);
         M = look_at(pos, look, up);
-        T = M * T;
-      } else if (tp == Val::Rotate) {
-        seq = Val::Rotate + " " + seq;
-        Float theta = 0;
-        theta = m[Key::Value][Key::Theta].get<Float>();
-        Vector3f axis{0, 1, 0};
-        get_xyz(m[Key::Value][Key::Axis], &axis.x, &axis.y, &axis.z);
-        M = rotate(theta, axis);
         T = M * T;
       } else {
         SWarn("Unknow Transform type " + tp);
@@ -253,6 +259,26 @@ bool SceneLoader::do_shapes(const json &scene_file) {
       SInfo("Got Shape " + name + " with:\n\ttype " + tp +
             "\n\tnumber of triangles " + string_format("%d ", n_triangles) +
             "\n\tnumber of vertices " + string_format("%d ", n_vertices));
+    } else if (tp == Val::MeshObj) {
+      Transform trans;
+      if (shp.contains(Key::Transform)) {
+        std::string trans_name = shp[Key::Transform].get<std::string>();
+        SInfo("applying transform " + trans_name);
+        std::shared_ptr<Transform> transs = transforms[trans_name];
+        trans = trans * (*transs);
+      }
+      bool flip = shp[Key::FlipNormal].get<bool>();
+      std::string file_path = shp[Key::File].get<std::string>();
+      std::vector<std::shared_ptr<Shape>> triangles;
+      bool stat =
+          load_triangle_mesh(trans, flip, &triangles, file_path.c_str(), "");
+      if (stat) {
+        shapes[name] = std::make_shared<VEC_OF_SHARED(Shape)>(triangles);
+        SInfo("Got Shape " + name + " with:\n\ttype " + tp);
+      } else {
+        SError("Error loading triangle mesh from " + file_path);
+        return stat;
+      }
     } else {
       SWarn("Unknown Shape type " + tp);
     }

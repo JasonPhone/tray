@@ -31,6 +31,7 @@ const std::string FlipNormal = "flip_normal";
 const std::string Radius = "radius";
 const std::string Vertex = "vertex";
 const std::string Index = "index";
+const std::string File = "file";
 // Lights.
 const std::string Lights = "lights";
 const std::string Emit = "emit";
@@ -69,6 +70,7 @@ namespace Val {
 // Transforms
 const std::string Translate = "translate";
 const std::string Rotate = "rotate";
+const std::string Scale = "scale";
 const std::string LookAt = "look_at";
 // Colors.
 const std::string RGB = "RGB";
@@ -81,6 +83,7 @@ const std::string MatteMaterial = "matte";
 // Shapes.
 const std::string Sphere = "sphere";
 const std::string MeshPlain = "mesh_plain";
+const std::string MeshObj = "mesh_obj";
 // Lights.
 const std::string DiffuseArea = "diffuse_area";
 // Primitives.
