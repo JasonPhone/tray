@@ -7,7 +7,7 @@ PerspectiveCamera::PerspectiveCamera(const Transform &cam_to_world,
                                      const Bound2f &screen, Float shutter_open,
                                      Float shutter_close, Float lens_r,
                                      Float focal_d, Float fov, std::shared_ptr<Film> film)
-    : ProjectiveCamera(cam_to_world, perspective(fov, 0.01, 1000.0), screen,
+    : ProjectiveCamera(cam_to_world, perspective(fov, 0.01, 2000.0), screen,
                        shutter_open, shutter_close, lens_r, focal_d, film) {
   SInfo("PerspectiveCamera:: Created perspective camera \n\t" + to_string());
 }

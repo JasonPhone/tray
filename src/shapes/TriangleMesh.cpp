@@ -44,7 +44,11 @@ Bound3f Triangle::world_bound() const {
   const Point3f &p0 = m_parent_mesh->vpos[vidx[0]];
   const Point3f &p1 = m_parent_mesh->vpos[vidx[1]];
   const Point3f &p2 = m_parent_mesh->vpos[vidx[2]];
-  return bound_insert(Bound3f(p0, p1), p2);
+  Bound3f bound = bound_insert(Bound3f(p0, p1), p2);
+  // In case of axis-parallel triangle.
+  bound.p_min -= Vector3f(0.01, 0.01, 0.01);
+  bound.p_max += Vector3f(0.01, 0.01, 0.01);
+  return bound;
 }
 bool Triangle::intersect(const Ray &ray, Float *thit, SurfaceInteraction *si,
                          bool test_alpha_texture) const {
@@ -224,6 +228,11 @@ std::vector<std::shared_ptr<Shape>> create_triangle_mesh(
     int n_triangles, const int *vertex_indices, int n_vertices,
     const Point3f *vertices, const Normal3f *vertex_normals,
     const Point2f *vertex_uv) {
+  SInfo(
+      string_format("Creating triangle mesh with"
+                    "\n\t%d triangles"
+                    "\n\t%d vertices",
+                    n_triangles, n_vertices));
   std::shared_ptr<TriangleMesh> mesh = std::make_shared<TriangleMesh>(
       obj_world, n_triangles, vertex_indices, n_vertices, vertices,
       vertex_normals, vertex_uv);

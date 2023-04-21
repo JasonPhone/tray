@@ -52,6 +52,17 @@ Ray Transform::operator()(const Ray &r) const {
 }
 Transform Transform::inverse() const { return Transform(m_inv, m); }
 Bound3f Transform::operator()(const Bound3f &b) const {
+  const Transform &M = *this;
+  Bound3f ret(M(Point3f(b.p_min.x, b.p_min.y, b.p_min.z)));
+  ret = bound_insert(ret, M(Point3f(b.p_max.x, b.p_min.y, b.p_min.z)));
+  ret = bound_insert(ret, M(Point3f(b.p_min.x, b.p_max.y, b.p_min.z)));
+  ret = bound_insert(ret, M(Point3f(b.p_min.x, b.p_min.y, b.p_max.z)));
+  ret = bound_insert(ret, M(Point3f(b.p_min.x, b.p_max.y, b.p_max.z)));
+  ret = bound_insert(ret, M(Point3f(b.p_max.x, b.p_max.y, b.p_min.z)));
+  ret = bound_insert(ret, M(Point3f(b.p_max.x, b.p_min.y, b.p_max.z)));
+  ret = bound_insert(ret, M(Point3f(b.p_max.x, b.p_max.y, b.p_max.z)));
+  return ret;
+  // FIXME Why this fails?
   // Take every extreme element.
   // https://github.com/erich666/GraphicsGems/blob/master/gems/TransBox.c
   Float pmin[3], pmax[3];
