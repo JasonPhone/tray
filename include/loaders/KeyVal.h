@@ -11,6 +11,7 @@ const std::string Transform = "transform";
 const std::string Transforms = "transforms";
 const std::string Sequence = "sequence";
 const std::string Position = "position";
+const std::string Direction = "direction";
 const std::string Look = "look";
 const std::string Up = "up";
 const std::string Theta = "theta";
@@ -21,6 +22,9 @@ const std::string Colors = "colors";
 // Textures.
 const std::string Textures = "textures";
 const std::string Return = "return";
+const std::string ColorA = "color_a";
+const std::string ColorB = "color_b";
+const std::string Interval = "interval";
 // Materials.
 const std::string Materials = "materials";
 const std::string Diffuse = "diffuse";
@@ -76,6 +80,7 @@ const std::string LookAt = "look_at";
 const std::string RGB = "RGB";
 // Textures.
 const std::string Constant = "constant";
+const std::string Grid3D = "3d_grid";
 const std::string Spectrum = "spectrum";
 const std::string Float = "float";
 // Materials.
@@ -86,6 +91,7 @@ const std::string MeshPlain = "mesh_plain";
 const std::string MeshObj = "mesh_obj";
 // Lights.
 const std::string DiffuseArea = "diffuse_area";
+const std::string Distant = "distant";
 // Primitives.
 const std::string Geometric = "geometric";
 // Accelerator.
@@ -96,6 +102,11 @@ const std::string BoxFilter = "box";
 const std::string NoFilter = "no";
 // Sampler.
 const std::string StratifiedSampler = "stratified";
+const std::string RandomSampler = "random";
+const std::string HaltonSampler = "halton";
+const std::string ZeroTwoSampler = "0-2_sequence";
+const std::string MaxMinDisSampler = "max_min_distance";
+const std::string SobolSampler = "sobol";
 // Integrator
 const std::string PathIntegrator = "path";
 

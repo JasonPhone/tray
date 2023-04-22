@@ -33,9 +33,7 @@ class SceneLoader {
   std::map<std::string, std::shared_ptr<Texture<Float>>> float_textures;
   std::map<std::string, std::shared_ptr<Material>> materials;
   std::map<std::string, std::shared_ptr<VEC_OF_SHARED(Shape)>> shapes;
-  std::map<std::string, std::shared_ptr<VEC_OF_SHARED(DiffuseAreaLight)>> dalights;
-  std::map<std::string, std::shared_ptr<VEC_OF_SHARED(DistantLight)>> dlights;
-  std::map<std::string, std::shared_ptr<VEC_OF_SHARED(Light)>> lights;
+  std::map<std::string, std::shared_ptr<VEC_OF_SHARED(AreaLight)>> alights;
 #undef VEC_OF_SHARED
 
   using json = nlohmann::json;

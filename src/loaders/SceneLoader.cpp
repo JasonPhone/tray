@@ -15,16 +15,20 @@
 #define VEC_OF_SHARED(T) std::vector<std::shared_ptr<T>>
 
 using json = nlohmann::json;
-void get_xyz(const json &js, Float *x, Float *y, Float *z) {
+void get_float(const json &js, Float *x, Float *y, Float *z) {
   if (x == nullptr || y == nullptr || z == nullptr) return;
   *x = js[0].get<Float>();
   *y = js[1].get<Float>();
   *z = js[2].get<Float>();
 }
-void get_xy(const json &js, Float *x, Float *y) {
+void get_float(const json &js, Float *x, Float *y) {
   if (x == nullptr || y == nullptr) return;
   *x = js[0].get<Float>();
   *y = js[1].get<Float>();
+}
+void get_float(const json &js, Float *x) {
+  if (x == nullptr) return;
+  *x = js.get<Float>();
 }
 
 namespace TRay {
@@ -37,7 +41,8 @@ bool SceneLoader::reload() {
   float_textures.clear();
   materials.clear();
   shapes.clear();
-  dalights.clear();
+  alights.clear();
+
   primitive_list.clear();
   light_list.clear();
 
@@ -65,11 +70,6 @@ bool SceneLoader::reload() {
   stat = stat && do_materials(scene_file);
   stat = stat && do_shapes(scene_file);
   stat = stat && do_lights(scene_file);
-  for (const auto &[name, light_vec] : dalights) {
-    for (const auto &light : *light_vec) {
-      light_list.push_back(light);
-    }
-  }
 
   stat = stat && do_primitives(scene_file);
   stat = stat && do_accel(scene_file[Key::Accelerator]);
@@ -103,28 +103,28 @@ bool SceneLoader::do_transforms(const json &scene_file) {
         Float theta = 0;
         theta = m[Key::Value][Key::Theta].get<Float>();
         Vector3f axis{0, 1, 0};
-        get_xyz(m[Key::Value][Key::Axis], &axis.x, &axis.y, &axis.z);
+        get_float(m[Key::Value][Key::Axis], &axis.x, &axis.y, &axis.z);
         M = rotate(theta, axis);
         T = M * T;
       } else if (tp == Val::Translate) {
         seq = Val::Translate + " " + seq;
         Float x = 0, y = 0, z = 0;
-        get_xyz(m[Key::Value], &x, &y, &z);
+        get_float(m[Key::Value], &x, &y, &z);
         M = translate(Vector3f(x, y, z));
         T = M * T;
       } else if (tp == Val::Scale) {
         seq = Val::Scale + " " + seq;
         Float x = 0, y = 0, z = 0;
-        get_xyz(m[Key::Value], &x, &y, &z);
+        get_float(m[Key::Value], &x, &y, &z);
         M = scale(x, y, z);
         T = M * T;
       } else if (tp == Val::LookAt) {
         seq = Val::LookAt + " " + seq;
         Point3f pos(0, 0, 0), look(0, 0, 1);
         Vector3f up(0, 1, 0);
-        get_xyz(m[Key::Value][Key::Position], &pos.x, &pos.y, &pos.z);
-        get_xyz(m[Key::Value][Key::Look], &look.x, &look.y, &look.z);
-        get_xyz(m[Key::Value][Key::Up], &up.x, &up.y, &up.z);
+        get_float(m[Key::Value][Key::Position], &pos.x, &pos.y, &pos.z);
+        get_float(m[Key::Value][Key::Look], &look.x, &look.y, &look.z);
+        get_float(m[Key::Value][Key::Up], &up.x, &up.y, &up.z);
         M = look_at(pos, look, up);
         T = M * T;
       } else {
@@ -146,7 +146,7 @@ bool SceneLoader::do_colors(const json &scene_file) {
     Spectrum c(0.0);
     if (tp == Val::RGB) {
       Float rgb[3] = {0, 0, 0};
-      get_xyz(clr[Key::Value], rgb, rgb + 1, rgb + 2);
+      get_float(clr[Key::Value], rgb, rgb + 1, rgb + 2);
       c = Spectrum::from_RGB(rgb);
     } else {
       SWarn("Unknow Spectrum type " + tp);
@@ -175,6 +175,19 @@ bool SceneLoader::do_textures(const json &scene_file) {
         Float val = tex[Key::Value].get<Float>();
         ConstantTexture<Float> text{val};
         float_textures[name] = std::make_shared<ConstantTexture<Float>>(text);
+      } else {
+        SWarn("Unknown return type " + rtp);
+      }
+    } else if (tp == Val::Grid3D) {
+      if (rtp == Val::Spectrum) {
+        const auto &values = tex[Key::Value];
+        std::string ca = values[Key::ColorA].get<std::string>();
+        std::string cb = values[Key::ColorB].get<std::string>();
+        Vector3f interval;
+        get_float(values[Key::Interval], &interval.x, &interval.y, &interval.z);
+        Spectrum &color_a{*colors[ca]}, &color_b{*colors[cb]};
+        spectrum_textures[name] =
+            std::make_shared<Grid3DTexture>(color_a, color_b, interval);
       } else {
         SWarn("Unknown return type " + rtp);
       }
@@ -238,7 +251,7 @@ bool SceneLoader::do_shapes(const json &scene_file) {
       std::vector<Point3f> vertices;
       for (const auto &v : shp[Key::Vertex]) {
         Float x = 0, y = 0, z = 0;
-        get_xyz(v, &x, &y, &z);
+        get_float(v, &x, &y, &z);
         vertices.push_back({x, y, z});
         n_vertices++;
       }
@@ -303,12 +316,24 @@ bool SceneLoader::do_lights(const json &scene_file) {
       const auto &shape_list = shapes[shape_name];
       for (const auto &shape : *shape_list) {
         DiffuseAreaLight light{*trans, *emit, n_samples, shape};
-        if (dalights.find(name) == dalights.end())
-          dalights[name] = std::make_shared<VEC_OF_SHARED(DiffuseAreaLight)>();
-        dalights[name]->push_back(std::make_shared<DiffuseAreaLight>(light));
+        if (alights.find(name) == alights.end())
+          alights[name] = std::make_shared<VEC_OF_SHARED(AreaLight)>();
+        alights[name]->push_back(std::make_shared<DiffuseAreaLight>(light));
+        light_list.push_back(std::make_shared<DiffuseAreaLight>(light));
       }
       SInfo("Got Light " + name + " with:\n\ttype " + tp + "\n\temit " +
             emit_name + "\n\tshape " + shape_name);
+    } else if (tp == Val::Distant) {
+      std::string trans_name = lit[Key::Transform].get<std::string>();
+      std::shared_ptr<Transform> trans = transforms[trans_name];
+      std::string emit_name = lit[Key::Emit].get<std::string>();
+      std::shared_ptr<Spectrum> emit = colors[emit_name];
+      Vector3f dir;
+      get_float(lit[Key::Direction], &dir.x, &dir.y, &dir.z);
+      DistantLight light = DistantLight{*trans, *emit, dir};
+      light_list.push_back(std::make_shared<DistantLight>(light));
+      SInfo("Got Light " + name + " with:\n\ttype " + tp + "\n\temit " +
+            emit_name + "\n\twi " + dir.to_string());
     } else {
       // TODO other lights
       SWarn("Unknown Light type " + tp);
@@ -329,7 +354,7 @@ bool SceneLoader::do_primitives(const json &scene_file) {
       if (pri.contains(Key::Light)) {
         // Primitive with lights.
         std::string light_name = pri[Key::Light].get<std::string>();
-        const auto &light_list = dalights[light_name];
+        const auto &light_list = alights[light_name];
         SInfo("Got Primitive light with:\n\ttype " + tp + "\n\tshape " +
               shape_name + "\n\tmaterial " + mat_name + "\n\tlight " +
               light_name);
@@ -380,11 +405,11 @@ bool SceneLoader::do_camera(const json &camera_file) {
     const auto trans =
         transforms[camera_file[Key::Transform].get<std::string>()];
     Point2f scr0, scr1;
-    get_xy(camera_file[Key::Screen][0], &scr0.x, &scr0.y);
-    get_xy(camera_file[Key::Screen][1], &scr1.x, &scr1.y);
+    get_float(camera_file[Key::Screen][0], &scr0.x, &scr0.y);
+    get_float(camera_file[Key::Screen][1], &scr1.x, &scr1.y);
     Bound2f screen{scr0, scr1};
     Float shutter0 = 0, shutter1 = 0;
-    get_xy(camera_file[Key::ShutterTime], &shutter0, &shutter1);
+    get_float(camera_file[Key::ShutterTime], &shutter0, &shutter1);
     Float lensr = 0, focald = 0, fov = 0;
     lensr = camera_file[Key::LensRadius].get<Float>();
     focald = camera_file[Key::FocalDistance].get<Float>();
@@ -392,12 +417,12 @@ bool SceneLoader::do_camera(const json &camera_file) {
     const auto &film_file = camera_file[Key::Film];
     std::string film_name = film_file[Key::Name].get<std::string>();
     Float w = 0, h = 0;
-    get_xy(film_file[Key::Resolution], &w, &h);
+    get_float(film_file[Key::Resolution], &w, &h);
     Point2i resolution{int(w), int(h)};
     m_width = w, m_height = h;
     Point2f crop0, crop1;
-    get_xy(film_file[Key::Crop][0], &crop0.x, &crop0.y);
-    get_xy(film_file[Key::Crop][1], &crop1.x, &crop1.y);
+    get_float(film_file[Key::Crop][0], &crop0.x, &crop0.y);
+    get_float(film_file[Key::Crop][1], &crop1.x, &crop1.y);
     Bound2f crop{crop0, crop1};
     std::shared_ptr<Film> film = nullptr;
     std::string filter_type = film_file[Key::Filter].get<std::string>();
@@ -408,7 +433,7 @@ bool SceneLoader::do_camera(const json &camera_file) {
                                          film_name.c_str()});
     } else if (filter_type == Val::BoxFilter) {
       Float fx = 1, fy = 1;
-      get_xy(film_file[Key::FilterRadius], &fx, &fy);
+      get_float(film_file[Key::FilterRadius], &fx, &fy);
       BoxFilter filter = BoxFilter{Vector2f{fx, fy}};
       film = std::make_shared<Film>(Film{resolution, crop,
                                          std::make_unique<BoxFilter>(filter),
@@ -433,15 +458,23 @@ bool SceneLoader::do_sampler(const json &sampler_file) {
   std::string sam_type = sampler_file[Key::Type].get<std::string>();
   if (sam_type == Val::StratifiedSampler) {
     Float sppx = 0, sppy = 0, sdim = 0;
-    get_xy(sampler_file[Key::SamplePerPixel], &sppx, &sppy);
+    get_float(sampler_file[Key::SamplePerPixel], &sppx, &sppy);
     sdim = sampler_file[Key::SampleDimension].get<Float>();
     bool jitter = sampler_file[Key::Jitter].get<bool>();
     m_sampler = std::make_shared<StratifiedSampler>(
         StratifiedSampler{int(sppx), int(sppy), int(sdim), jitter});
-    SInfo("Got StratifiedCamera with:\n\tspp " +
-          string_format(" x %d, y %d", sppx, sppy) + "\n\tdim " +
-          string_format("%d", sdim) + "\n\tjitter " +
-          string_format("%d", jitter));
+    SInfo("Got StratifiedCamera with:" +
+          string_format("\n\tspp x %d, y %d", sppx, sppy) +
+          string_format("\n\tdim %d", sdim) +
+          string_format("\n\tjitter %d", jitter));
+  } else if (sam_type == Val::RandomSampler) {
+    Float spp = 0, sdim = 0;
+    get_float(sampler_file[Key::SamplePerPixel], &spp);
+    get_float(sampler_file[Key::SampleDimension], &sdim);
+    m_sampler =
+        std::make_shared<RandomSampler>(RandomSampler{int(spp), int(sdim)});
+    SInfo("Got StratifiedCamera with:" + string_format("\n\tspp %d", spp) +
+          string_format("\n\tdim %d", sdim));
   } else {
     SWarn("Unknown Sampler type " + sam_type);
     return false;

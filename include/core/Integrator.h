@@ -7,6 +7,7 @@ class Integrator {
  public:
   virtual ~Integrator() {}
   virtual void render(const Scene &scene) = 0;
+  virtual void render_step(const Scene &scene) = 0;
 };
 
 class SamplerIntegrator : public Integrator {
@@ -15,6 +16,7 @@ class SamplerIntegrator : public Integrator {
                     std::shared_ptr<Sampler> &sampler)
       : m_camera(camera), m_sampler(sampler) {}
   void render(const Scene &scene) override;
+  void render_step(const Scene &scene) override;
   virtual void preprocess(const Scene &scene, Sampler &sampler) {
     SInfo("SamplerIntegrator::preprocess: Start preprocessing.");
   }

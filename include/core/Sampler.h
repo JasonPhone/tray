@@ -50,7 +50,7 @@ class Sampler {
 
  protected:
   std::vector<int> m_1D_array_sizes, m_2D_array_sizes;
-  // Layout: m_sample_1D_array[this_arr_size][this_arr_size * m_spp].
+  // Layout: m_sample_1D_array[this_arr_index][this_arr_size * m_spp].
   // 2D layout in each array. Dimension goes first.
   std::vector<std::vector<Float>> m_sample_1D_array;
   std::vector<std::vector<Point2f>> m_sample_2D_array;
