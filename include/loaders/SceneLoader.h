@@ -10,6 +10,7 @@ class SceneLoader {
   SceneLoader(const char* path) : m_file_path(path) {}
   std::shared_ptr<Scene> get_scene() const { return m_scene; }
   std::shared_ptr<Integrator> get_integrator() const { return m_integrator; }
+  std::shared_ptr<Camera> get_camera() const { return m_camera; }
   Point2i get_resulotion() const { return Point2i(m_width, m_height); }
   bool load() { return reload(); }
   bool reload();
@@ -33,6 +34,8 @@ class SceneLoader {
   std::map<std::string, std::shared_ptr<Material>> materials;
   std::map<std::string, std::shared_ptr<VEC_OF_SHARED(Shape)>> shapes;
   std::map<std::string, std::shared_ptr<VEC_OF_SHARED(DiffuseAreaLight)>> dalights;
+  std::map<std::string, std::shared_ptr<VEC_OF_SHARED(DistantLight)>> dlights;
+  std::map<std::string, std::shared_ptr<VEC_OF_SHARED(Light)>> lights;
 #undef VEC_OF_SHARED
 
   using json = nlohmann::json;

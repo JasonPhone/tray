@@ -6,7 +6,7 @@ namespace TRay {
 class Integrator {
  public:
   virtual ~Integrator() {}
-  virtual void render(const Scene &scene, uint8_t *dst = nullptr) = 0;
+  virtual void render(const Scene &scene) = 0;
 };
 
 class SamplerIntegrator : public Integrator {
@@ -14,7 +14,7 @@ class SamplerIntegrator : public Integrator {
   SamplerIntegrator(std::shared_ptr<const Camera> &camera,
                     std::shared_ptr<Sampler> &sampler)
       : m_camera(camera), m_sampler(sampler) {}
-  void render(const Scene &scene, uint8_t *dst) override;
+  void render(const Scene &scene) override;
   virtual void preprocess(const Scene &scene, Sampler &sampler) {
     SInfo("SamplerIntegrator::preprocess: Start preprocessing.");
   }

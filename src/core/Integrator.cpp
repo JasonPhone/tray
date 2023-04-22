@@ -10,7 +10,7 @@
 #include "core/math/sampling.h"
 
 namespace TRay {
-void SamplerIntegrator::render(const Scene &scene, uint8_t *dst) {
+void SamplerIntegrator::render(const Scene &scene) {
   SInfo("SamplerIntegrator::render: Start rendering.");
   preprocess(scene, *m_sampler);
   // Render.
@@ -23,6 +23,18 @@ void SamplerIntegrator::render(const Scene &scene, uint8_t *dst) {
                   (sample_extent.y + tile_size - 1) / tile_size);
   SInfo("SampleIntegrator::render:\n\tSample bound: " + sample_bound.to_string());
   // Iteration.
+  /**
+   * For every tile:
+   *   Get the tile coords.
+   *   Compute the tile extent.
+   *   Get the FilmTile.
+   *   Loop over pixels in this tile.
+   *     Loop over samples in this pixel.
+   *       Generate camera sample.
+   *       Get the Li.
+   *       Add Li to FilmTile.
+   *   Merge the FilmTile.
+   */
   auto per_tile = [&](Point2i tile) {
     // Memory allocation.
     // TODO MemoryPool
@@ -85,7 +97,6 @@ void SamplerIntegrator::render(const Scene &scene, uint8_t *dst) {
   // Write to file.
   // --------------
   SInfo("SamplerIntegrator::render: Done rendering.");
-  m_camera->m_film->write_image(1.0, dst);
 }
 Spectrum SamplerIntegrator::specular_reflect(const Ray &ray,
                                              const SurfaceInteraction &si,
