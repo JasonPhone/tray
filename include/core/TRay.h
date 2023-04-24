@@ -206,6 +206,11 @@ static constexpr Float SQRT2 = 1.41421356237309504880;
 
 // Math functions.
 // ---------------
+template <typename T>
+inline T mod(T a, T b) {
+  T result = a - (a / b) * b;
+  return T((result < 0) ? result + b : result);
+}
 inline Float lerp(Float a, Float b, Float t) { return (1 - t) * a + t * b; }
 template <typename T, typename U, typename V>
 inline T clamp(T val, U low, V high) {
