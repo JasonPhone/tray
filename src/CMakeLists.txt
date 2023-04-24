@@ -84,6 +84,9 @@ add_library(TRay_loader
 
   ${SOURCE_DIR}/integrators/PathIntegrator.cpp
 
+  ${SOURCE_DIR}/samplers/StratifiedSampler.cpp
+  ${SOURCE_DIR}/samplers/HaltonSampler.cpp
+
   ${SOURCE_DIR}/cameras/PerspectiveCamera.cpp
 
   ${SOURCE_DIR}/shapes/Sphere.cpp
