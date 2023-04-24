@@ -146,14 +146,14 @@ bool GlobalSampler::set_sample_index(int64_t idx) {
 
 Float GlobalSampler::sample_1D() {
   // Skip dimensions for the arrays.
-  if (m_dimension >= m_idx_array_start_dim && m_dimension < m_idx_array_end_dim)
+  if (m_idx_array_start_dim <= m_dimension && m_dimension < m_idx_array_end_dim)
     m_dimension = m_idx_array_end_dim;
   return value_by_dimension(m_global_idx_current_sample, m_dimension++);
 }
 Point2f GlobalSampler::sample_2D() {
   // Skip dimensions for the arrays.
   // m_dimension here is for first of the two.
-  if (m_dimension + 1 >= m_idx_array_start_dim &&
+  if (m_idx_array_start_dim <= m_dimension + 1 &&
       m_dimension < m_idx_array_end_dim)
     m_dimension = m_idx_array_end_dim;
   Float x = value_by_dimension(m_global_idx_current_sample, m_dimension);
