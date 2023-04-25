@@ -242,6 +242,33 @@ inline bool solve_quadratic(Float a, Float b, Float c, Float *t0, Float *t1) {
 
 // Other inlines.
 // --------------
+/// @brief Count trailing zeros.
+inline int ctz(uint32_t v) { return __builtin_ctz(v); }
+/// @brief Get the smallest power of 2 non-less than @param v.
+inline int32_t pow2_ceil(int32_t v) {
+  v--;
+  // Make all ones.
+  v |= v >> 1;
+  v |= v >> 2;
+  v |= v >> 4;
+  v |= v >> 8;
+  v |= v >> 16;
+  return v + 1;
+}
+inline int64_t pow2_ceil(int64_t v) {
+  v--;
+  v |= v >> 1;
+  v |= v >> 2;
+  v |= v >> 4;
+  v |= v >> 8;
+  v |= v >> 16;
+  v |= v >> 32;
+  return v + 1;
+}
+template <typename T>
+inline constexpr bool is_pow2(T v) {
+  return v && !(v & (v - 1));
+}
 /// @brief gamma correction for color value.
 inline Float gamma_correct(Float value) {
   if (value <= 0.0031308f) return 12.92f * value;
