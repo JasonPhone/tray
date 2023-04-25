@@ -9,7 +9,6 @@ void ZeroTwoSampler::start_pixel(const Point2i &p) {
   // 2D
   for (size_t i = 0; i < m_sample_2D.size(); i++)
     fill_Sobol_2D(1, m_spp, &m_sample_2D[i][0], m_rng);
-
   // 1D array
   for (size_t i = 0; i < m_1D_array_sizes.size(); i++)
     fill_VDCorput_1D(m_1D_array_sizes[i], m_spp, &m_sample_1D_array[i][0],

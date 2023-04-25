@@ -8,7 +8,7 @@ class HaltonSampler : public GlobalSampler {
   /// @param spp Sample per pixel.
   /// @param sample_bound Bound to be sampled, Film::sample_bound().
   HaltonSampler(int spp, const Bound2i &sample_bound);
-  int64_t global_index(int64_t native_index) const override;
+  int64_t global_index(int64_t local_index) const override;
   Float value_by_dimension(int64_t global_idx_sample,
                                    int idx_dim) const override;
   std::unique_ptr<Sampler> clone(int seed) const override;

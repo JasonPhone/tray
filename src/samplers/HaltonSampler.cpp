@@ -49,7 +49,7 @@ HaltonSampler::HaltonSampler(int spp, const Bound2i &sample_bound)
                     spp, sample_bound.to_string().c_str(), m_scale_ceil[0],
                     m_scale_ceil[1], m_sample_stride));
 }
-int64_t HaltonSampler::global_index(int64_t native_index) const {
+int64_t HaltonSampler::global_index(int64_t local_index) const {
   if (m_current_pixel != m_offset_pixel) {
     /**
      * X = i mod 2^m_scale_expo[0]
@@ -71,7 +71,7 @@ int64_t HaltonSampler::global_index(int64_t native_index) const {
     }
     m_offset_pixel = m_current_pixel;
   }
-  return m_offset_global_idx + native_index * m_sample_stride;
+  return m_offset_global_idx + local_index * m_sample_stride;
 }
 Float HaltonSampler::value_by_dimension(int64_t global_idx_sample,
                                         int idx_dim) const {

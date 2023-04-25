@@ -96,7 +96,7 @@ class GlobalSampler : public Sampler {
   GlobalSampler(int64_t samples_per_pixel);
   /// @brief Get the global index of sample vector based on current pixel and
   ///        sample index in this pixel.
-  virtual int64_t global_index(int64_t native_index) const = 0;
+  virtual int64_t global_index(int64_t local_index) const = 0;
   /// @brief Get the component value of sample vector of given global index and
   ///        dimension index.
   /// @param global_idx_sample Global index of sample. Start from 0.
