@@ -239,11 +239,6 @@ inline bool solve_quadratic(Float a, Float b, Float c, Float *t0, Float *t1) {
   if (*t0 > *t1) std::swap(*t0, *t1);
   return true;
 }
-
-// Other inlines.
-// --------------
-/// @brief Count trailing zeros.
-inline int ctz(uint32_t v) { return __builtin_ctz(v); }
 /// @brief Get the smallest power of 2 non-less than @param v.
 inline int32_t pow2_ceil(int32_t v) {
   v--;
@@ -269,6 +264,13 @@ template <typename T>
 inline constexpr bool is_pow2(T v) {
   return v && !(v & (v - 1));
 }
+/// @brief Integer floor of log2( @param v )
+inline int log2_int(uint32_t v) { return 31 - __builtin_clz(v); }
+
+// Other inlines.
+// --------------
+/// @brief Count trailing zeros.
+inline int ctz(uint32_t v) { return __builtin_ctz(v); }
 /// @brief gamma correction for color value.
 inline Float gamma_correct(Float value) {
   if (value <= 0.0031308f) return 12.92f * value;

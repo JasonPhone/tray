@@ -3,3 +3,4 @@
 #include "samplers/RandomSampler.h"
 #include "samplers/HaltonSampler.h"
 #include "samplers/ZeroTwoSampler.h"
+#include "samplers/MaxMinDisSampler.h"

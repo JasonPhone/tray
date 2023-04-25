@@ -132,4 +132,5 @@ inline void fill_Sobol_2D(int n_sub_samples, int n_pxl_samples,
     shuffle(sample_values + i * n_sub_samples, n_sub_samples, 1, rng);
   shuffle(sample_values, n_pxl_samples, n_sub_samples, rng);
 }
+extern uint32_t CMaxMinDis[17][32];
 }  // namespace TRay

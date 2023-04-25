@@ -41,6 +41,7 @@ add_library(TRay_sampler
   ${SOURCE_DIR}/samplers/StratifiedSampler.cpp
   ${SOURCE_DIR}/samplers/HaltonSampler.cpp
   ${SOURCE_DIR}/samplers/ZeroTwoSampler.cpp
+  ${SOURCE_DIR}/samplers/MaxMinDisSampler.cpp
 )
 add_library(TRay_material
   STATIC
