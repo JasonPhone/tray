@@ -36,12 +36,15 @@ add_library(TRay_camera
 add_library(TRay_sampler
   STATIC
   ${SOURCE_DIR}/core/Sampler.cpp
+  ${SOURCE_DIR}/core/math/sampling.cpp
   ${SOURCE_DIR}/core/math/lowdiscrepancy.cpp
+  ${SOURCE_DIR}/core/math/SobolMatrices.cpp
 
   ${SOURCE_DIR}/samplers/StratifiedSampler.cpp
   ${SOURCE_DIR}/samplers/HaltonSampler.cpp
   ${SOURCE_DIR}/samplers/ZeroTwoSampler.cpp
   ${SOURCE_DIR}/samplers/MaxMinDisSampler.cpp
+  ${SOURCE_DIR}/samplers/SobolSampler.cpp
 )
 add_library(TRay_material
   STATIC
