@@ -266,6 +266,69 @@ inline constexpr bool is_pow2(T v) {
 }
 /// @brief Integer floor of log2( @param v )
 inline int log2_int(uint32_t v) { return 31 - __builtin_clz(v); }
+inline uint32_t float_to_bits(float f) {
+  uint32_t ui;
+  memcpy(&ui, &f, sizeof(float));
+  return ui;
+}
+inline float bits_to_float(uint32_t ui) {
+  float f;
+  memcpy(&f, &ui, sizeof(uint32_t));
+  return f;
+}
+inline uint64_t float_to_bits(double f) {
+  uint64_t ui;
+  memcpy(&ui, &f, sizeof(double));
+  return ui;
+}
+inline double bits_to_float(uint64_t ui) {
+  double f;
+  memcpy(&f, &ui, sizeof(uint64_t));
+  return f;
+}
+inline float next_float_up(float v) {
+  // Handle infinity and negative zero for _NextFloatUp()_
+  if (std::isinf(v) && v > 0.) return v;
+  if (v == -0.f) v = 0.f;
+  // Advance _v_ to next higher float
+  uint32_t ui = float_to_bits(v);
+  if (v >= 0)
+    ++ui;
+  else
+    --ui;
+  return bits_to_float(ui);
+}
+inline float next_float_down(float v) {
+  // Handle infinity and positive zero for _NextFloatDown()_
+  if (std::isinf(v) && v < 0.) return v;
+  if (v == 0.f) v = -0.f;
+  uint32_t ui = float_to_bits(v);
+  if (v > 0)
+    --ui;
+  else
+    ++ui;
+  return bits_to_float(ui);
+}
+inline double next_float_up(double v, int delta = 1) {
+  if (std::isinf(v) && v > 0.) return v;
+  if (v == -0.f) v = 0.f;
+  uint64_t ui = float_to_bits(v);
+  if (v >= 0.)
+    ui += delta;
+  else
+    ui -= delta;
+  return bits_to_float(ui);
+}
+inline double next_float_down(double v, int delta = 1) {
+  if (std::isinf(v) && v < 0.) return v;
+  if (v == 0.f) v = -0.f;
+  uint64_t ui = float_to_bits(v);
+  if (v > 0.)
+    ui -= delta;
+  else
+    ui += delta;
+  return bits_to_float(ui);
+}
 
 // Other inlines.
 // --------------

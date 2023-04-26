@@ -30,8 +30,6 @@ class Sphere : public Shape {
   Bound3f object_bound() const override;
   bool intersect(const Ray &ray, Float *thit, SurfaceInteraction *si,
                  bool test_alpha_texture = true) const override;
-  bool intersect_test(const Ray &ray,
-                      bool test_alpha_texture = true) const override;
   Interaction sample_surface(const Point2f &u,
                              Float *pdf_value = nullptr) const override;
   Interaction sample_surface(const Interaction &ref, const Point2f &u,

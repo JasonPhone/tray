@@ -38,6 +38,7 @@
 #include "core/geometry/Shape.h"
 #include "core/geometry/Transform.h"
 #include "core/geometry/Vector.h"
+#include "core/geometry/precision.h"
 
 namespace TRay {
 }  // namespace TRay
