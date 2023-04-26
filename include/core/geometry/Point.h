@@ -140,6 +140,14 @@ class Point2 {
 };
 
 template <typename T>
+inline Point3<T> abs(const Point3<T> &v) {
+  return Point3<T>(std::abs(v.x), std::abs(v.y), std::abs(v.z));
+}
+template <typename T>
+inline Point2<T> abs(const Point2<T> &v) {
+  return Point2<T>(std::abs(v.x), std::abs(v.y));
+}
+template <typename T>
 inline Float distance(const Point3<T> &p1, const Point3<T> &p2) {
   return (p1 - p2).length();
 }

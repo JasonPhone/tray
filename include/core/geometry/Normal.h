@@ -56,6 +56,10 @@ class Normal3 {
 
 /// @brief Normal3 inlines.
 template <typename T>
+inline Normal3<T> abs(const Normal3<T> &v) {
+  return Normal3<T>(std::abs(v.x), std::abs(v.y), std::abs(v.z));
+}
+template <typename T>
 inline T dot(const Normal3<T> &u, const Normal3<T> &v) {
   return u.x * v.x + u.y * v.y + u.z * v.z;
 }

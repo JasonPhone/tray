@@ -4,3 +4,4 @@
 #include "samplers/HaltonSampler.h"
 #include "samplers/ZeroTwoSampler.h"
 #include "samplers/MaxMinDisSampler.h"
+#include "samplers/SobolSampler.h"

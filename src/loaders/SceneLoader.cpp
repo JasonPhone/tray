@@ -56,6 +56,7 @@ bool SceneLoader::reload() {
   // Load json.
   // ----------
   json scene_file = json::parse(f);
+  f.close();
   if (!scene_file.is_object()) {
     SError("TRay::scene_from_json: Not an object in scene file" + m_file_path);
     return false;
@@ -212,6 +213,12 @@ bool SceneLoader::do_materials(const json &scene_file) {
       std::shared_ptr<MatteMaterial> matt = nullptr;
       matt = std::make_shared<MatteMaterial>(spectrum_textures[diffuse],
                                              float_textures[sigma]);
+      materials[name] = matt;
+      SInfo("Got Material " + name + " with:\n\ttype " + tp);
+    } else if (tp == Val::MirrorMaterial) {
+      std::string diffuse = mat[Key::Diffuse].get<std::string>();
+      std::shared_ptr<MirrorMaterial> matt = nullptr;
+      matt = std::make_shared<MirrorMaterial>(spectrum_textures[diffuse]);
       materials[name] = matt;
       SInfo("Got Material " + name + " with:\n\ttype " + tp);
     } else {
@@ -463,18 +470,63 @@ bool SceneLoader::do_sampler(const json &sampler_file) {
     bool jitter = sampler_file[Key::Jitter].get<bool>();
     m_sampler = std::make_shared<StratifiedSampler>(
         StratifiedSampler{int(sppx), int(sppy), int(sdim), jitter});
-    SInfo("Got StratifiedCamera with:" +
-          string_format("\n\tspp x %d, y %d", sppx, sppy) +
-          string_format("\n\tdim %d", sdim) +
-          string_format("\n\tjitter %d", jitter));
+    SInfo(
+        string_format("Got StratifiedSampler with:"
+                      "\n\tspp x %d, y %d"
+                      "\n\tdim %d"
+                      "\n\tjitter %d",
+                      int(sppx), int(sppy), int(sdim), jitter));
   } else if (sam_type == Val::RandomSampler) {
     Float spp = 0, sdim = 0;
     get_float(sampler_file[Key::SamplePerPixel], &spp);
     get_float(sampler_file[Key::SampleDimension], &sdim);
     m_sampler =
         std::make_shared<RandomSampler>(RandomSampler{int(spp), int(sdim)});
-    SInfo("Got StratifiedCamera with:" + string_format("\n\tspp %d", spp) +
-          string_format("\n\tdim %d", sdim));
+    SInfo(
+        string_format("Got RandomSampler with:"
+                      "\n\tspp %d"
+                      "\n\tdim %d",
+                      int(spp), int(sdim)));
+  } else if (sam_type == Val::HaltonSampler) {
+    Float spp = 0;
+    get_float(sampler_file[Key::SamplePerPixel], &spp);
+    m_sampler = std::make_shared<HaltonSampler>(
+        HaltonSampler{int(spp), m_camera->m_film->sample_bound()});
+    SInfo(
+        string_format("Got HaltonSampler with:"
+                      "\n\tspp %d",
+                      int(spp)));
+  } else if (sam_type == Val::ZeroTwoSampler) {
+    Float spp = 0, sdim = 0;
+    get_float(sampler_file[Key::SamplePerPixel], &spp);
+    get_float(sampler_file[Key::SampleDimension], &sdim);
+    m_sampler =
+        std::make_shared<ZeroTwoSampler>(ZeroTwoSampler{int(spp), int(sdim)});
+    SInfo(
+        string_format("Got ZeroTwoSampler with:"
+                      "\n\tspp %d"
+                      "\n\tdim %d",
+                      int(spp), int(sdim)));
+  } else if (sam_type == Val::MaxMinDisSampler) {
+    Float spp = 0, sdim = 0;
+    get_float(sampler_file[Key::SamplePerPixel], &spp);
+    get_float(sampler_file[Key::SampleDimension], &sdim);
+    m_sampler = std::make_shared<MaxMinDisSampler>(
+        MaxMinDisSampler{int(spp), int(sdim)});
+    SInfo(
+        string_format("Got MaxMinDisSampler with:"
+                      "\n\tspp %d"
+                      "\n\tdim %d",
+                      int(spp), int(sdim)));
+  } else if (sam_type == Val::SobolSampler) {
+    Float spp = 0;
+    get_float(sampler_file[Key::SamplePerPixel], &spp);
+    m_sampler = std::make_shared<SobolSampler>(
+        SobolSampler{int(spp), m_camera->m_film->sample_bound()});
+    SInfo(
+        string_format("Got SobolSampler with:"
+                      "\n\tspp %d",
+                      int(spp)));
   } else {
     SWarn("Unknown Sampler type " + sam_type);
     return false;
@@ -491,6 +543,20 @@ bool SceneLoader::do_integrator(const json &integrator_file) {
     m_integrator = std::make_shared<PathIntegrator>(
         PathIntegrator{max_depth, m_camera, m_sampler});
     SInfo("Got PathIntegrator with:\n\tmax depth " +
+          string_format("%d", max_depth));
+  } else if (itr_type == Val::DirectIntegrator) {
+    int max_depth = 0;
+    max_depth = integrator_file[Key::MaxDepth].get<int>();
+    m_integrator = std::make_shared<DirectIntegrator>(
+        DirectIntegrator{LightSample::UNIFORM_ALL, max_depth, m_camera, m_sampler});
+    SInfo("Got DirectIntegrator (UNIFORM_ALL) with:\n\tmax depth " +
+          string_format("%d", max_depth));
+  } else if (itr_type == Val::WhittedIntegrator) {
+    int max_depth = 0;
+    max_depth = integrator_file[Key::MaxDepth].get<int>();
+    m_integrator = std::make_shared<WhittedIntegrator>(
+        WhittedIntegrator{max_depth, m_camera, m_sampler});
+    SInfo("Got WhittedIntegrator with:\n\tmax depth " +
           string_format("%d", max_depth));
   } else {
     SWarn("Unknown Sampler type " + itr_type);

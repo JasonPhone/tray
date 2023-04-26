@@ -158,6 +158,8 @@ inline uint64_t SobolIntervalToIndex(const uint32_t expo, uint64_t local_idx,
   return index;
 }
 
+inline float sample_Sobol_float(int64_t a, int dimension, uint32_t scramble);
+inline float sample_Sobol_double(int64_t a, int dimension, uint32_t scramble);
 inline Float sample_Sobol(int64_t global_index, int dimension,
                           uint64_t scramble = 0) {
 #ifdef TRAY_FLOAT_AS_DOUBLE

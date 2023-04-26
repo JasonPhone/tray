@@ -23,6 +23,7 @@ add_library(TRay_primitive
   STATIC
   ${SOURCE_DIR}/core/primitives/GeometricPrimitive.cpp
   ${SOURCE_DIR}/core/primitives/Aggregate.cpp
+
   ${SOURCE_DIR}/accelerators/LinearAccel.cpp
 )
 add_library(TRay_camera
@@ -85,18 +86,18 @@ add_library(TRay_integrator
 )
 add_library(TRay_loader
   STATIC
-  ${SOURCE_DIR}/filters/BoxFilter.cpp
-
-  ${SOURCE_DIR}/integrators/PathIntegrator.cpp
-
-  ${SOURCE_DIR}/samplers/StratifiedSampler.cpp
-  ${SOURCE_DIR}/samplers/HaltonSampler.cpp
-
-  ${SOURCE_DIR}/cameras/PerspectiveCamera.cpp
-
-  ${SOURCE_DIR}/shapes/Sphere.cpp
-  ${SOURCE_DIR}/shapes/TriangleMesh.cpp
-
   ${SOURCE_DIR}/loaders/meshloading.cpp
   ${SOURCE_DIR}/loaders/SceneLoader.cpp
+)
+target_link_libraries(TRay_loader PRIVATE
+  TRay_geometry
+  TRay_shape
+  TRay_primitive
+  TRay_camera
+  TRay_sampler
+  TRay_material
+  TRay_texture
+  TRay_light
+  TRay_scene
+  TRay_integrator
 )

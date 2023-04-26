@@ -14,16 +14,14 @@ Bound3f LinearAccel::world_bound() const { return m_world_bound; }
 bool LinearAccel::intersect(const Ray &ray, SurfaceInteraction *si) const {
   bool hitted = false;
   for (const auto &prim : m_primitives)
-    if (
-      prim->world_bound().intersect_test(ray, nullptr, nullptr) &&
+    if (prim->world_bound().intersect_test(ray, nullptr, nullptr) &&
         prim->intersect(ray, si))
       hitted = true;
   return hitted;
 }
 bool LinearAccel::intersect_test(const Ray &ray) const {
   for (const auto &prim : m_primitives) {
-    if (
-      prim->world_bound().intersect_test(ray, nullptr, nullptr) &&
+    if (prim->world_bound().intersect_test(ray, nullptr, nullptr) &&
         prim->intersect_test(ray))
       return true;
   }

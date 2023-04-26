@@ -8,6 +8,8 @@ Scene::Scene(std::shared_ptr<Primitive> aggregate,
   SInfo("Scene:: Created scene with" +
         string_format("\n\t%d lights", (int)lights.size()));
   m_world_bound = aggregate->world_bound();
+  m_world_bound.p_min -= Vector3f(10, 10, 10);
+  m_world_bound.p_max += Vector3f(10, 10, 10);
   for (const auto &light : lights) {
     light->preprocess(*this);
     if (light->m_type & LIGHT_INFINITE) {

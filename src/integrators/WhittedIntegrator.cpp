@@ -36,7 +36,7 @@ Spectrum WhittedIntegrator::Li(const Ray &ray, const Scene &scene,
   for (const auto &light : scene.m_lights) {
     // Normalized, from interaction point to point on light.
     Vector3f wi;
-    Float pdf;
+    Float pdf = 0;
     VisibilityTester visibility;
     // Li assuming no occlusion.
     Spectrum Li =

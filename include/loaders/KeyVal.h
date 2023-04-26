@@ -85,6 +85,7 @@ const std::string Spectrum = "spectrum";
 const std::string Float = "float";
 // Materials.
 const std::string MatteMaterial = "matte";
+const std::string MirrorMaterial = "mirror";
 // Shapes.
 const std::string Sphere = "sphere";
 const std::string MeshPlain = "mesh_plain";
@@ -109,6 +110,8 @@ const std::string MaxMinDisSampler = "max_min_distance";
 const std::string SobolSampler = "sobol";
 // Integrator
 const std::string PathIntegrator = "path";
+const std::string DirectIntegrator = "direct";
+const std::string WhittedIntegrator = "whitted";
 
 }  // namespace Val
 }  // namespace TRay

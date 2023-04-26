@@ -21,7 +21,7 @@ Point2f disk_concentric_sample(const Point2f &u) {
   // Handle degeneracy at the origin.
   if (u_offset[0] == 0 && u_offset[1] == 0) return Point2f(0, 0);
   // Concentric map to point.
-  Float theta, r;
+  Float theta = 0, r = 0;
   if (std::abs(u_offset[0]) > std::abs(u_offset[1])) {
     r = u_offset[0];
     theta = PI_DIV_4 * (u_offset[1] / u_offset[0]);
@@ -33,27 +33,27 @@ Point2f disk_concentric_sample(const Point2f &u) {
 }
 Vector3f hemisphere_uniform_sample(const Point2f &u) {
   Float z = u[0];
-  Float r = std::sqrt(std::max((Float)0, (Float)1. - z * z));
+  Float r = std::sqrt(std::max(Float(0), Float(1.0 - z * z)));
   Float phi = 2 * PI * u[1];
   return Vector3f(r * std::cos(phi), r * std::sin(phi), z);
 }
 Float hemisphere_uniform_pdf() { return PI_INV2; }
 Vector3f hemisphere_cosine_sample(const Point2f &u) {
   Point2f d = disk_concentric_sample(u);
-  Float z = std::sqrt(std::max((Float)0, 1 - d.x * d.x - d.y * d.y));
+  Float z = std::sqrt(std::max(0.0, 1.0 - d.x * d.x - d.y * d.y));
   return Vector3f(d.x, d.y, z);
 }
 Float hemisphere_cosine_pdf(Float cos_theta) { return cos_theta * PI_INV; }
 Vector3f sphere_uniform_sample(const Point2f &u) {
-  Float z = 1 - 2 * u.x;
-  Float r = std::sqrt(std::max((Float)0, (Float)1 - z * z));
-  Float phi = 2 * PI * u.y;
+  Float z = 1 - 2 * u[0];
+  Float r = std::sqrt(std::max(Float(0), Float(1.0 - z * z)));
+  Float phi = 2 * PI * u[1];
   return Vector3f(r * std::cos(phi), r * std::sin(phi), z);
 }
 Float sphere_uniform_pdf() { return PI_INV4; }
 Vector3f cone_uniform_sample(const Point2f &u, Float cos_theta_range) {
-  Float cos_theta = lerp(cos_theta_range, 1.f, u[0]);
-  Float sin_theta = std::sqrt((Float)1 - cos_theta * cos_theta);
+  Float cos_theta = lerp(cos_theta_range, 1.0, u[0]);
+  Float sin_theta = std::sqrt(1.0 - cos_theta * cos_theta);
   Float phi = u[1] * 2 * PI;
   return Vector3f(std::cos(phi) * sin_theta, std::sin(phi) * sin_theta,
                   cos_theta);
