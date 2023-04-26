@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.5.0)
 
-project("TRay")
+project("TRay"
+  LANGUAGES CXX
+  DESCRIPTION "This is TRay."
+)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin/)
 
@@ -11,9 +14,17 @@ add_executable(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
   "${CMAKE_SOURCE_DIR}/lib/libglfw3.a"
-  # tiny_obj_loader
-  # TRay_geometry
-  # TRay_shapes
+  TRay_geometry
+  TRay_shape
+  TRay_primitive
+  TRay_camera
+  TRay_sampler
+  TRay_material
+  TRay_texture
+  TRay_light
+  TRay_scene
+  TRay_integrator
+  TRay_loader
 )
 
 # Copy assimp dll into this folder
