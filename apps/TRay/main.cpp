@@ -162,10 +162,13 @@ int main(int argc, char* argv[]) {
   glBindVertexArray(0);
 
   // render loop
+  GLuint texture0 = 0;
+  int logo_w, logo_h, nchnl = 0;
+  uint8_t* logo = stbi_load("./logo.jpg", &logo_w, &logo_h, &nchnl, 3);
+  image_w = logo_w, image_h = logo_h;
+  texture0 = create_texture(logo, logo_w, logo_h);
   shader.use();
   shader.set_int("texture0", 0);
-  GLuint texture0 = 0;
-  texture0 = create_texture(image, image_w, image_h);
 
   printf("main loop\n");
   // Main loop
@@ -237,6 +240,8 @@ int main(int argc, char* argv[]) {
           file_loaded = open_scene_file(file_path.c_str());
           rendering = false;
           done_rendering = false;
+          glDeleteTextures(1, &texture0);
+          texture0 = create_texture(logo, logo_w, logo_h);
         }
       }
       ImGui::SameLine();
@@ -249,7 +254,9 @@ int main(int argc, char* argv[]) {
         ImGui::Text("No active scene file.");
       }
       // Render.
-      if (ImGui::Button("Render")) rendering = !rendering;
+      if (ImGui::Button("Render")) {
+        if (file_loaded) rendering = !rendering;
+      }
       ImGui::SameLine();
       if (done_rendering) {
         ImGui::Text("Done.");
@@ -261,11 +268,13 @@ int main(int argc, char* argv[]) {
 
       // Export image.
       if (ImGui::Button("Export")) {
-        save_image();
+        if (rendering || done_rendering) save_image();
       }
       ImGui::SameLine();
-      if (sloader.get_camera()) {
+      if (file_loaded) {
         ImGui::Text("%s", sloader.get_camera()->m_film->m_filename.c_str());
+      } else {
+        ImGui::Text("Load a scene file to configure the scene.");
       }
 
       ImGui::Text("%.3f ms/frame (%.1f FPS)",
