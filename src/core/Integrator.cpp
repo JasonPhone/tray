@@ -118,7 +118,7 @@ void SamplerIntegrator::render(const Scene &scene) {
  *  all-finished flag.
  *  The move sematics of Film::merge_tile. It should be changed.
  */
-void SamplerIntegrator::render_step(const Scene &scene) {
+bool SamplerIntegrator::render_step(const Scene &scene) {
   if (m_tiles.empty()) {
     SInfo("SamplerIntegrator::render_step: Empty tile list, preprocessing.");
     preprocess(scene, *m_sampler);
@@ -126,7 +126,7 @@ void SamplerIntegrator::render_step(const Scene &scene) {
     // Number of tiles.
     Bound2i sample_bound = m_camera->m_film->sample_bound();
     Vector2i sample_extent = sample_bound.diagonal();
-    const int tile_size = 16;
+    const int tile_size = 4;
     Point2i n_tiles((sample_extent.x + tile_size - 1) / tile_size,
                     (sample_extent.y + tile_size - 1) / tile_size);
     SInfo("SampleIntegrator::render_step:\n\tSample bound: " +
@@ -149,11 +149,15 @@ void SamplerIntegrator::render_step(const Scene &scene) {
             TileUnit{tile_sampler, film_tile, tile_bound, *this, scene});
       }
     SInfo(string_format("Generated %d tiles.", int(m_tiles.size())));
+    return false;
   } else {
+    bool done = true;
     for (auto &tile : m_tiles) {
       if (tile.tile_done) continue;
       tile.render_one_sample();
+      done = false;
     }
+    return done;
   }
 }
 Spectrum SamplerIntegrator::specular_reflect(const Ray &ray,
