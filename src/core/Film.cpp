@@ -71,6 +71,17 @@ void Film::merge_tile(std::unique_ptr<FilmTile> tile) {
     dst_pxl.filter_weight_sum += tile_pxl.filter_weight_sum;
   }
 }
+void Film::merge_tile(FilmTile &tile) {
+  Bound2iIterator pxl_range(tile.tile_bound());
+  for (const Point2i &pxl_pos : pxl_range) {
+    const FilmTilePixel &tile_pxl = tile.pixel(pxl_pos);
+    Pixel &dst_pxl = this->pixel(pxl_pos);
+    dst_pxl.rgb[0] += tile_pxl.contrib_sum[0];
+    dst_pxl.rgb[1] += tile_pxl.contrib_sum[1];
+    dst_pxl.rgb[2] += tile_pxl.contrib_sum[2];
+    dst_pxl.filter_weight_sum += tile_pxl.filter_weight_sum;
+  }
+}
 void Film::set_image(const Spectrum *colors) {
   int n_pixels = m_cropped_pixel_bound.area();
   for (int i = 0; i < n_pixels; i++) {
@@ -83,7 +94,6 @@ void Film::set_image(const Spectrum *colors) {
 }
 void Film::write_image(Float, uint8_t *dst) {
   ASSERT(dst != nullptr);
-  SInfo("Film::write_image: Writing to uint8 array.");
   int offset = 0;
   const Bound2i &bound = m_cropped_pixel_bound;
   std::unique_ptr<Float[]> rgb_arr(new Float[bound.area() * 3]);
@@ -107,8 +117,6 @@ void Film::write_image(Float, uint8_t *dst) {
   // image_to_array(&rgb_arr[0], dst, bound.diagonal().x, bound.diagonal().y);
   Float *src = &rgb_arr[0];
   int width = bound.diagonal().x, height = bound.diagonal().y;
-  PEEK(width);
-  PEEK(height);
   for (int y = 0; y < height; y++) {
     for (int x = 0; x < width; x++) {
 // Gamma correction and scale to [0, 255].

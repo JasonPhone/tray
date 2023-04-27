@@ -38,6 +38,7 @@ class Film {
   /// @brief Merge this tile into the film.
   ///        Note that the ownership is transferred.
   void merge_tile(std::unique_ptr<FilmTile> tile);
+  void merge_tile(FilmTile &tile);
   /// @brief Set the whole (cropped) image.
   /// @param colors Spectrum array. The size should be equal to image area.
   void set_image(const Spectrum *colors);

@@ -32,7 +32,7 @@ void get_float(const json &js, Float *x) {
 }
 
 namespace TRay {
-bool SceneLoader::reload() {
+bool SceneLoader::reload(const char* path) {
   // Clean.
   // ------
   transforms.clear();
@@ -48,6 +48,7 @@ bool SceneLoader::reload() {
 
   // Check.
   // ------
+  m_file_path = std::string(path);
   std::ifstream f(m_file_path);
   if (!f) {
     SError("TRay::scene_from_json: Failed to open scene file " + m_file_path);

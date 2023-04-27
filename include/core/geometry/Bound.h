@@ -74,8 +74,7 @@ class Bound3 {
   // bool intersect_test(const Ray &ray, const Vector3f &inv_dir,
   //                     const int dir_is_neg[3]) const;
   std::string to_string() const {
-    return " {" + p_min.to_string() + ", " + p_max.to_string() +
-                         "} ";
+    return " {" + p_min.to_string() + ", " + p_max.to_string() + "} ";
   }
 
   Point3<T> p_min, p_max;
@@ -163,11 +162,14 @@ class Bound2iIterator {
   Point2i operator*() const;
   Bound2iIterator begin() const;
   Bound2iIterator end() const;
+  std::string to_string() const {
+    return "pos " + pos.to_string() + ", bound " + bound.to_string();
+  }
 
  private:
   void increase();
 
-  const Bound2i &bound;
+  const Bound2i bound;
   Point2i pos;
 };
 

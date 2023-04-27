@@ -180,7 +180,10 @@ inline float sample_Sobol_float(int64_t a, int dimension, uint32_t scramble) {
 }
 inline float sample_Sobol_double(int64_t a, int dimension, uint32_t scramble) {
   if (dimension >= NSobolDimensions) {
-    SWarn("sample_Sobol_float: dimension index exceeded, zero is returned.");
+    SWarn(
+        string_format("sample_Sobol_double: dimension index %d exceeded (%d), "
+                      "zero is returned.",
+                      dimension, NSobolDimensions));
     return 0;
   }
   uint64_t result = scramble & ~-(1ll << SobolMatrixSize);

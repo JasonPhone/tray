@@ -8,12 +8,13 @@ namespace TRay {
 class SceneLoader {
  public:
   SceneLoader(const char* path) : m_file_path(path) {}
+  SceneLoader() {}
   std::shared_ptr<Scene> get_scene() const { return m_scene; }
   std::shared_ptr<Integrator> get_integrator() const { return m_integrator; }
   std::shared_ptr<Camera> get_camera() const { return m_camera; }
   Point2i get_resulotion() const { return Point2i(m_width, m_height); }
-  bool load() { return reload(); }
-  bool reload();
+  bool load(const char* path) { return reload(path); }
+  bool reload(const char* path);
 
  private:
   std::string m_file_path;
