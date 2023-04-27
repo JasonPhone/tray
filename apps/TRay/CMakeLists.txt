@@ -14,6 +14,8 @@ add_executable(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
   "${CMAKE_SOURCE_DIR}/lib/libglfw3.a"
+  imgui
+  gui
   TRay_geometry
   TRay_shape
   TRay_primitive
@@ -27,9 +29,10 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
   TRay_loader
 )
 
-# Copy assimp dll into this folder
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E copy_directory
-  "${CMAKE_SOURCE_DIR}/bin/"
-  $<TARGET_FILE_DIR:${PROJECT_NAME}>
-)
+target_link_options(${PROJECT_NAME} PRIVATE "-mwindows")
+
+# add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+# COMMAND ${CMAKE_COMMAND} -E copy_directory
+# "${CMAKE_SOURCE_DIR}/bin/"
+# $<TARGET_FILE_DIR:${PROJECT_NAME}>
+# )
