@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
 
 void render_file(const char* path) {
   SceneLoader sloader{path};
-  if (!sloader.reload()) {
+  if (!sloader.reload(path)) {
     SError("Error loading scene file " + string(path));
     return;
   }
