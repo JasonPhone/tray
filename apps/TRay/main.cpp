@@ -173,6 +173,7 @@ int main(int argc, char* argv[]) {
   bool file_opened = false;
   bool file_loaded = false;
   bool rendering = false;
+  bool done_rendering = false;
   bool m_fileDialogOpen;
   ImFileDialogInfo m_fileDialogInfo;
 
@@ -183,7 +184,9 @@ int main(int argc, char* argv[]) {
     // Update image.
     double time = glfwGetTime();
     if (rendering && time - last_render_time > 0.03) {
-      sloader.get_integrator()->render_step(*(sloader.get_scene()));
+      done_rendering =
+          sloader.get_integrator()->render_step(*(sloader.get_scene()));
+      rendering = !done_rendering;
       sloader.get_camera()->m_film->write_image(1.0, image);
       glDeleteTextures(1, &texture0);
       texture0 = create_texture(image, image_w, image_h);
@@ -209,6 +212,7 @@ int main(int argc, char* argv[]) {
       // Open file.
       if (ImGui::Button("Open")) {
         rendering = false;
+        done_rendering = false;
         // Open file callback.
         m_fileDialogOpen = true;
         m_fileDialogInfo.type = ImGuiFileDialogType_OpenFile;
@@ -232,6 +236,7 @@ int main(int argc, char* argv[]) {
         if (file_opened) {
           file_loaded = open_scene_file(file_path.c_str());
           rendering = false;
+          done_rendering = false;
         }
       }
       ImGui::SameLine();
@@ -246,10 +251,13 @@ int main(int argc, char* argv[]) {
       // Render.
       if (ImGui::Button("Render")) rendering = !rendering;
       ImGui::SameLine();
-      if (rendering)
+      if (done_rendering) {
+        ImGui::Text("Done.");
+      } else if (rendering) {
         ImGui::Text("Rendering.");
-      else
+      } else {
         ImGui::Text("Paused.");
+      }
 
       // Export image.
       if (ImGui::Button("Export")) {
