@@ -10,6 +10,7 @@
 #include "file_dialog/file_dialog.h"
 
 #include <iostream>
+#include <ctime>
 #include "core/TRay.h"
 #include "core/imageio.h"
 #include "core/geometry/geometry.h"
@@ -33,10 +34,11 @@ using namespace TRay;
 using namespace std;
 
 uint8_t image[1000 * 1000 * 3];
-const int window_w = 1280, window_h = 720;
+const int window_w = 900, window_h = 800;
 int image_w = 200, image_h = 200;
 
 double last_render_time = 0;
+double time_cost = 0;
 std::string file_path;
 SceneLoader sloader;
 void render_file(const char*);
@@ -69,7 +71,12 @@ int main(int argc, char* argv[]) {
   fill(image, image + sizeof(image), 0);
 
   if (argc > 1) {
-    for (int i = 1; i < argc; i++) render_file(argv[i]);
+    for (int i = 1; i < argc; i++) {
+      time_t st = time(NULL);
+      render_file(argv[i]);
+      time_t ed = time(NULL);
+      SInfo(string_format("Rendering done, %d seconds used.", int(ed - st)));
+    }
     return 0;
   }
   for (int i = 0; i < image_h; i++) {
@@ -189,6 +196,7 @@ int main(int argc, char* argv[]) {
     if (rendering && time - last_render_time > 0.03) {
       done_rendering =
           sloader.get_integrator()->render_step(*(sloader.get_scene()));
+      time_cost += glfwGetTime() - time;
       rendering = !done_rendering;
       sloader.get_camera()->m_film->write_image(1.0, image);
       glDeleteTextures(1, &texture0);
@@ -240,6 +248,7 @@ int main(int argc, char* argv[]) {
           file_loaded = open_scene_file(file_path.c_str());
           rendering = false;
           done_rendering = false;
+          time_cost = 0;
           glDeleteTextures(1, &texture0);
           texture0 = create_texture(logo, logo_w, logo_h);
         }
@@ -259,11 +268,11 @@ int main(int argc, char* argv[]) {
       }
       ImGui::SameLine();
       if (done_rendering) {
-        ImGui::Text("Done.");
+        ImGui::Text("Done. %.3f seconds.", time_cost);
       } else if (rendering) {
-        ImGui::Text("Rendering.");
+        ImGui::Text("Rendering. %.3f seconds.", time_cost);
       } else {
-        ImGui::Text("Paused.");
+        ImGui::Text("Paused. %.3f seconds.", time_cost);
       }
 
       // Export image.

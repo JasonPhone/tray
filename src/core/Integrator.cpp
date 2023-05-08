@@ -19,6 +19,7 @@ void SamplerIntegrator::render(const Scene &scene) {
   Bound2i sample_bound = m_camera->m_film->sample_bound();
   Vector2i sample_extent = sample_bound.diagonal();
   const int tile_size = 16;
+  int tile_cnt = 0;
   Point2i n_tiles((sample_extent.x + tile_size - 1) / tile_size,
                   (sample_extent.y + tile_size - 1) / tile_size);
   SInfo("SampleIntegrator::render:\n\tSample bound: " +
@@ -52,7 +53,9 @@ void SamplerIntegrator::render(const Scene &scene) {
     std::unique_ptr<FilmTile> film_tile =
         m_camera->m_film->get_tile(tile_bound);
     // Loop over pixels in this FilmTile.
-    SInfo("SampleIntegrator::render: \n\tBegin tile " + tile_bound.to_string());
+    SInfo(string_format("SampleIntegrator::render: %d/%d \n\tBegin tile ",
+                        tile_cnt, n_tiles.x * n_tiles.y) +
+          tile_bound.to_string());
     Bound2iIterator bound_range(tile_bound);
     for (const Point2i &pxl : bound_range) {
       // Begin for this pixel.
@@ -94,7 +97,10 @@ void SamplerIntegrator::render(const Scene &scene) {
   };
   // No parallelism by now.
   for (int y = 0; y < n_tiles.y; ++y)
-    for (int x = 0; x < n_tiles.x; ++x) per_tile(Point2i(x, y));
+    for (int x = 0; x < n_tiles.x; ++x) {
+      tile_cnt++;
+      per_tile(Point2i(x, y));
+    }
   // Write to file.
   // --------------
   SInfo("SamplerIntegrator::render: Done rendering.");
