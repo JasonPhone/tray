@@ -32,7 +32,7 @@ Film::Film(const Point2i &resolution, const Bound2f &crop_window,
   }
 }
 Bound2i Film::sample_bound() const {
-  // The 0.5 offser is to move to the center.
+  // The 0.5 offset is to move to the center.
   Bound2f bound_float(floor(Point2f(m_cropped_pixel_bound.p_min) +
                             Vector2f(0.5, 0.5) - m_filter->m_radius),
                       ceil(Point2f(m_cropped_pixel_bound.p_max) -

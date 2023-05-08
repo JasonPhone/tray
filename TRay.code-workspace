@@ -118,6 +118,7 @@
       "span": "cpp",
       "valarray": "cpp",
       "filesystem": "cpp"
-    }
+    },
+    "editor.tabSize": 2
   }
 }
