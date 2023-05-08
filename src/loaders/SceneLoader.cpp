@@ -32,7 +32,7 @@ void get_float(const json &js, Float *x) {
 }
 
 namespace TRay {
-bool SceneLoader::reload(const char* path) {
+bool SceneLoader::reload(const char *path) {
   // Clean.
   // ------
   transforms.clear();
@@ -427,7 +427,6 @@ bool SceneLoader::do_camera(const json &camera_file) {
     Float w = 0, h = 0;
     get_float(film_file[Key::Resolution], &w, &h);
     Point2i resolution{int(w), int(h)};
-    m_width = w, m_height = h;
     Point2f crop0, crop1;
     get_float(film_file[Key::Crop][0], &crop0.x, &crop0.y);
     get_float(film_file[Key::Crop][1], &crop1.x, &crop1.y);
@@ -449,6 +448,14 @@ bool SceneLoader::do_camera(const json &camera_file) {
     } else {
       SWarn("Unknown Filter type " + filter_type);
     }
+    // Screen window from full resolution.
+    Float asp = 1.0 * w / h;
+    if (asp > 1) {
+      screen = Bound2f{Point2f{-asp, -1}, Point2f{asp, 1}};
+    } else {
+      screen = Bound2f{Point2f{-1, -asp}, Point2f{1, asp}};
+    }
+
     PerspectiveCamera camera = PerspectiveCamera{
         trans->inverse(), screen, shutter0, shutter1, lensr, focald, fov, film};
     m_camera = std::make_shared<PerspectiveCamera>(camera);
@@ -548,8 +555,8 @@ bool SceneLoader::do_integrator(const json &integrator_file) {
   } else if (itr_type == Val::DirectIntegrator) {
     int max_depth = 0;
     max_depth = integrator_file[Key::MaxDepth].get<int>();
-    m_integrator = std::make_shared<DirectIntegrator>(
-        DirectIntegrator{LightSample::UNIFORM_ALL, max_depth, m_camera, m_sampler});
+    m_integrator = std::make_shared<DirectIntegrator>(DirectIntegrator{
+        LightSample::UNIFORM_ALL, max_depth, m_camera, m_sampler});
     SInfo("Got DirectIntegrator (UNIFORM_ALL) with:\n\tmax depth " +
           string_format("%d", max_depth));
   } else if (itr_type == Val::WhittedIntegrator) {

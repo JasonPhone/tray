@@ -52,8 +52,8 @@ static bool open_scene_file(const char* path) {
   file_path = path;
   bool stat = sloader.reload(path);
   if (stat) {
-    image_w = sloader.get_camera()->m_film->m_full_resolution.x;
-    image_h = sloader.get_camera()->m_film->m_full_resolution.y;
+    image_w = sloader.get_resulotion().x;
+    image_h = sloader.get_resulotion().y;
     return true;
   } else {
     SError("Error loading scene file.");
@@ -172,7 +172,6 @@ int main(int argc, char* argv[]) {
   GLuint texture0 = 0;
   int logo_w, logo_h, nchnl = 0;
   uint8_t* logo = stbi_load("./logo.jpg", &logo_w, &logo_h, &nchnl, 3);
-  image_w = logo_w, image_h = logo_h;
   texture0 = create_texture(logo, logo_w, logo_h);
   shader.use();
   shader.set_int("texture0", 0);
@@ -183,6 +182,7 @@ int main(int argc, char* argv[]) {
   bool file_opened = false;
   bool file_loaded = false;
   bool rendering = false;
+  bool show_logo = true;
   bool done_rendering = false;
   bool m_fileDialogOpen;
   ImFileDialogInfo m_fileDialogInfo;
@@ -202,6 +202,11 @@ int main(int argc, char* argv[]) {
       glDeleteTextures(1, &texture0);
       texture0 = create_texture(image, image_w, image_h);
       last_render_time = time;
+    }
+    // Logo
+    if (show_logo) {
+      glDeleteTextures(1, &texture0);
+      texture0 = create_texture(logo, logo_w, logo_h);
     }
 
     // Redraw image.
@@ -249,8 +254,7 @@ int main(int argc, char* argv[]) {
           rendering = false;
           done_rendering = false;
           time_cost = 0;
-          glDeleteTextures(1, &texture0);
-          texture0 = create_texture(logo, logo_w, logo_h);
+          show_logo = true;
         }
       }
       ImGui::SameLine();
@@ -264,7 +268,10 @@ int main(int argc, char* argv[]) {
       }
       // Render.
       if (ImGui::Button("Render")) {
-        if (file_loaded) rendering = !rendering;
+        if (file_loaded) {
+          rendering = !rendering;
+          show_logo = false;
+        }
       }
       ImGui::SameLine();
       if (done_rendering) {
@@ -295,8 +302,10 @@ int main(int argc, char* argv[]) {
     ImGui::Render();
     int display_w, display_h;
     glfwGetFramebufferSize(window, &display_w, &display_h);
-    int view_h = std::min(image_h * 2.0, window_h * 0.8);
-    int view_w = 1.0 * image_w / image_h * view_h;
+    int show_w = show_logo ? logo_w : image_w;
+    int show_h = show_logo ? logo_h : image_h;
+    int view_h = std::min(show_h * 2.0, window_h * 0.8);
+    int view_w = 1.0 * show_w / show_h * view_h;
     glViewport((display_w - view_w) / 2, (display_h - view_h) / 2, view_w,
                view_h);
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

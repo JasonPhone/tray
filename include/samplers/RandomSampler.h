@@ -7,19 +7,15 @@ namespace TRay {
 class RandomSampler : public PixelSampler {
  public:
   RandomSampler(int64_t spp, int n_dims) : PixelSampler(spp, n_dims) {}
+  Float sample_1D() override {
+    return std::min(m_rng.uniform_float(), ONE_M_EPS);
+  }
+  Point2f sample_2D() override {
+    Float x = std::min(m_rng.uniform_float(), ONE_M_EPS);
+    Float y = std::min(m_rng.uniform_float(), ONE_M_EPS);
+    return Point2f{x, y};
+  }
   void start_pixel(const Point2i &p) override {
-    // Fill 1D.
-    for (size_t i = 0; i < m_sample_1D.size(); i++)
-      for (int64_t si = 0; si < m_spp; si++) {
-        m_sample_1D[i][si] = std::min(m_rng.uniform_float(), ONE_M_EPS);
-      }
-    // Fill 2D.
-    for (size_t i = 0; i < m_sample_2D.size(); i++)
-      for (int64_t si = 0; si < m_spp; si++) {
-        Float x = std::min(m_rng.uniform_float(), ONE_M_EPS);
-        Float y = std::min(m_rng.uniform_float(), ONE_M_EPS);
-        m_sample_2D[i][si] = Point2f{x, y};
-      }
     // Fill 1D array.
     for (size_t i = 0; i < m_1D_array_sizes.size(); i++) {
       int n_subsamples = m_1D_array_sizes[i];

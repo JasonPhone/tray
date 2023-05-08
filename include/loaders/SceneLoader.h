@@ -1,6 +1,8 @@
 #pragma once
 #include "core/TRay.h"
 #include "core/Scene.h"
+#include "core/Camera.h"
+#include "core/Film.h"
 #include "loaders/meshloading.h"
 #include <nlohmann/json_fwd.hpp>
 
@@ -12,7 +14,10 @@ class SceneLoader {
   std::shared_ptr<Scene> get_scene() const { return m_scene; }
   std::shared_ptr<Integrator> get_integrator() const { return m_integrator; }
   std::shared_ptr<Camera> get_camera() const { return m_camera; }
-  Point2i get_resulotion() const { return Point2i(m_width, m_height); }
+  Vector2i get_resulotion() const {
+    return m_camera ? m_camera->m_film->m_cropped_pixel_bound.diagonal()
+                    : Vector2i(1, 1);
+  }
   bool load(const char* path) { return reload(path); }
   bool reload(const char* path);
 
@@ -25,7 +30,6 @@ class SceneLoader {
   std::shared_ptr<Camera> m_camera = nullptr;
   std::shared_ptr<Sampler> m_sampler = nullptr;
   std::shared_ptr<Integrator> m_integrator = nullptr;
-  int m_width, m_height;
 
 #define VEC_OF_SHARED(T) std::vector<std::shared_ptr<T>>
   std::map<std::string, std::shared_ptr<Transform>> transforms;
