@@ -9,7 +9,7 @@ class NoFilter : public Filter {
  public:
   NoFilter() : Filter(Vector2f(1, 1)) {}
   Float evaluate(const Point2f &p) const override {
-    if (std::abs(p.x) < 0.3 && std::abs(p.y) < 0.3) return 1;
+    if (std::abs(p.x) < 0.5 && std::abs(p.y) < 0.5) return 1;
     return 0;
   }
 };

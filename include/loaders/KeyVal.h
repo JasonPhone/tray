@@ -105,7 +105,7 @@ const std::string NoFilter = "no";
 const std::string StratifiedSampler = "stratified";
 const std::string RandomSampler = "random";
 const std::string HaltonSampler = "halton";
-const std::string ZeroTwoSampler = "0-2_sequence";
+const std::string ZeroTwoSampler = "0,2-sequence";
 const std::string MaxMinDisSampler = "max_min_distance";
 const std::string SobolSampler = "sobol";
 // Integrator

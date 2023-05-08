@@ -8,7 +8,7 @@ class MatteMaterial : public Material {
  public:
   MatteMaterial(const std::shared_ptr<Texture<Spectrum>> &diffuse,
                 const std::shared_ptr<Texture<Float>> &sigma)
-      : m_diffuse(diffuse), m_sigma(sigma) {};
+      : m_diffuse(diffuse), m_sigma(sigma){};
   void fill_scattering_func(SurfaceInteraction *si, TransportMode mode,
                             bool allow_multi_lobes) const override;
 

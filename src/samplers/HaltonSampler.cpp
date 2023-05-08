@@ -55,12 +55,18 @@ int64_t HaltonSampler::global_index(int64_t local_index) const {
      * X = i mod 2^m_scale_expo[0]
      * Y = i mod 3^m_scale_expo[1]
      * Use CRT to find the first solution.
+     * @see https://zhuanlan.zhihu.com/p/44591114
+     * In short: If a x = a_i (mod m_i) and every two m_i are co-prime,
+     *           Then x = sum{ a_i * N / m_i * inv(m_i) } (mod N),
+     *           where N = prod(m_i) and
+     *           inv(m_i) is the multiplicative inverse of N/m_i in m_i.
      */
     m_offset_global_idx = 0;
     if (m_sample_stride > 1) {
       Point2i pm(mod(m_current_pixel[0], MAX_RESOLUTION),
                  mod(m_current_pixel[1], MAX_RESOLUTION));
       for (int i = 0; i < 2; ++i) {
+        // The integer part of scaled radical inverse.
         uint64_t offset_in_dim =
             (i == 0) ? radical_inverse_inv<2>(pm[i], m_scale_expo[i])
                      : radical_inverse_inv<3>(pm[i], m_scale_expo[i]);
