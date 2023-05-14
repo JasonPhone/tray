@@ -59,7 +59,7 @@ int64_t HaltonSampler::global_index(int64_t local_index) const {
      * In short: If a x = a_i (mod m_i) and every two m_i are co-prime,
      *           Then x = sum{ a_i * N / m_i * inv(m_i) } (mod N),
      *           where N = prod(m_i) and
-     *           inv(m_i) is the multiplicative inverse of N/m_i in m_i.
+     *           inv(m_i) is the multiplicative inverse of N/m_i (mod m_i).
      */
     m_offset_global_idx = 0;
     if (m_sample_stride > 1) {

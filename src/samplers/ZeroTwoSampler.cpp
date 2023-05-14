@@ -3,6 +3,7 @@
 
 namespace TRay {
 void ZeroTwoSampler::start_pixel(const Point2i &p) {
+  // Single RNG, samples will change with #dimensions.
   // 1D
   for (size_t i = 0; i < m_sample_1D.size(); i++)
     fill_VDCorput_1D(1, m_spp, &m_sample_1D[i][0], m_rng);

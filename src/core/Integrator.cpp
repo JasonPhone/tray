@@ -90,7 +90,6 @@ void SamplerIntegrator::render(const Scene &scene) {
           L = Spectrum(0.f);
         }
         film_tile->add_sample(cam_sample.m_point_film, L, ray_w);
-        // TODO Update GUI here?
       } while (tile_sampler->next_sample());
     }
     m_camera->m_film->merge_tile(std::move(film_tile));

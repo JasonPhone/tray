@@ -135,24 +135,25 @@ inline void fill_Sobol_2D(int n_sub_samples, int n_pxl_samples,
 }
 extern uint32_t CMaxMinDis[17][32];
 
-// TODO how does this work?
-inline uint64_t SobolIntervalToIndex(const uint32_t expo, uint64_t local_idx,
-                                     const Point2i &pxl) {
+inline uint64_t global_index_Sobol(const uint32_t expo, uint64_t local_idx,
+                                   const Point2i &pxl) {
   if (expo == 0) return 0;
 
   const uint32_t m2 = expo << 1;
+  // 2 x expo as a stride, at lower bits.
   uint64_t index = uint64_t(local_idx) << m2;
 
+  // Some magic number (possibly related with Sobol' matrices)
+  // for the offset in stride.
   uint64_t delta = 0;
   for (int c = 0; local_idx; local_idx >>= 1, ++c)
-    if (local_idx & 1)  // Add flipped column m + c + 1.
+    if (local_idx & 1)  // Add flipped column expo + c + 1.
       delta ^= VDCSobolMatrices[expo - 1][c];
-
   // flipped b
   uint64_t b = ((uint64_t(uint32_t(pxl.x)) << expo) | uint32_t(pxl.y)) ^ delta;
 
   for (int c = 0; b; b >>= 1, ++c)
-    if (b & 1)  // Add column 2 * m - c.
+    if (b & 1)  // Add column 2 * expo - c.
       index ^= VDCSobolMatricesInv[expo - 1][c];
 
   return index;
@@ -186,6 +187,7 @@ inline float sample_Sobol_double(int64_t a, int dimension, uint32_t scramble) {
                       dimension, NSobolDimensions));
     return 0;
   }
+  // TODO Why bitwise-and?
   uint64_t result = scramble & ~-(1ll << SobolMatrixSize);
   for (int i = dimension * SobolMatrixSize; a != 0; a >>= 1, i++)
     if (a & 1) result ^= SobolMatrices64[i];

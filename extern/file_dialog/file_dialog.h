@@ -5,6 +5,7 @@
 	Changes by Vladimir Sigalkin
 */
 
+// FIXME Changing filename when dialog is open causes crash.
 #pragma once
 
 #include <filesystem>

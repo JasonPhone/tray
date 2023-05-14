@@ -38,7 +38,7 @@ Spectrum PathIntegrator::Li(const Ray &ray, const Scene &scene,
      * Except for: 1) the initial bounce 2) current ray is from a
      * delta distribution, which is ignored by direct lighting.
      */
-    // If emissive should be considered..
+    // If emissive should be considered.
     if (bounce_cnt == 0 || from_specular) {
       // Emitted light.
       if (hitted) {

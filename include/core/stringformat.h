@@ -93,8 +93,7 @@ inline void string_format_recursive(std::string *s, const char *fmt, float v,
   if (next_fmt == "%f")
     // Always use enough precision.
     // https://randomascii.wordpress.com/2012/03/08/float-precisionfrom-zero-to-100-digits-2/
-    *s += format_one("%.4g", v);
-    // *s += format_one("%.9g", v);
+    *s += format_one("%.9g", v);
   else
     // No operation.
     *s += format_one(next_fmt.c_str(), v);
@@ -108,8 +107,7 @@ inline void string_format_recursive(std::string *s, const char *fmt, double v,
                                     Args... args) {
   std::string next_fmt = next_format(&fmt, s);
   if (next_fmt == "%f")
-    *s += format_one("%.4g", v);
-    // *s += format_one("%.17g", v);
+    *s += format_one("%.17g", v);
   else
     *s += format_one(next_fmt.c_str(), v);
   string_format_recursive(s, fmt, args...);
