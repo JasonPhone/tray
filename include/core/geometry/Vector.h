@@ -9,7 +9,7 @@ namespace TRay {
 template <typename T>
 class Vector3 {
  public:
-  Vector3(T x, T y, T z) : x(x), y(y), z(z) { ASSERT(!has_NaN()); }
+  Vector3(T _x, T _y, T _z) : x(_x), y(_y), z(_z) { ASSERT(!has_NaN()); }
   Vector3() : Vector3(0, 0, 0) {}
   explicit Vector3(const Normal3<T> &n) : Vector3(n.x, n.y, n.z) {}
   bool has_NaN() const {
@@ -66,7 +66,7 @@ class Vector3 {
 template <typename T>
 class Vector2 {
  public:
-  Vector2(T x, T y) : x(x), y(y) { ASSERT(!has_NaN()); }
+  Vector2(T _x, T _y) : x(_x), y(_y) { ASSERT(!has_NaN()); }
   Vector2() : Vector2(0, 0, 0) {}
   bool has_NaN() const { return std::isnan(x) || std::isnan(y); }
   Float length2() const { return x * x + y * y; }

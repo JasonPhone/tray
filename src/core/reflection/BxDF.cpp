@@ -3,7 +3,7 @@
 namespace TRay {
 /// @details The default impl samples the hemisphere with cosine distribution.
 Spectrum BxDF::sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample,
-                        Float *pdf_value, BxDFType *sampled_type) const {
+                        Float *pdf_value, BxDFType *) const {
   // Sample hemisphere around (0, 0, 1).
   *wi = hemisphere_cosine_sample(sample);
   if (wo.z < 0) wi->z *= -1;

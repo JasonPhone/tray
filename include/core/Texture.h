@@ -7,6 +7,7 @@ namespace TRay {
 /// @brief Mapping interface. To a 2D point.
 class TextureMapping2D {
  public:
+  virtual ~TextureMapping2D() {}
   virtual Point2f map(const SurfaceInteraction &si) const = 0;
 };
 /// @brief Mapping using uv coord of SurfaceInteraction.
@@ -43,6 +44,7 @@ class PlanarMapping2D : public TextureMapping2D {
 /// @brief Mapping interface. To a 3D point.
 class TextureMapping3D {
  public:
+  virtual ~TextureMapping3D() {}
   virtual Point3f map(const SurfaceInteraction &si) const = 0;
 };
 /// @brief Mapping using Transform. Often just transform back to the obj space.

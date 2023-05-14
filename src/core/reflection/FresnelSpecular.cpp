@@ -1,22 +1,23 @@
 #include "core/reflection/FresnelSpecular.h"
+
 #include "core/Material.h"
 #include "core/geometry/Point.h"
 
 namespace TRay {
 
-Spectrum SpecularReflection::f(const Vector3f &wo, const Vector3f &wi) const {
+Spectrum SpecularReflection::f(const Vector3f &, const Vector3f &) const {
   return Spectrum(0.0);
 }
 Spectrum SpecularReflection::sample_f(const Vector3f &wo, Vector3f *wi,
-                                      const Point2f &sample, Float *pdf_value,
-                                      BxDFType *sampled_type) const {
+                                      const Point2f &, Float *pdf_value,
+                                      BxDFType *) const {
   // Reflection direction for perfect speculat reflection. In BRDF space.
   *wi = Vector3f(-wo.x, -wo.y, wo.z);
   *pdf_value = 1.0;
   return m_fresnel->evaluate(cos_theta_of(*wi)) * m_scale /
          abs_cos_theta_of(*wi);
 }
-Float SpecularReflection::pdf(const Vector3f &wo, const Vector3f &wi) const {
+Float SpecularReflection::pdf(const Vector3f &, const Vector3f &) const {
   // Using delta distribution there is zero probability to find this direction.
   return 0;
 }
@@ -25,12 +26,12 @@ std::string SpecularReflection::to_string() const {
          " fresnel: " + m_fresnel->to_string() + " SPECULAR | REFLECTION ]";
 }
 
-Spectrum SpecularTransmission::f(const Vector3f &wo, const Vector3f &wi) const {
+Spectrum SpecularTransmission::f(const Vector3f &, const Vector3f &) const {
   return Spectrum(0.0);
 }
 Spectrum SpecularTransmission::sample_f(const Vector3f &wo, Vector3f *wi,
-                                        const Point2f &sample, Float *pdf_value,
-                                        BxDFType *sampled_type) const {
+                                        const Point2f &, Float *pdf_value,
+                                        BxDFType *) const {
   // Check the incident and transmit eta.
   bool entering = cos_theta_of(wo) > 0;
   Float eta_i = entering ? m_eta_A : m_eta_B;
@@ -47,7 +48,7 @@ Spectrum SpecularTransmission::sample_f(const Vector3f &wo, Vector3f *wi,
     ft *= (eta_i * eta_i) / (eta_t * eta_t);
   return ft / abs_cos_theta_of(*wi);
 }
-Float SpecularTransmission::pdf(const Vector3f &wo, const Vector3f &wi) const {
+Float SpecularTransmission::pdf(const Vector3f &, const Vector3f &) const {
   // Using delta distribution there is zero probability to find this direction.
   return 0;
 }
@@ -56,10 +57,11 @@ std::string SpecularTransmission::to_string() const {
          " fresnel: " + m_fresnel.to_string() +
          " etaA: " + format_one("%f", m_eta_A) +
          " etaB: " + format_one("%f", m_eta_B) + " mode : " +
-         (m_mode == TransportMode::Radiance ? "RADIANCE" : "IMPORTANCE") + " SPECULAR | TRANSMISSION ]";
+         (m_mode == TransportMode::Radiance ? "RADIANCE" : "IMPORTANCE") +
+         " SPECULAR | TRANSMISSION ]";
 }
 
-Spectrum FresnelSpecular::f(const Vector3f &wo, const Vector3f &wi) const {
+Spectrum FresnelSpecular::f(const Vector3f &, const Vector3f &) const {
   return Spectrum(0.0);
 }
 Spectrum FresnelSpecular::sample_f(const Vector3f &wo, Vector3f *wi,

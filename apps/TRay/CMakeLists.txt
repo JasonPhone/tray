@@ -29,7 +29,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
   TRay_loader
 )
 
-target_link_options(${PROJECT_NAME} PRIVATE "-mwindows")
+# target_link_options(${PROJECT_NAME} PRIVATE "-mwindows")
 
 # add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 # COMMAND ${CMAKE_COMMAND} -E copy_directory

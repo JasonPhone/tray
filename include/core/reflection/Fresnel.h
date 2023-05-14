@@ -21,6 +21,7 @@ Spectrum fresnel_conductor(Float cos_theta_i, const Spectrum &eta_i,
 /// @brief Interface to compute the Fresnel coefficients.
 class Fresnel {
  public:
+  virtual ~Fresnel() {}
   /// @brief Get the coefficients.
   /// @param cos_i Cosine of incident angle.
   virtual Spectrum evaluate(Float cos_i) const = 0;

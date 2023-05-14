@@ -1,13 +1,13 @@
 #include "integrators/PathIntegrator.h"
-#include "core/spectrum/spectrum.h"
-#include "core/geometry/geometry.h"
+
+#include "core/Sampler.h"
 #include "core/Scene.h"
 #include "core/reflection/BSDF.h"
-#include "core/Sampler.h"
+
 
 namespace TRay {
 Spectrum PathIntegrator::Li(const Ray &ray, const Scene &scene,
-                            Sampler &sampler, int depth) const {
+                            Sampler &sampler, int) const {
   // SDebug("path integrator Li begin");
   // Sum of radiance of all sub paths until the longest one.
   // The paths in one PathIntegrator::Li() is from one point sequence.

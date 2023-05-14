@@ -20,7 +20,7 @@ class SamplerIntegrator : public Integrator {
       : m_camera(camera), m_sampler(sampler) {}
   void render(const Scene &scene) override;
   bool render_step(const Scene &scene) override;
-  virtual void preprocess(const Scene &scene, Sampler &sampler) {
+  virtual void preprocess(const Scene &, Sampler &) {
     SInfo("SamplerIntegrator::preprocess: Start preprocessing.");
   }
   /// @brief Evaluate the incident radiance.

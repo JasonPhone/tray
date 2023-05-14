@@ -1,13 +1,15 @@
 #include "core/Integrator.h"
-#include "core/geometry/Bound.h"
+
 #include "core/Camera.h"
 #include "core/Film.h"
 #include "core/Sampler.h"
 #include "core/Scene.h"
+#include "core/geometry/Bound.h"
 #include "core/geometry/Interaction.h"
+#include "core/math/sampling.h"
 #include "core/reflection/BSDF.h"
 #include "core/reflection/BxDF.h"
-#include "core/math/sampling.h"
+
 
 namespace TRay {
 void SamplerIntegrator::render(const Scene &scene) {
@@ -260,8 +262,7 @@ Spectrum light_sample_uniform_one(const Interaction &inter, const Scene &scene,
 
 Spectrum direct_lighting(const Interaction &inter, const Point2f &u_bsdf,
                          const Light &light, const Point2f &u_light,
-                         const Scene &scene, Sampler &sampler,
-                         bool do_specular) {
+                         const Scene &scene, Sampler &, bool do_specular) {
   // SDebug("===========================\ndirect lighting begin");
   BxDFType flags =
       do_specular ? BSDF_ALL : BxDFType(BSDF_ALL & (~BSDF_SPECULAR));

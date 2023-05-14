@@ -4,20 +4,20 @@
 #include "core/Light.h"
 
 namespace TRay {
-SurfaceInteraction::SurfaceInteraction(const Point3f &p, const Vector3f &err,
-                                       const Point2f &uv, const Vector3f &wo,
-                                       const Vector3f &dpdu,
-                                       const Vector3f &dpdv, Float time,
+SurfaceInteraction::SurfaceInteraction(const Point3f &_p, const Vector3f &err,
+                                       const Point2f &_uv, const Vector3f &_wo,
+                                       const Vector3f &_dpdu,
+                                       const Vector3f &_dpdv, Float _time,
                                        const Shape *sh_ptr)
-    : Interaction(p, Normal3f(normalize(cross(dpdu, dpdv))), err, wo, time),
-      uv(uv),
-      dpdu(dpdu),
-      dpdv(dpdv),
+    : Interaction(_p, Normal3f(normalize(cross(_dpdu, _dpdv))), err, _wo, _time),
+      uv(_uv),
+      dpdu(_dpdu),
+      dpdv(_dpdv),
       shape(sh_ptr) {
   // Shading data.
   shading.n = n;
-  shading.dpdu = dpdu;
-  shading.dpdv = dpdv;
+  shading.dpdu = _dpdu;
+  shading.dpdv = _dpdv;
   // The intersection is done in left-handed space, adjust if needed.
   if (shape && (shape->flip_normal ^ shape->swap_handness)) {
     n *= -1;
@@ -43,7 +43,7 @@ SurfaceInteraction::SurfaceInteraction(const Point3f &p, const Point2f &uv,
     shading.n *= -1;
   }
 }
-void SurfaceInteraction::fill_scattering_func(const Ray &ray,
+void SurfaceInteraction::fill_scattering_func(const Ray &,
                                               TransportMode mode,
                                               bool allow_multi_lobes) {
   primitive->fill_scattering_func(this, mode, allow_multi_lobes);

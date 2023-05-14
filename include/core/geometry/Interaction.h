@@ -11,15 +11,15 @@ namespace TRay {
 class Interaction {
  public:
   Interaction() : time(0) {}
-  Interaction(const Point3f &p, const Normal3f &n, const Vector3f &err,
-              const Vector3f &wo, Float time)
-      : p(p), time(time), wo(normalize(wo)), n(n), m_perr(err) {}
-  Interaction(const Point3f &p, const Normal3f &n, const Vector3f &wo,
-              Float time)
-      : p(p), time(time), wo(normalize(wo)), n(n) {}
-  Interaction(const Point3f &p, const Vector3f &wo, Float time)
-      : p(p), time(time), wo(wo) {}
-  Interaction(const Point3f &p, Float time) : p(p), time(time) {}
+  Interaction(const Point3f &_p, const Normal3f &_n, const Vector3f &err,
+              const Vector3f &_wo, Float _time)
+      : p(_p), time(_time), wo(normalize(_wo)), n(_n), m_perr(err) {}
+  Interaction(const Point3f &_p, const Normal3f &_n, const Vector3f &_wo,
+              Float _time)
+      : p(_p), time(_time), wo(normalize(_wo)), n(_n) {}
+  Interaction(const Point3f &_p, const Vector3f &_wo, Float _time)
+      : p(_p), time(_time), wo(_wo) {}
+  Interaction(const Point3f &_p, Float _time) : p(_p), time(_time) {}
   bool is_surface_interaction() const { return n != Normal3f(); }
   Ray ray_along(const Vector3f &d) const {
     Point3f o = offset_ray_ori(p, m_perr, n, d);

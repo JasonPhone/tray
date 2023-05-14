@@ -33,13 +33,13 @@ class Light {
                              VisibilityTester *vis) const = 0;
   virtual Float pdf_Li(const Interaction &ref, const Vector3f &wi) const = 0;
   /// @brief Get radiance as the "environment".
-  Spectrum Le(const Ray &ray) const { return Spectrum(0.f); }
+  Spectrum Le(const Ray &) const { return Spectrum(0.f); }
   /// @brief Get the total power this light source emits.
   /// @details This may be useful for adaptive light resources computation.
   virtual Spectrum total_power() const = 0;
   /// @brief Preprocess before rendering, e.g compute the scene bound.
   /// @param scene
-  virtual void preprocess(const Scene &scene) {}
+  virtual void preprocess(const Scene &) {}
   /// @brief If the ligh is defined with delta distribution.
   bool is_delta_light() const {
     return (m_type & LIGHT_DELTA_POSITION) || (m_type & LIGHT_DELTA_DIRECTION);

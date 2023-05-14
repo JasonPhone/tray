@@ -362,14 +362,14 @@ bool SceneLoader::do_primitives(const json &scene_file) {
       if (pri.contains(Key::Light)) {
         // Primitive with lights.
         std::string light_name = pri[Key::Light].get<std::string>();
-        const auto &light_list = alights[light_name];
+        const auto &lights = alights[light_name];
         SInfo("Got Primitive light with:\n\ttype " + tp + "\n\tshape " +
               shape_name + "\n\tmaterial " + mat_name + "\n\tlight " +
               light_name);
-        if (shape_list->size() == light_list->size()) {
+        if (shape_list->size() == lights->size()) {
           for (size_t i = 0; i < shape_list->size(); i++) {
             primitive_list.push_back(std::make_shared<GeometricPrimitive>(
-                GeometricPrimitive{(*shape_list)[i], mat, (*light_list)[i]}));
+                GeometricPrimitive{(*shape_list)[i], mat, (*lights)[i]}));
           }
         } else {
           SWarn("Number of lights and shapes cannot match.");
@@ -456,9 +456,9 @@ bool SceneLoader::do_camera(const json &camera_file) {
       screen = Bound2f{Point2f{-1, -asp}, Point2f{1, asp}};
     }
 
-    PerspectiveCamera camera = PerspectiveCamera{
+    PerspectiveCamera cam = PerspectiveCamera{
         trans->inverse(), screen, shutter0, shutter1, lensr, focald, fov, film};
-    m_camera = std::make_shared<PerspectiveCamera>(camera);
+    m_camera = std::make_shared<PerspectiveCamera>(cam);
     SInfo("Got PerspectiveCamera with:\n\tresolution " +
           resolution.to_string());
   } else {

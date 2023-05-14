@@ -6,7 +6,7 @@ class RGBSpectrum : public CoefficientSpectrum<3> {
  public:
   /// @brief Build an RGBSpectrum from Float array and given SpectrumType
   static RGBSpectrum from_RGB(const Float rgb[3],
-                              SpectrumType type = SpectrumType::Reflectance) {
+                              SpectrumType = SpectrumType::Reflectance) {
     RGBSpectrum s;
     s.c[0] = rgb[0];
     s.c[1] = rgb[1];

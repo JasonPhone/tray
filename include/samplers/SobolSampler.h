@@ -1,6 +1,6 @@
 #pragma once
-#include "core/TRay.h"
 #include "core/Sampler.h"
+#include "core/TRay.h"
 
 namespace TRay {
 class SobolSampler : public GlobalSampler {
@@ -20,7 +20,7 @@ class SobolSampler : public GlobalSampler {
   int64_t global_index(int64_t local_index) const override;
   Float value_by_dimension(int64_t global_idx_sample,
                            int idx_dim) const override;
-  std::unique_ptr<Sampler> clone(int seed) const {
+  std::unique_ptr<Sampler> clone(int) const override {
     return std::unique_ptr<Sampler>(new SobolSampler(*this));
   }
   int round(int n) override { return pow2_ceil(n); }

@@ -1,5 +1,4 @@
 #include "core/primitives/Aggregate.h"
-#include "core/geometry/Transform.h"
 
 namespace TRay {
 AreaLight *Aggregate::area_light() const {
@@ -12,8 +11,8 @@ Material *Aggregate::material() const {
   ASSERT(0);
   return nullptr;
 }
-void Aggregate::fill_scattering_func(SurfaceInteraction *si, TransportMode mode,
-                                     bool allow_multi_lobes) const {
+void Aggregate::fill_scattering_func(SurfaceInteraction *, TransportMode,
+                                     bool) const {
   SError("Aggregate::fill_scattering_func: Aggregate has no BxDF!");
   ASSERT(0);
 }

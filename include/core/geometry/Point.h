@@ -9,7 +9,7 @@ namespace TRay {
 template <typename T>
 class Point3 {
  public:
-  Point3(T x, T y, T z) : x(x), y(y), z(z) { ASSERT(!has_NaN()); }
+  Point3(T _x, T _y, T _z) : x(_x), y(_y), z(_z) { ASSERT(!has_NaN()); }
   Point3() : Point3(0, 0, 0) {}
   /// @brief Component type explicit conversion. Changing the component type.
   /// @tparam U Original type.
@@ -78,7 +78,7 @@ class Point3 {
 template <typename T>
 class Point2 {
  public:
-  Point2(T x, T y) : x(x), y(y) { ASSERT(!has_NaN()); }
+  Point2(T _x, T _y) : x(_x), y(_y) { ASSERT(!has_NaN()); }
   Point2() : Point2(0, 0) {}
   /// @brief A conversion dropping z component.
   explicit Point2(const Point3<T> &p) : Point2(p.x, p.y) {}

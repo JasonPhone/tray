@@ -16,7 +16,7 @@ Bound3f Sphere::object_bound() const {
  *     and the return interaction info should be in world space.
  */
 bool Sphere::intersect(const Ray &ray, Float *t, SurfaceInteraction *si,
-                       bool test_alpha_texture) const {
+                       bool) const {
   // SDebug("Sphere::intersect: testing ray " + ray.to_string());
   // SDebug("\twith sphere at " + obj_to_world(Point3f(0, 0, 0)).to_string() +
   //        ", radius " + format_one("%f ", radius));

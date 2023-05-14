@@ -7,7 +7,7 @@ namespace TRay {
 template <typename T>
 class Normal3 {
  public:
-  Normal3(T x, T y, T z) : x(x), y(y), z(z) { ASSERT(!has_NaN()); }
+  Normal3(T _x, T _y, T _z) : x(_x), y(_y), z(_z) { ASSERT(!has_NaN()); }
   Normal3() : Normal3(0, 0, 0) {}
   explicit Normal3(const Vector3<T> &v) : Normal3(v.x, v.y, v.z) {}
   bool has_NaN() const {

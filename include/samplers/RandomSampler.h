@@ -40,7 +40,7 @@ class RandomSampler : public PixelSampler {
     }
     PixelSampler::start_pixel(p);
   }
-  std::unique_ptr<Sampler> clone(int seed) const {
+  std::unique_ptr<Sampler> clone(int seed) const override {
     RandomSampler *ss = new RandomSampler(*this);
     ss->m_rng.set_sequence(seed);
     return std::unique_ptr<Sampler>(ss);

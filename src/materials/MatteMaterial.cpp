@@ -1,13 +1,14 @@
-#include "core/Texture.h"
 #include "materials/MatteMaterial.h"
+
+#include "core/Texture.h"
 #include "core/reflection/BSDF.h"
 #include "core/reflection/Lambertian.h"
 #include "core/reflection/OrenNayar.h"
 
+
 namespace TRay {
-void MatteMaterial::fill_scattering_func(SurfaceInteraction *si,
-                                         TransportMode mode,
-                                         bool allow_multi_lobes) const {
+void MatteMaterial::fill_scattering_func(SurfaceInteraction *si, TransportMode,
+                                         bool) const {
   si->bsdf = new BSDF(*si);
   Spectrum r = m_diffuse->evaluate(*si).clamp();
   Float sig = clamp(m_sigma->evaluate(*si), 0, 90);

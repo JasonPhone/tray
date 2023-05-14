@@ -1,40 +1,41 @@
 #include "shapes/TriangleMesh.h"
-#include "core/geometry/Point.h"
-#include "core/geometry/Normal.h"
-#include "core/geometry/Transform.h"
+
 #include "core/geometry/Bound.h"
+#include "core/geometry/Normal.h"
+#include "core/geometry/Point.h"
+#include "core/geometry/Transform.h"
 #include "core/math/sampling.h"
 
 namespace TRay {
-TriangleMesh::TriangleMesh(const Transform &obj_to_world, int n_triangles,
-                           const int *vertex_indices, int n_vertices,
+TriangleMesh::TriangleMesh(const Transform &obj_to_world, int _n_triangles,
+                           const int *vertex_indices, int _n_vertices,
                            const Point3f *vertices,
                            const Normal3f *vertex_normals,
                            const Point2f *vertex_uv)
-    : n_triangles(n_triangles),
-      n_vertices(n_vertices),
-      vindex(vertex_indices, vertex_indices + 3 * n_triangles) {
+    : n_triangles(_n_triangles),
+      n_vertices(_n_vertices),
+      vindex(vertex_indices, vertex_indices + 3 * _n_triangles) {
   // Point3f* vertices.
-  vpos.reset(new Point3f[n_vertices]);
-  for (int i = 0; i < n_vertices; i++) vpos[i] = obj_to_world(vertices[i]);
+  vpos.reset(new Point3f[_n_vertices]);
+  for (int i = 0; i < _n_vertices; i++) vpos[i] = obj_to_world(vertices[i]);
   // Optional Normal3f* vertex_normals.
   if (vertex_normals) {
-    vnormal.reset(new Normal3f[n_vertices]);
-    for (int i = 0; i < n_vertices; ++i)
+    vnormal.reset(new Normal3f[_n_vertices]);
+    for (int i = 0; i < _n_vertices; ++i)
       vnormal[i] = obj_to_world(vertex_normals[i]);
   }
   // Optional Point2f* vertex_uv.
   if (vertex_uv) {
-    vuv.reset(new Point2f[n_vertices]);
-    memcpy(vuv.get(), vertex_uv, n_vertices * sizeof(Point2f));
+    vuv.reset(new Point2f[_n_vertices]);
+    memcpy(vuv.get(), vertex_uv, _n_vertices * sizeof(Point2f));
   }
 }
 
 Triangle::Triangle(const Transform &obj_world, const Transform &world_obj,
-                   bool flip_normal,
+                   bool _flip_normal,
                    const std::shared_ptr<TriangleMesh> parent_mesh,
                    int triangle_index)
-    : Shape(obj_world, world_obj, flip_normal),
+    : Shape(obj_world, world_obj, _flip_normal),
       m_parent_mesh(parent_mesh),
       vidx(&(parent_mesh->vindex[3 * triangle_index])) {}
 Bound3f Triangle::object_bound() const {
@@ -51,10 +52,8 @@ Bound3f Triangle::world_bound() const {
   return bound;
 }
 bool Triangle::intersect(const Ray &ray, Float *thit, SurfaceInteraction *si,
-                         bool test_alpha_texture) const {
-  // https://zhuanlan.zhihu.com/p/451582864
-
-  // Get triangle vertices in _p0_, _p1_, and _p2_
+                         bool) const {
+  // Get triangle vertices.
   const Point3f &p0 = m_parent_mesh->vpos[vidx[0]];
   const Point3f &p1 = m_parent_mesh->vpos[vidx[1]];
   const Point3f &p2 = m_parent_mesh->vpos[vidx[2]];

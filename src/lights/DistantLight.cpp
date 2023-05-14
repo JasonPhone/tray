@@ -6,7 +6,7 @@ void DistantLight::preprocess(const Scene &scene) {
   scene.world_bound().bounding_sphere(&m_world_center, &m_world_radius);
 }
 
-Spectrum DistantLight::sample_Li(const Interaction &ref, const Point2f &u,
+Spectrum DistantLight::sample_Li(const Interaction &ref, const Point2f &,
                                  Vector3f *wi, Float *pdf_value,
                                  VisibilityTester *vis) const {
   *wi = m_w_light;
@@ -16,7 +16,7 @@ Spectrum DistantLight::sample_Li(const Interaction &ref, const Point2f &u,
   *vis = VisibilityTester(ref, Interaction(p_outside, ref.time));
   return m_L;
 }
-Float DistantLight::pdf_Li(const Interaction &ref, const Vector3f &wi) const {
+Float DistantLight::pdf_Li(const Interaction &, const Vector3f &) const {
   return 0.0;
 }
 Spectrum DistantLight::total_power() const {

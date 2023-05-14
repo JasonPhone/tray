@@ -90,7 +90,7 @@ Float HaltonSampler::value_by_dimension(int64_t global_idx_sample,
   return ret;
 }
 
-std::unique_ptr<Sampler> HaltonSampler::clone(int seed) const {
+std::unique_ptr<Sampler> HaltonSampler::clone(int) const {
   return std::unique_ptr<Sampler>(new HaltonSampler{*this});
 }
 }  // namespace TRay
