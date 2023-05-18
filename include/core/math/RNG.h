@@ -1,5 +1,6 @@
 #pragma once
 #include "core/TRay.h"
+// #include <random>
 /**
  * @brief Random Number Generator used for all stochastic of TRay.
  *
@@ -41,11 +42,14 @@ class RNG {
 
  private:
   uint64_t m_state, m_inc;
+  // std::mt19937 m_generator;
 };
 
 inline RNG::RNG(): m_state(PCG32_DEFAULT_STATE), m_inc(PCG32_DEFAULT_STREAM) {}
 inline RNG::RNG(uint64_t idx_init_seq) { set_sequence(idx_init_seq); }
 inline void RNG::set_sequence(uint64_t idx_init_seq) {
+  // m_generator.seed(idx_init_seq);
+  // return;
   m_state = 0u;
   m_inc = (idx_init_seq << 1u) | 1u;
   uniform_uint32();
@@ -54,6 +58,7 @@ inline void RNG::set_sequence(uint64_t idx_init_seq) {
 }
 
 inline uint32_t RNG::uniform_uint32() {
+  // return m_generator();
   // PCG minimal impl.
   uint64_t oldstate = m_state;
   m_state = oldstate * PCG32_MULT + m_inc;

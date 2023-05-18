@@ -1,34 +1,23 @@
 #define GLFW_INCLUDE_NONE
-#include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glad/glad.h>
 
-#include "ImGui/imgui.h"
+#include <ctime>
+#include <iostream>
+
 #include "ImGui/backend/imgui_impl_glfw.h"
 #include "ImGui/backend/imgui_impl_opengl3.h"
-#include "gui/utility.h"
-#include "gui/Shader.h"
-#include "file_dialog/file_dialog.h"
-
-#include <iostream>
-#include <ctime>
+#include "ImGui/imgui.h"
+#include "core/Film.h"
+#include "core/Integrator.h"
+#include "core/Scene.h"
 #include "core/TRay.h"
 #include "core/imageio.h"
-#include "core/geometry/geometry.h"
-#include "core/primitives/primitives.h"
-#include "core/spectrum/spectrum.h"
-#include "shapes/shapes.h"
-#include "accelerators/accelerators.h"
-#include "textures/textures.h"
-#include "materials/materials.h"
-#include "lights/lights.h"
-#include "cameras/cameras.h"
-#include "samplers/samplers.h"
-#include "integrators/integrators.h"
-#include "filters/filters.h"
-#include "core/Scene.h"
-#include "core/Film.h"
-#include "core/reflection/BSDF.h"
+#include "file_dialog/file_dialog.h"
+#include "gui/Shader.h"
+#include "gui/utility.h"
 #include "loaders/SceneLoader.h"
+
 
 using namespace TRay;
 using namespace std;

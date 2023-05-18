@@ -1,0 +1,18 @@
+{
+  "configurations": [
+    {
+      "name": "TRay",
+      "type": "lldb",
+      "request": "launch",
+      "program": "${workspaceFolder}/apps/TRay/bin/TRay.exe",
+      "cwd": "${workspaceFolder}/apps/TRay/bin/"
+    },
+    {
+      "name": "test",
+      "type": "lldb",
+      "request": "launch",
+      "program": "${workspaceFolder}/apps/test/bin/test.exe",
+      "cwd": "${workspaceFolder}/apps/test/bin/"
+    }
+  ]
+}
