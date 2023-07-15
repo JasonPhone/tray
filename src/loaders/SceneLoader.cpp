@@ -1,17 +1,20 @@
-#include <nlohmann/json.hpp>
-#include <fstream>
 #include "loaders/SceneLoader.h"
-#include "loaders/KeyVal.h"
+
+#include <fstream>
+#include <nlohmann/json.hpp>
+
 #include "accelerators/accelerators.h"
-#include "textures/textures.h"
-#include "materials/materials.h"
-#include "shapes/shapes.h"
-#include "lights/lights.h"
-#include "filters/filters.h"
 #include "cameras/cameras.h"
-#include "samplers/samplers.h"
-#include "integrators/integrators.h"
 #include "core/Film.h"
+#include "filters/filters.h"
+#include "integrators/integrators.h"
+#include "lights/lights.h"
+#include "loaders/KeyVal.h"
+#include "materials/materials.h"
+#include "samplers/samplers.h"
+#include "shapes/shapes.h"
+#include "textures/textures.h"
+
 #define VEC_OF_SHARED(T) std::vector<std::shared_ptr<T>>
 
 using json = nlohmann::json;

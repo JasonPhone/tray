@@ -107,3 +107,4 @@ TRay for "yet another Ray Tracer".
 - BVH
 - Cascaded Sobol' Sampling
 - MatBuilder
+- Film + Filter = Sensor?
