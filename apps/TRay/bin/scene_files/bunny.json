@@ -1,0 +1,141 @@
+{
+  "comments": "bunny, 5146 triangles, 2588 vertices",
+  "transforms": [
+    { "name": "identical", "sequence": [ ] },
+    { "name": "trans_bunny", "sequence": [ 
+      { "type": "scale", "value": [ -0.40, 0.40, -0.40 ] },
+      { "type": "translate", "value": [ 500, 500, 500 ] }
+       ] },
+    { "name": "trans_camera", "sequence": [
+        {
+          "type": "look_at", "value": {
+            "position": [ 500, 500, -1300 ],
+            "look": [ 500, 500, 1000 ],
+            "up": [ 0, 1, 0 ]
+          } }
+      ] }
+  ],
+  "colors": [
+    { "name": "color_red", "type": "RGB", "value": [ 0.65, 0.05, 0.05 ] },
+    { "name": "color_green", "type": "RGB", "value": [ 0.12, 0.45, 0.15 ] },
+    { "name": "color_grey", "type": "RGB", "value": [ 0.73, 0.73, 0.73 ] },
+    { "name": "color_white", "type": "RGB", "value": [ 3.00, 3.00, 3.00 ] }
+  ],
+  "textures": [
+    { "name": "tex_red", "type": "constant", "return": "spectrum", "value": "color_red" },
+    { "name": "tex_green", "type": "constant", "return": "spectrum", "value": "color_green" },
+    { "name": "tex_grey", "type": "constant", "return": "spectrum", "value": "color_grey" },
+    { "name": "tex_white", "type": "constant", "return": "spectrum", "value": "color_white" },
+    { "name": "tex_const", "type": "constant", "return": "float", "value": 0 }
+  ],
+  "materials": [
+    { "name": "matte_red", "type": "matte", "diffuse": "tex_red", "sigma": "tex_const" },
+    { "name": "matte_green", "type": "matte", "diffuse": "tex_green", "sigma": "tex_const" },
+    { "name": "matte_grey", "type": "matte", "diffuse": "tex_grey", "sigma": "tex_const" },
+    { "name": "matte_white", "type": "matte", "diffuse": "tex_white", "sigma": "tex_const" }
+  ],
+  "shapes": [
+    { "name": "shape_bunny", "type": "mesh_obj", "flip_normal": false, "transform": "trans_bunny", "file": "./obj/bunny.obj"},
+    {
+      "name": "shape_ceil", "type": "mesh_plain", "flip_normal": false,
+      "vertex": [
+        [ 0, 1000, 0 ],
+        [ 0, 1000, 1000 ],
+        [ 1000, 1000, 0 ],
+        [ 1000, 1000, 1000 ]
+      ],
+      "index": [ 0, 2, 3, 3, 1, 0 ]
+    },
+    {
+      "name": "shape_floor", "type": "mesh_plain", "flip_normal": false,
+      "vertex": [
+        [ 0, 0, 0 ],
+        [ 0, 0, 1000 ],
+        [ 1000, 0, 0 ],
+        [ 1000, 0, 1000 ]
+      ],
+      "index": [ 0, 1, 3, 3, 2, 0 ]
+    },
+    {
+      "name": "shape_left", "type": "mesh_plain", "flip_normal": false,
+      "vertex": [
+        [ 0, 0, 0 ],
+        [ 0, 0, 1000 ],
+        [ 0, 1000, 0 ],
+        [ 0, 1000, 1000 ]
+      ],
+      "index": [ 0, 2, 3, 3, 1, 0 ]
+    },
+    {
+      "name": "shape_right", "type": "mesh_plain", "flip_normal": false,
+      "vertex": [
+        [ 1000, 0, 0 ],
+        [ 1000, 0, 1000 ],
+        [ 1000, 1000, 0 ],
+        [ 1000, 1000, 1000 ]
+      ],
+      "index": [ 0, 1, 3, 3, 2, 0 ]
+    },
+    {
+      "name": "shape_back", "type": "mesh_plain", "flip_normal": false,
+      "vertex": [
+        [ 0, 0, 1000 ],
+        [ 0, 1000, 1000 ],
+        [ 1000, 0, 1000 ],
+        [ 1000, 1000, 1000 ]
+      ],
+      "index": [ 0, 1, 3, 3, 2, 0 ]
+    },
+    {
+      "name": "shape_light", "type": "mesh_plain", "flip_normal": false,
+      "vertex": [
+        [ 200, 999, 200 ],
+        [ 800, 999, 200 ],
+        [ 800, 999, 800 ],
+        [ 200, 999, 800 ]
+      ],
+      "index": [ 0, 1, 2, 2, 3, 0 ]
+    }
+  ],
+  "lights": [
+    { "name": "light_ceil", "type": "diffuse_area", "transform": "identical", "emit": "color_white", "n_samples": 5, "shape": "shape_light" }
+  ],
+  "primitives": [
+    { "type": "geometric", "shape": "shape_ceil", "material": "matte_grey" },
+    { "type": "geometric", "shape": "shape_floor", "material": "matte_grey" },
+    { "type": "geometric", "shape": "shape_left", "material": "matte_green" },
+    { "type": "geometric", "shape": "shape_right", "material": "matte_red" },
+    { "type": "geometric", "shape": "shape_back", "material": "matte_grey" },
+
+    { "type": "geometric", "shape": "shape_bunny", "material": "matte_grey" },
+
+    { "type": "geometric", "shape": "shape_light", "material": "matte_grey", "light": "light_ceil" }
+  ],
+  "accelerator": { "type": "linear" },
+  "camera": {
+    "type": "perspective",
+    "transform": "trans_camera",
+    "screen": [ [ -1, -1 ], [ 1, 1 ] ],
+    "shutter_time": [ 0, 1 ],
+    "lens_radius": 0,
+    "focal_distance": 0,
+    "fov": 45,
+    "film": {
+      "name": "bunny.600x600.02-512.path5.jpg",
+      "resolution": [ 600, 600 ],
+      "crop": [ [ 0, 0 ], [ 1, 1 ] ],
+      "filter": "box",
+      "filter_radius": [1, 1]
+    }
+  },
+  "sampler": {
+    "type": "0,2-sequence",
+    "sample_per_pixel": 256,
+    "sample_dimension": 30,
+    "jitter": true
+  },
+  "integrator": {
+    "type": "path",
+    "max_depth": 5 
+  }
+}

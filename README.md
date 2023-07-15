@@ -2,6 +2,14 @@
 
 TRay for "yet another Ray Tracer".
 
+Served as my bachelor's undergraduate graduation project, now as a playground for leaning rendering.
+
+# Build and Run
+
+`cd build` and `build ..` should be ok. The required libs should be libglfw.a only, for supporting ImGUI and some other features based on OpenGL.
+
+I dislike build systems, so any related problems please work it out by yourself. I am trying to make it ok on most platforms, by writing (for me) most portable codes.
+
 # Project Structure
 
 ```text
@@ -124,11 +132,12 @@ TRay for "yet another Ray Tracer".
 ## GUI
 
 - [ ] Basic Framework
-  - [ ] Image Preview
-  - [ ] Renderer Control
-    - [ ] Start/Stop Rendering
-  - [ ] Scene Drscription File I/O
-    - [ ] File Dialog with [tiny file dialogs](https://sourceforge.net/projects/tinyfiledialogs/)
+  - [x] Image Preview
+  - [x] Render Control
+    - [x] Start/Pause Rendering
+  - [x] Scene Description File I/O
+    - [x] Scene File Load/Reload
+    - [x] File Dialog with [tiny file dialogs](https://sourceforge.net/projects/tinyfiledialogs/)
 
 ## Others
 
