@@ -1,8 +1,8 @@
 /build/
-.vscode/
 /apps/test/
 bin/
 lib/
+.cache/
 
 *.exe
 *.lib
