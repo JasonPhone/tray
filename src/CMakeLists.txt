@@ -89,6 +89,10 @@ add_library(TRay_loader
   ${SOURCE_DIR}/loaders/meshloading.cpp
   ${SOURCE_DIR}/loaders/SceneLoader.cpp
 )
+add_library(TRay_memory
+  STATIC
+  ${SOURCE_DIR}/core/Memory.cpp
+)
 target_link_libraries(TRay_loader PRIVATE
   TRay_geometry
   TRay_shape
