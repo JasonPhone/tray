@@ -119,6 +119,7 @@
       "valarray": "cpp",
       "filesystem": "cpp"
     },
-    "editor.tabSize": 2
+    "editor.tabSize": 2,
+    "C_Cpp.intelliSenseEngine": "disabled"
   }
 }

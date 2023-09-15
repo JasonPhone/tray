@@ -6,9 +6,11 @@ Served as my bachelor's undergraduate graduation project, now as a playground fo
 
 # Build and Run
 
+TRay is OK with clang 15.0.7. Some builtin function may fail MSVC.
+
 `cd build` and `build ..` should be ok. The required libs should be libglfw.a only, for supporting ImGUI and some other features based on OpenGL.
 
-I dislike build systems, so any related problems please work it out by yourself. I am trying to make it ok on most platforms, by writing (for me) most portable codes.
+I dislike build systems, so any related problems please work it out by yourself. I am trying to make it OK on most platforms, by writing (for me) most portable codes.
 
 # Project Structure
 
@@ -126,7 +128,7 @@ I dislike build systems, so any related problems please work it out by yourself.
   - [x] Basic Path Tracing
   - [ ] ...
 - [ ] System
-  - [ ] Memory Pool
+  - [ ] Memory Pool (see [here?](https://github.com/microsoft/mimalloc))
   - [ ] Better UI
 
 ## GUI
