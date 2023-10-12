@@ -5,6 +5,7 @@ project(TRay)
 
 # #######################################
 # Options.
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Float or double.
 option(TRAY_FLOAT_AS_DOUBLE "Use double instead of float" ON)
@@ -20,22 +21,28 @@ INCLUDE(CheckCXXSourceCompiles)
 # INCLUDE (CheckCXXSourceRuns)
 # Aligned memory allocation check.
 CHECK_CXX_SOURCE_COMPILES(
-  "struct alignas(32) Foo { char x; }; int main() { }"
+  " 
+  struct alignas(32) Foo { char x; };
+  int main() { } 
+  "
   HAVE_ALIGNAS)
 
 IF(HAVE_ALIGNAS)
   ADD_DEFINITIONS(-D TRAY_HAVE_ALIGNAS)
 ENDIF()
 
-CHECK_CXX_SOURCE_COMPILES("
-#include <malloc.h>
-int main() { void * ptr = _aligned_malloc(1024, 32); }
-" HAVE__ALIGNED_MALLOC)
-CHECK_CXX_SOURCE_COMPILES("
-#include <malloc.h>
-int main() {
-    void *ptr = memalign(32, 1024);
-} " HAVE_MEMALIGN)
+CHECK_CXX_SOURCE_COMPILES(
+  "
+  #include <malloc.h>
+  int main() { void * ptr = _aligned_malloc(1024, 32); }
+  "
+  HAVE__ALIGNED_MALLOC)
+CHECK_CXX_SOURCE_COMPILES(
+  "
+  #include <malloc.h>
+  int main() { void *ptr = memalign(32, 1024); }
+  "
+  HAVE_MEMALIGN)
 
 IF(HAVE__ALIGNED_MALLOC)
   ADD_DEFINITIONS(-D TRAY_HAVE__ALIGNED_MALLOC)

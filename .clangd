@@ -3,3 +3,5 @@ InlayHints:
   Designators: No
   ParameterNames: Yes
   DeducedTypes: Yes
+CompileFlags:
+  Add: [-I, "C:/Users/Admin/Documents/003Code/cxx/tray/include"]
