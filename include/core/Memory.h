@@ -31,7 +31,7 @@ private:
   MemoryPool &operator=(const MemoryPool &) = delete;
   // Size of the chuncks.
   const size_t m_block_size;
-  
+
   size_t m_current_block_pos = 0, m_current_alloc_size = 0;
   uint8_t *m_current_block = nullptr;
 };

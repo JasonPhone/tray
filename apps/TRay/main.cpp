@@ -18,7 +18,6 @@
 #include "gui/utility.h"
 #include "loaders/SceneLoader.h"
 
-
 using namespace TRay;
 using namespace std;
 
@@ -30,14 +29,14 @@ double last_render_time = 0;
 double time_cost = 0;
 std::string file_path;
 SceneLoader sloader;
-void render_file(const char*);
+void render_file(const char *);
 
-static void glfw_error_callback(int error, const char* description) {
+static void glfw_error_callback(int error, const char *description) {
   fprintf(stderr, "Glfw Error %d: %s\n", error, description);
   printf("Glfw Error %d: %s\n", error, description);
 }
 
-static bool open_scene_file(const char* path) {
+static bool open_scene_file(const char *path) {
   file_path = path;
   bool stat = sloader.reload(path);
   if (stat) {
@@ -56,7 +55,7 @@ static void save_image() {
   }
 }
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
   fill(image, image + sizeof(image), 0);
 
   if (argc > 1) {
@@ -79,24 +78,26 @@ int main(int argc, char* argv[]) {
   // Setup window
   printf("setup\n");
   glfwSetErrorCallback(glfw_error_callback);
-  if (!glfwInit()) return 1;
+  if (!glfwInit())
+    return 1;
 
   // Decide GL+GLSL versions
   // GL 3.0 + GLSL 130
   printf("choose version\n");
-  const char* glsl_version = "#version 130";
+  const char *glsl_version = "#version 130";
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_OPENGL_PROFILE,
-                 GLFW_OPENGL_CORE_PROFILE);  // use core profile
+                 GLFW_OPENGL_CORE_PROFILE); // use core profile
   glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
   // Create window with graphics context
   printf("create window context\n");
-  GLFWwindow* window = glfwCreateWindow(window_w, window_h, "TRay", NULL, NULL);
-  if (window == NULL) return 1;
+  GLFWwindow *window = glfwCreateWindow(window_w, window_h, "TRay", NULL, NULL);
+  if (window == NULL)
+    return 1;
   glfwMakeContextCurrent(window);
-  glfwSwapInterval(1);  // Enable vsync
+  glfwSwapInterval(1); // Enable vsync
 
   // Initialize OpenGL loader
   bool err = gladLoadGL() == 0;
@@ -109,7 +110,7 @@ int main(int argc, char* argv[]) {
   printf("imgui context\n");
   IMGUI_CHECKVERSION();
   ImGui::CreateContext();
-  ImGuiIO& io = ImGui::GetIO();
+  ImGuiIO &io = ImGui::GetIO();
   (void)io;
 
   // Setup Dear ImGui style
@@ -143,24 +144,24 @@ int main(int argc, char* argv[]) {
   glBufferData(GL_ARRAY_BUFFER, sizeof(unique_vert), unique_vert,
                GL_STATIC_DRAW);
   // vertex attrib: position
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)0);
   glEnableVertexAttribArray(0);
   // vertex attrib: color
   glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
-                        (void*)(3 * sizeof(float)));
+                        (void *)(3 * sizeof(float)));
   glEnableVertexAttribArray(1);
   // buffer EBO
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
                GL_STATIC_DRAW);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)0);
   glEnableVertexAttribArray(0);
   glBindVertexArray(0);
 
   // render loop
   GLuint texture0 = 0;
   int logo_w, logo_h, nchnl = 0;
-  uint8_t* logo = stbi_load("./logo.jpg", &logo_w, &logo_h, &nchnl, 3);
+  uint8_t *logo = stbi_load("./logo.jpg", &logo_w, &logo_h, &nchnl, 3);
   texture0 = create_texture(logo, logo_w, logo_h);
   shader.use();
   shader.set_int("texture0", 0);
@@ -273,7 +274,8 @@ int main(int argc, char* argv[]) {
 
       // Export image.
       if (ImGui::Button("Export")) {
-        if (rendering || done_rendering) save_image();
+        if (rendering || done_rendering)
+          save_image();
       }
       ImGui::SameLine();
       if (file_loaded) {
@@ -314,7 +316,7 @@ int main(int argc, char* argv[]) {
   return 0;
 }
 
-void render_file(const char* path) {
+void render_file(const char *path) {
   if (!sloader.reload(path)) {
     SError("Error loading scene file " + string(path));
     return;
