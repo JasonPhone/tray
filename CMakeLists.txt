@@ -16,7 +16,7 @@ endif()
 
 # #######################################
 # Code checks.
-INCLUDE(CheckCXXSourceCompiles)
+include(CheckCXXSourceCompiles)
 
 # INCLUDE (CheckCXXSourceRuns)
 # Aligned memory allocation check.
@@ -28,7 +28,7 @@ CHECK_CXX_SOURCE_COMPILES(
   HAVE_ALIGNAS)
 
 IF(HAVE_ALIGNAS)
-  ADD_DEFINITIONS(-D TRAY_HAVE_ALIGNAS)
+  add_compile_definitions(TRAY_HAVE_ALIGNAS)
 ENDIF()
 
 CHECK_CXX_SOURCE_COMPILES(
@@ -45,9 +45,9 @@ CHECK_CXX_SOURCE_COMPILES(
   HAVE_MEMALIGN)
 
 IF(HAVE__ALIGNED_MALLOC)
-  ADD_DEFINITIONS(-D TRAY_HAVE__ALIGNED_MALLOC)
+  add_compile_definitions(TRAY_HAVE__ALIGNED_MALLOC)
 ELSEIF(HAVE_MEMALIGN)
-  ADD_DEFINITIONS(-D TRAY_HAVE_MEMALIGN)
+  add_compile_definitions(TRAY_HAVE_MEMALIGN)
 ELSE()
   MESSAGE(SEND_ERROR "No way to allocate aligned memory.")
 ENDIF()
