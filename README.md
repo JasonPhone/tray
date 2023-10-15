@@ -17,26 +17,45 @@ I dislike build systems, so any related problems please work it out by yourself.
 ```text
 +---.vscode
 +---apps
+|   +---sample_images
 |   +---test
 |   |   \---bin
 |   \---TRay
 |       \---bin
-+---bin
 +---build
 +---extern
+|   +---file_dialog
 |   +---glad
 |   +---GLFW
 |   +---ImGui
-|   |   \---backend
-|   \---KHR
+|   +---KHR
+|   \---nlohmann
 +---include
+|   +---accelerators
+|   +---cameras
 |   +---core
-|   \---gui
+|   +---filters
+|   +---gui
+|   +---integrators
+|   +---lights
+|   +---loaders
+|   +---materials
+|   +---samplers
+|   +---shapes
+|   \---textures
 +---lib
-+---others
 \---src
+    +---accelerators
+    +---cameras
     +---core
-    \---gui
+    +---filters
+    +---gui
+    +---integrators
+    +---lights
+    +---loaders
+    +---materials
+    +---samplers
+    \---shapes
 ```
 
 # Features
@@ -128,7 +147,8 @@ I dislike build systems, so any related problems please work it out by yourself.
   - [x] Basic Path Tracing
   - [ ] ...
 - [ ] System
-  - [ ] Memory Pool (see [here?](https://github.com/microsoft/mimalloc))
+  - [ ] Statistics
+  - [ ] Memory Pool (see [here](https://github.com/microsoft/mimalloc))
   - [ ] Better UI
 
 ## GUI
