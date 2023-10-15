@@ -4,4 +4,4 @@ InlayHints:
   ParameterNames: Yes
   DeducedTypes: Yes
 CompileFlags:
-  Add: [-I, "C:/Users/Admin/Documents/003Code/cxx/tray/include"]
+  Add: [-I, "C:/Users/Admin/Documents/003Code/cxx/tray/include", -I, "C:/Users/Admin/Documents/003Code/cxx/tray/extern"]
