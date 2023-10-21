@@ -1,8 +1,9 @@
 #pragma once
 #include "core/TRay.h"
-#include "core/geometry/Transform.h"
-#include "core/geometry/Point.h"
 #include "core/geometry/Bound.h"
+#include "core/geometry/Point.h"
+#include "core/geometry/Transform.h"
+
 
 /**
  * Object space: Space in which geometry primitives are defined.
@@ -40,7 +41,7 @@ class Camera {
   virtual Float ray_sample(const CameraSample &cam_sample,
                            Ray *gen_ray) const = 0;
   virtual std::string to_string() const {
-    return string_format(" shutter time [%f, %f]\n\t", m_shutter_open,
+    return string_format("shutter time [%f, %f]\n\t", m_shutter_open,
                          m_shutter_close);
   }
   Transform m_cam_to_world;

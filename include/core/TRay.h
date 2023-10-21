@@ -23,10 +23,10 @@ using Float = float;
 // Logging and assert warp
 #define ASSERT(x) assert((x))
 #define PEEK(x) std::cerr << #x << ": " << x << "\n";
-#define SInfo(msg) std::cerr << msg << "\n"
-#define SWarn(msg) std::cerr << msg << "\n"
-#define SError(msg) std::cerr << msg << "\n"
-#define SCritical(msg) std::cerr << msg << "\n"
+#define SInfo(msg) std::cerr << "[I]" << msg << "\n"
+#define SWarn(msg) std::cerr << "[W]" << msg << "\n"
+#define SError(msg) std::cerr << "[E]" << msg << "\n"
+#define SCritical(msg) std::cerr << "[C]" << msg << "\n"
 
 #ifndef NDEBUG
 #define SDebug(msg) std::cerr << msg << "\n"

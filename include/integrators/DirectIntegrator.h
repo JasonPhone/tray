@@ -1,6 +1,7 @@
 #pragma once
-#include "core/TRay.h"
 #include "core/Integrator.h"
+#include "core/TRay.h"
+
 /**
  * DirectIntegrator accounts for the light from light source directly to the
  * shading point. The specular reflection and transmission is also included.

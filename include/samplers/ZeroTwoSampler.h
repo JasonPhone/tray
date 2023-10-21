@@ -1,6 +1,7 @@
 #pragma once
-#include "core/TRay.h"
 #include "core/Sampler.h"
+#include "core/TRay.h"
+
 
 namespace TRay {
 /// @brief (0, 2)-sequence for 2D samples,
@@ -8,11 +9,11 @@ namespace TRay {
 class ZeroTwoSampler : public PixelSampler {
  public:
   ZeroTwoSampler(int64_t spp, int n_dims) : PixelSampler(round(spp), n_dims) {
-    SInfo(
-        string_format("ZeroTwoSampler:: Created (0-2)-sequence sampler with"
-                      "\n\tspp %d rounded up to %d"
-                      "\n\tsample dimensions %d",
-                      spp, round(spp), n_dims));
+    // SInfo(
+    //     string_format("ZeroTwoSampler:: Created (0-2)-sequence sampler with"
+    //                   "\n\tspp %d rounded up to %d"
+    //                   "\n\tsample dimensions %d",
+    //                   spp, round(spp), n_dims));
   }
 
   void start_pixel(const Point2i &p) override;

@@ -10,7 +10,6 @@
 #include "core/reflection/BSDF.h"
 #include "core/reflection/BxDF.h"
 
-
 namespace TRay {
 void SamplerIntegrator::render(const Scene &scene) {
   SInfo("SamplerIntegrator::render: Start rendering.");
@@ -55,9 +54,8 @@ void SamplerIntegrator::render(const Scene &scene) {
     std::unique_ptr<FilmTile> film_tile =
         m_camera->m_film->get_tile(tile_bound);
     // Loop over pixels in this FilmTile.
-    SInfo(string_format("SampleIntegrator::render: %d/%d \n\tBegin tile ",
-                        tile_cnt, n_tiles.x * n_tiles.y) +
-          tile_bound.to_string());
+    SInfo(string_format("SampleIntegrator::render: %d/%d.", tile_cnt,
+                        n_tiles.x * n_tiles.y));
     Bound2iIterator bound_range(tile_bound);
     for (const Point2i &pxl : bound_range) {
       // Begin for this pixel.
@@ -70,7 +68,8 @@ void SamplerIntegrator::render(const Scene &scene) {
         Float ray_w = m_camera->ray_sample(cam_sample, &ray);
         // SDebug("ray_sample: " + ray.to_string());
         Spectrum L(0.0);
-        if (ray_w > 0) L = Li(ray, scene, *tile_sampler);
+        if (ray_w > 0)
+          L = Li(ray, scene, *tile_sampler);
         // Check.
         if (L.has_NaN()) {
           SError(string_format(
@@ -160,7 +159,8 @@ bool SamplerIntegrator::render_step(const Scene &scene) {
   } else {
     bool done = true;
     for (auto &tile : m_tiles) {
-      if (tile.tile_done) continue;
+      if (tile.tile_done)
+        continue;
       tile.render_one_sample();
       done = false;
     }
@@ -266,7 +266,7 @@ Spectrum direct_lighting(const Interaction &inter, const Point2f &u_bsdf,
   // SDebug("===========================\ndirect lighting begin");
   BxDFType flags =
       do_specular ? BSDF_ALL : BxDFType(BSDF_ALL & (~BSDF_SPECULAR));
-  Spectrum Ld(0.0);  // Final result.
+  Spectrum Ld(0.0); // Final result.
   Float light_pdf = 0, bsdf_pdf = 0;
   Vector3f wi;
   // Light term and BSDF term.
@@ -341,7 +341,7 @@ Spectrum direct_lighting(const Interaction &inter, const Point2f &u_bsdf,
       // SDebug("non-zero pdf and non-zero bsdf");
       //  Light contribution along wi.
       Float weight = 1;
-      if (!specular_sampled) {  // Delta distribution cannot be sampled.
+      if (!specular_sampled) { // Delta distribution cannot be sampled.
         // SDebug("non-specular sample, evaluating Li");
         light_pdf = light.pdf_Li(inter, wi);
         // Light term is not sampled.
@@ -378,4 +378,4 @@ Spectrum direct_lighting(const Interaction &inter, const Point2f &u_bsdf,
   // SDebug("---------------------------");
   return Ld;
 }
-}  // namespace TRay
+} // namespace TRay

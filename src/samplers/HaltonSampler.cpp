@@ -1,5 +1,7 @@
 #include "samplers/HaltonSampler.h"
+
 #include "core/math/lowdiscrepancy.h"
+
 
 namespace TRay {
 /// @brief Solve x, y for ax + by = 1.
@@ -41,13 +43,13 @@ HaltonSampler::HaltonSampler(int spp, const Bound2i &sample_bound)
   // Multiplicetive inverse for determine the first global index using CRT.
   m_mult_inv[0] = multiply_inverse(m_scale_ceil[1], m_scale_ceil[0]);
   m_mult_inv[1] = multiply_inverse(m_scale_ceil[0], m_scale_ceil[1]);
-  SInfo(
-      string_format("HaltonSampler:: Created halton sampler with"
-                    "\n\tspp %d"
-                    "\n\tsample bound %s"
-                    "\n\tscale %d, %d (stride %d)",
-                    spp, sample_bound.to_string().c_str(), m_scale_ceil[0],
-                    m_scale_ceil[1], m_sample_stride));
+  // SInfo(
+  //     string_format("HaltonSampler:: Created halton sampler with"
+  //                   "\n\tspp %d"
+  //                   "\n\tsample bound %s"
+  //                   "\n\tscale %d, %d (stride %d)",
+  //                   spp, sample_bound.to_string().c_str(), m_scale_ceil[0],
+  //                   m_scale_ceil[1], m_sample_stride));
 }
 int64_t HaltonSampler::global_index(int64_t local_index) const {
   if (m_current_pixel != m_offset_pixel) {

@@ -11,11 +11,11 @@ class SobolSampler : public GlobalSampler {
     m_scale = pow2_ceil(
         std::max(sample_bound.diagonal().x, sample_bound.diagonal().y));
     m_scale_expo = log2_int(m_scale);
-    SInfo(
-        string_format("SobolSampler:: Created Sobol' sampler with"
-                      "\n\tspp %d rounded up to %d"
-                      "\n\tscale resolution %d",
-                      spp, round(spp), m_scale));
+    // SInfo(
+    //     string_format("SobolSampler:: Created Sobol' sampler with"
+    //                   "\n\tspp %d rounded up to %d"
+    //                   "\n\tscale resolution %d",
+    //                   spp, round(spp), m_scale));
   }
   int64_t global_index(int64_t local_index) const override;
   Float value_by_dimension(int64_t global_idx_sample,

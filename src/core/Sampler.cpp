@@ -1,10 +1,11 @@
 #include "core/Sampler.h"
+
 #include "core/Camera.h"
 
 namespace TRay {
 Sampler::Sampler(int64_t sample_per_pixel) : m_spp(sample_per_pixel) {
-  SInfo("Sampler:: Created sampler with" +
-        string_format("\n\tspp %llu", sample_per_pixel));
+  // SInfo("Sampler:: Created sampler with" +
+  //       string_format("\n\tspp %llu", sample_per_pixel));
 }
 /// @details Order of consuming samples:
 ///          2D for point on film,
@@ -64,8 +65,8 @@ const Point2f *Sampler::get_2D_array(int n) {
 
 PixelSampler::PixelSampler(int64_t samples_per_pxiel, int sample_dims)
     : Sampler(samples_per_pxiel) {
-  SInfo("PixelSampler:: Created pixel sampler with" +
-        string_format("\n\tsample dims %d", sample_dims));
+  // SInfo("PixelSampler:: Created pixel sampler with" +
+  //       string_format("\n\tsample dims %d", sample_dims));
   for (int i = 0; i < sample_dims; i++) {
     m_sample_1D.push_back(std::vector<Float>(m_spp));
     m_sample_2D.push_back(std::vector<Point2f>(m_spp));

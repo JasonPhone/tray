@@ -1,7 +1,8 @@
 #pragma once
-#include "core/TRay.h"
 #include "core/Integrator.h"
+#include "core/TRay.h"
 #include "core/stringformat.h"
+
 /**
  * The original idea for path tracing comes from the "area form" of light
  * transport equation, where instead of integrate over a sphere of directions,
@@ -26,8 +27,8 @@ class PathIntegrator : public SamplerIntegrator {
   PathIntegrator(int max_depth, std::shared_ptr<const Camera> camera,
                  std::shared_ptr<Sampler> sampler)
       : SamplerIntegrator(camera, sampler), m_max_depth(max_depth) {
-    SInfo("PathIntegrator:: Created integrator with" +
-          string_format("\n\tmax depth %d\n", max_depth));
+    // SInfo("PathIntegrator:: Created integrator with" +
+    //       string_format("\n\tmax depth %d\n", max_depth));
   }
   Spectrum Li(const Ray &ray, const Scene &scene, Sampler &sampler,
               int depth = 0) const override;

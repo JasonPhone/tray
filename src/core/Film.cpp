@@ -1,5 +1,7 @@
 #include "core/Film.h"
+
 #include "core/image.h"
+
 
 namespace TRay {
 Film::Film(const Point2i &resolution, const Bound2f &crop_window,
@@ -60,7 +62,8 @@ std::unique_ptr<FilmTile> Film::get_tile(const Bound2i &tile_bound) {
 }
 void Film::merge_tile(std::unique_ptr<FilmTile> tile) {
   // TODO Need lock here if using multi-therads.
-  SInfo("Film::merge_tile:\n\tMerging tile " + tile->tile_bound().to_string());
+  // SInfo("Film::merge_tile:\n\tMerging tile " +
+  // tile->tile_bound().to_string());
   Bound2iIterator pxl_range(tile->tile_bound());
   for (const Point2i &pxl_pos : pxl_range) {
     const FilmTilePixel &tile_pxl = tile->pixel(pxl_pos);

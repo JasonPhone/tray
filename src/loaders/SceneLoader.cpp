@@ -136,7 +136,8 @@ bool SceneLoader::do_transforms(const json &scene_file) {
         SWarn("Unknow Transform type " + tp);
       }
     }
-    SInfo("Got Transform " + name + " with:\n\tsequence (" + seq + ")");
+    SInfo("\tGot Transform " + name);
+    // SInfo("\tGot Transform " + name + " with:\n\tsequence (" + seq + ")");
     transforms[name] = std::make_shared<Transform>(T);
   }
   SInfo("Transforms loaded");
@@ -156,7 +157,8 @@ bool SceneLoader::do_colors(const json &scene_file) {
     } else {
       SWarn("Unknow Spectrum type " + tp);
     }
-    SInfo("Got Spectrum " + name + " with:\n\t value " + c.to_string());
+    SInfo("\tGot Spectrum " + name);
+    // SInfo("\tGot Spectrum " + name + " with:\n\t value " + c.to_string());
     colors[name] = std::make_shared<Spectrum>(c);
   }
   SInfo("Colors loaded");
@@ -176,10 +178,14 @@ bool SceneLoader::do_textures(const json &scene_file) {
         ConstantTexture<Spectrum> text{*colors[val]};
         spectrum_textures[name] =
             std::make_shared<ConstantTexture<Spectrum>>(text);
+        SInfo("\tGot Texture " + name);
+        // SInfo("\tGot Texture " + name + " with:\n\t" + tp + " -> " + rtp);
       } else if (rtp == Val::Float) {
         Float val = tex[Key::Value].get<Float>();
         ConstantTexture<Float> text{val};
         float_textures[name] = std::make_shared<ConstantTexture<Float>>(text);
+        SInfo("\tGot Texture " + name);
+        // SInfo("\tGot Texture " + name + " with:\n\t" + tp + " -> " + rtp);
       } else {
         SWarn("Unknown return type " + rtp);
       }
@@ -193,14 +199,14 @@ bool SceneLoader::do_textures(const json &scene_file) {
         Spectrum &color_a{*colors[ca]}, &color_b{*colors[cb]};
         spectrum_textures[name] =
             std::make_shared<Grid3DTexture>(color_a, color_b, interval);
+        SInfo("\tGot Texture " + name);
+        // SInfo("\tGot Texture " + name + " with:\n\t" + tp + " -> " + rtp);
       } else {
         SWarn("Unknown return type " + rtp);
       }
     } else {
       SWarn("Unknown Texture type " + tp);
     }
-    SInfo("Got Texture " + name + " with:\n\ttype " + tp + "\n\treturn type " +
-          rtp);
   }
   SInfo("Textures loaded");
   return true;
@@ -218,13 +224,15 @@ bool SceneLoader::do_materials(const json &scene_file) {
       matt = std::make_shared<MatteMaterial>(spectrum_textures[diffuse],
                                              float_textures[sigma]);
       materials[name] = matt;
-      SInfo("Got Material " + name + " with:\n\ttype " + tp);
+      SInfo("\tGot Material " + name);
+      // SInfo("\tGot Material " + name + " with:\n\ttype " + tp);
     } else if (tp == Val::MirrorMaterial) {
       std::string diffuse = mat[Key::Diffuse].get<std::string>();
       std::shared_ptr<MirrorMaterial> matt = nullptr;
       matt = std::make_shared<MirrorMaterial>(spectrum_textures[diffuse]);
       materials[name] = matt;
-      SInfo("Got Material " + name + " with:\n\ttype " + tp);
+      SInfo("\tGot Material " + name);
+      // SInfo("\tGot Material " + name + " with:\n\ttype " + tp);
     } else {
       SWarn("Unknown Material type " + tp);
     }
@@ -246,8 +254,9 @@ bool SceneLoader::do_shapes(const json &scene_file) {
         shapes[name] = std::make_shared<VEC_OF_SHARED(Shape)>();
       shapes[name]->push_back(std::make_shared<Sphere>(
           Sphere{*trans, trans->inverse(), flip, radius}));
-      SInfo("Got Shape " + name + " with:\n\ttype " + tp + "\n\tradius " +
-            string_format("%f ", radius));
+      SInfo("\tGot Shape " + name);
+      // SInfo("\tGot Shape " + name + " with:\n\ttype " + tp + "\n\tradius " +
+      //       string_format("%f ", radius));
     } else if (tp == Val::MeshPlain) {
       Transform trans;
       if (shp.contains(Key::Transform)) {
@@ -280,9 +289,10 @@ bool SceneLoader::do_shapes(const json &scene_file) {
         shapes[name] = std::make_shared<VEC_OF_SHARED(Shape)>();
       auto &vec = shapes[name];
       for (const auto &tri : triangles) vec->push_back(tri);
-      SInfo("Got Shape " + name + " with:\n\ttype " + tp +
-            "\n\tnumber of triangles " + string_format("%d ", n_triangles) +
-            "\n\tnumber of vertices " + string_format("%d ", n_vertices));
+      SInfo("\tGot Shape " + name);
+      // SInfo("\tGot Shape " + name + " with:\n\ttype " + tp +
+      //       "\n\tnumber of triangles " + string_format("%d ", n_triangles) +
+      //       "\n\tnumber of vertices " + string_format("%d ", n_vertices));
     } else if (tp == Val::MeshObj) {
       Transform trans;
       if (shp.contains(Key::Transform)) {
@@ -298,7 +308,8 @@ bool SceneLoader::do_shapes(const json &scene_file) {
           load_triangle_mesh(trans, flip, &triangles, file_path.c_str(), "");
       if (stat) {
         shapes[name] = std::make_shared<VEC_OF_SHARED(Shape)>(triangles);
-        SInfo("Got Shape " + name + " with:\n\ttype " + tp);
+        SInfo("\tGot Shape " + name);
+        // SInfo("\tGot Shape " + name + " with:\n\ttype " + tp);
       } else {
         SError("Error loading triangle mesh from " + file_path);
         return stat;
@@ -315,8 +326,7 @@ bool SceneLoader::do_lights(const json &scene_file) {
   for (const auto &lit : scene_file[Key::Lights]) {
     std::string name = lit[Key::Name].get<std::string>();
     std::string tp = lit[Key::Type].get<std::string>();
-    PEEK(name);
-    PEEK(tp);
+    // PEEK(name); PEEK(tp);
     if (tp == Val::DiffuseArea) {
       std::string trans_name = lit[Key::Transform].get<std::string>();
       std::shared_ptr<Transform> trans = transforms[trans_name];
@@ -332,8 +342,9 @@ bool SceneLoader::do_lights(const json &scene_file) {
         alights[name]->push_back(std::make_shared<DiffuseAreaLight>(light));
         light_list.push_back(std::make_shared<DiffuseAreaLight>(light));
       }
-      SInfo("Got Light " + name + " with:\n\ttype " + tp + "\n\temit " +
-            emit_name + "\n\tshape " + shape_name);
+      SInfo("\tGot Light " + name);
+      // SInfo("\tGot Light " + name + " with:\n\ttype " + tp + "\n\temit " +
+      //       emit_name + "\n\tshape " + shape_name);
     } else if (tp == Val::Distant) {
       std::string trans_name = lit[Key::Transform].get<std::string>();
       std::shared_ptr<Transform> trans = transforms[trans_name];
@@ -343,8 +354,9 @@ bool SceneLoader::do_lights(const json &scene_file) {
       get_float(lit[Key::Direction], &dir.x, &dir.y, &dir.z);
       DistantLight light = DistantLight{*trans, *emit, dir};
       light_list.push_back(std::make_shared<DistantLight>(light));
-      SInfo("Got Light " + name + " with:\n\ttype " + tp + "\n\temit " +
-            emit_name + "\n\twi " + dir.to_string());
+      SInfo("\tGot Light " + name);
+      // SInfo("\tGot Light " + name + " with:\n\ttype " + tp + "\n\temit " +
+      //       emit_name + "\n\twi " + dir.to_string());
     } else {
       // TODO other lights
       SWarn("Unknown Light type " + tp);
@@ -366,9 +378,10 @@ bool SceneLoader::do_primitives(const json &scene_file) {
         // Primitive with lights.
         std::string light_name = pri[Key::Light].get<std::string>();
         const auto &lights = alights[light_name];
-        SInfo("Got Primitive light with:\n\ttype " + tp + "\n\tshape " +
-              shape_name + "\n\tmaterial " + mat_name + "\n\tlight " +
-              light_name);
+        SInfo("\tGot Primitive light " + shape_name + " " + light_name);
+        // SInfo("\tGot Primitive light with:\n\ttype " + tp + "\n\tshape " +
+        //       shape_name + "\n\tmaterial " + mat_name + "\n\tlight " +
+        //       light_name);
         if (shape_list->size() == lights->size()) {
           for (size_t i = 0; i < shape_list->size(); i++) {
             primitive_list.push_back(std::make_shared<GeometricPrimitive>(
@@ -379,8 +392,9 @@ bool SceneLoader::do_primitives(const json &scene_file) {
         }
       } else {
         // Primitive without lights.
-        SInfo("Got Primitive list with:\n\ttype " + tp + "\n\tshape " +
-              shape_name + "\n\tmaterial " + mat_name);
+        SInfo("\tGot Primitive list " + shape_name + " " + mat_name);
+        // SInfo("\tGot Primitive list with:\n\ttype " + tp + "\n\tshape " +
+        //       shape_name + "\n\tmaterial " + mat_name);
         for (const auto &shape : *shape_list) {
           primitive_list.push_back(std::make_shared<GeometricPrimitive>(
               GeometricPrimitive{shape, mat, nullptr}));
@@ -412,7 +426,7 @@ bool SceneLoader::do_camera(const json &camera_file) {
   std::string camera_type = camera_file[Key::Type].get<std::string>();
   std::shared_ptr<Camera> camera = nullptr;
   if (camera_type == Val::PerspectiveCamera) {
-    PEEK(camera_type);
+    // PEEK(camera_type);
     const auto trans =
         transforms[camera_file[Key::Transform].get<std::string>()];
     Point2f scr0, scr1;
@@ -462,17 +476,16 @@ bool SceneLoader::do_camera(const json &camera_file) {
     PerspectiveCamera cam = PerspectiveCamera{
         trans->inverse(), screen, shutter0, shutter1, lensr, focald, fov, film};
     m_camera = std::make_shared<PerspectiveCamera>(cam);
-    SInfo("Got PerspectiveCamera with:\n\tresolution " +
-          resolution.to_string());
+    SInfo("\tGot PerspectiveCamera with resolution " + resolution.to_string());
   } else {
     SWarn("Unknown Camera type " + camera_type);
     return false;
   }
-  SDebug("Camera loaded");
+  SInfo("Camera loaded");
   return true;
 }
 bool SceneLoader::do_sampler(const json &sampler_file) {
-  SDebug("Loading sampler");
+  SInfo("Loading sampler");
   std::string sam_type = sampler_file[Key::Type].get<std::string>();
   if (sam_type == Val::StratifiedSampler) {
     Float sppx = 0, sppy = 0, sdim = 0;
@@ -482,7 +495,7 @@ bool SceneLoader::do_sampler(const json &sampler_file) {
     m_sampler = std::make_shared<StratifiedSampler>(
         StratifiedSampler{int(sppx), int(sppy), int(sdim), jitter});
     SInfo(
-        string_format("Got StratifiedSampler with:"
+        string_format("\tGot StratifiedSampler with:"
                       "\n\tspp x %d, y %d"
                       "\n\tdim %d"
                       "\n\tjitter %d",
@@ -494,7 +507,7 @@ bool SceneLoader::do_sampler(const json &sampler_file) {
     m_sampler =
         std::make_shared<RandomSampler>(RandomSampler{int(spp), int(sdim)});
     SInfo(
-        string_format("Got RandomSampler with:"
+        string_format("\tGot RandomSampler with:"
                       "\n\tspp %d"
                       "\n\tdim %d",
                       int(spp), int(sdim)));
@@ -504,7 +517,7 @@ bool SceneLoader::do_sampler(const json &sampler_file) {
     m_sampler = std::make_shared<HaltonSampler>(
         HaltonSampler{int(spp), m_camera->m_film->sample_bound()});
     SInfo(
-        string_format("Got HaltonSampler with:"
+        string_format("\tGot HaltonSampler with:"
                       "\n\tspp %d",
                       int(spp)));
   } else if (sam_type == Val::ZeroTwoSampler) {
@@ -514,7 +527,7 @@ bool SceneLoader::do_sampler(const json &sampler_file) {
     m_sampler =
         std::make_shared<ZeroTwoSampler>(ZeroTwoSampler{int(spp), int(sdim)});
     SInfo(
-        string_format("Got ZeroTwoSampler with:"
+        string_format("\tGot ZeroTwoSampler with:"
                       "\n\tspp %d"
                       "\n\tdim %d",
                       int(spp), int(sdim)));
@@ -525,7 +538,7 @@ bool SceneLoader::do_sampler(const json &sampler_file) {
     m_sampler = std::make_shared<MaxMinDisSampler>(
         MaxMinDisSampler{int(spp), int(sdim)});
     SInfo(
-        string_format("Got MaxMinDisSampler with:"
+        string_format("\tGot MaxMinDisSampler with:"
                       "\n\tspp %d"
                       "\n\tdim %d",
                       int(spp), int(sdim)));
@@ -535,45 +548,45 @@ bool SceneLoader::do_sampler(const json &sampler_file) {
     m_sampler = std::make_shared<SobolSampler>(
         SobolSampler{int(spp), m_camera->m_film->sample_bound()});
     SInfo(
-        string_format("Got SobolSampler with:"
+        string_format("\tGot SobolSampler with:"
                       "\n\tspp %d",
                       int(spp)));
   } else {
     SWarn("Unknown Sampler type " + sam_type);
     return false;
   }
-  SDebug("Sampler loaded");
+  SInfo("Sampler loaded");
   return true;
 }
 bool SceneLoader::do_integrator(const json &integrator_file) {
-  SDebug("Loading integrator");
+  SInfo("Loading integrator");
   std::string itr_type = integrator_file[Key::Type].get<std::string>();
   if (itr_type == Val::PathIntegrator) {
     int max_depth = 0;
     max_depth = integrator_file[Key::MaxDepth].get<int>();
     m_integrator = std::make_shared<PathIntegrator>(
         PathIntegrator{max_depth, m_camera, m_sampler});
-    SInfo("Got PathIntegrator with:\n\tmax depth " +
+    SInfo("\tGot PathIntegrator with:\n\tmax depth " +
           string_format("%d", max_depth));
   } else if (itr_type == Val::DirectIntegrator) {
     int max_depth = 0;
     max_depth = integrator_file[Key::MaxDepth].get<int>();
     m_integrator = std::make_shared<DirectIntegrator>(DirectIntegrator{
         LightSample::UNIFORM_ALL, max_depth, m_camera, m_sampler});
-    SInfo("Got DirectIntegrator (UNIFORM_ALL) with:\n\tmax depth " +
+    SInfo("\tGot DirectIntegrator (UNIFORM_ALL) with:\n\tmax depth " +
           string_format("%d", max_depth));
   } else if (itr_type == Val::WhittedIntegrator) {
     int max_depth = 0;
     max_depth = integrator_file[Key::MaxDepth].get<int>();
     m_integrator = std::make_shared<WhittedIntegrator>(
         WhittedIntegrator{max_depth, m_camera, m_sampler});
-    SInfo("Got WhittedIntegrator with:\n\tmax depth " +
+    SInfo("\tGot WhittedIntegrator with:\n\tmax depth " +
           string_format("%d", max_depth));
   } else {
     SWarn("Unknown Sampler type " + itr_type);
     return false;
   }
-  SDebug("Integrator loaded");
+  SInfo("Integrator loaded");
   return true;
 }
 }  // namespace TRay

@@ -253,9 +253,9 @@ std::vector<std::shared_ptr<Shape>> create_triangle_mesh(
     const Point3f *vertices, const Normal3f *vertex_normals,
     const Point2f *vertex_uv) {
   SInfo(
-      string_format("Creating triangle mesh with"
-                    "\n\t%d triangles"
-                    "\n\t%d vertices",
+      string_format("Creating triangle mesh "
+                    "%d triangles, "
+                    "%d vertices",
                     n_triangles, n_vertices));
   std::shared_ptr<TriangleMesh> mesh = std::make_shared<TriangleMesh>(
       obj_world, n_triangles, vertex_indices, n_vertices, vertices,
