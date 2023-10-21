@@ -1,0 +1,102 @@
+{
+  "transforms": [
+    { "name": "trans_light", "sequence": [ { "type": "translate", "value": [ 0, 1000, 0 ] } ] },
+    { "name": "trans_i", "sequence": [ ] },
+    { "name": "trans_x", "sequence": [ { "type": "translate", "value": [ 10, 0, 0 ] } ] },
+    { "name": "trans_y", "sequence": [ { "type": "translate", "value": [ 0, 10, 0 ] } ] },
+    { "name": "trans_z", "sequence": [ { "type": "translate", "value": [ 0, 0, 10 ] } ] },
+    { "name": "world_to_cam", "sequence": [
+        { "type": "look_at", "value": {
+            "position": [ 0, 30, 0 ],
+            "look": [ 60, 0, 40 ],
+            "up": [ 0, 1, 0 ]
+          } }
+      ] }
+  ],
+  "colors": [
+    { "name": "color_black", "type": "RGB", "value": [ 0.00, 0.00, 0.00 ] },
+    { "name": "color_r", "type": "RGB", "value": [ 0.65, 0.05, 0.05 ] },
+    { "name": "color_g", "type": "RGB", "value": [ 0.12, 0.45, 0.15 ] },
+    { "name": "color_b", "type": "RGB", "value": [ 0.35, 0.35, 0.95 ] },
+    { "name": "color_s", "type": "RGB", "value": [ 3.00, 3.00, 3.00 ] },
+    { "name": "color_white", "type": "RGB", "value": [ 1.00, 1.00, 1.00 ] }
+  ],
+  "textures": [
+    { "name": "tex_r", "type": "constant", "return": "spectrum", "value": "color_r" },
+    { "name": "tex_g", "type": "constant", "return": "spectrum", "value": "color_g" },
+    { "name": "tex_b", "type": "constant", "return": "spectrum", "value": "color_b" },
+    { "name": "tex_s", "type": "constant", "return": "spectrum", "value": "color_s" },
+    { "name": "tex_grid", "type": "3d_grid", "return": "spectrum", "value": {
+        "color_a": "color_white",
+        "color_b": "color_black",
+        "interval": [ 40, 40, 40 ]
+      } },
+    { "name": "tex_black", "type": "constant", "return": "spectrum", "value": "color_black" },
+    { "name": "tex_white", "type": "constant", "return": "spectrum", "value": "color_white" },
+    { "name": "tex_const", "type": "constant", "return": "float", "value": 0 }
+  ],
+  "materials": [
+    { "name": "matte_black", "type": "matte", "diffuse": "tex_black", "sigma": "tex_const" },
+    { "name": "matte_r", "type": "matte", "diffuse": "tex_r", "sigma": "tex_const" },
+    { "name": "matte_g", "type": "matte", "diffuse": "tex_g", "sigma": "tex_const" },
+    { "name": "matte_b", "type": "matte", "diffuse": "tex_b", "sigma": "tex_const" },
+    { "name": "matte_s", "type": "matte", "diffuse": "tex_s", "sigma": "tex_const" },
+    { "name": "matte_grid", "type": "matte", "diffuse": "tex_grid", "sigma": "tex_const" },
+    { "name": "const_grid", "type": "constant", "diffuse": "tex_grid" },
+    { "name": "matte_white", "type": "matte", "diffuse": "tex_white", "sigma": "tex_const" }
+  ],
+  "shapes": [
+    { "name": "ball_o", "type": "sphere", "transform": "trans_i", "flip_normal": false, "radius": 2 },
+    { "name": "ball_x", "type": "sphere", "transform": "trans_x", "flip_normal": false, "radius": 2 },
+    { "name": "ball_y", "type": "sphere", "transform": "trans_y", "flip_normal": false, "radius": 2 },
+    { "name": "ball_z", "type": "sphere", "transform": "trans_z", "flip_normal": false, "radius": 2 },
+    {
+      "name": "shape_plane_h", "type": "mesh_plain", "flip_normal": false,
+      "vertex": [
+        [ -2000, 0, -2000 ],
+        [ -2000, 0, 2000 ],
+        [ 2000, 0, 2000 ],
+        [ 2000, 0, -2000 ]
+      ],
+      "index": [ 0, 1, 2, 2, 3, 0 ]
+    }
+  ],
+  "lights": [
+    { "name": "light", "type": "distant", "transform": "trans_light", "emit": "color_s", "direction": [ 0, 1, 0 ] }
+  ],
+  "primitives": [
+    { "type": "geometri", "shape": "ball_o", "material": "matte_s" },
+    { "type": "geometri", "shape": "ball_x", "material": "matte_r" },
+    { "type": "geometri", "shape": "ball_y", "material": "matte_g" },
+    { "type": "geometri", "shape": "ball_z", "material": "matte_b" },
+    { "type": "geometric", "shape": "shape_plane_h", "material": "matte_grid" }
+  ],
+  "accelerator": { "type": "linear" },
+  "camera": {
+    "type": "perspective",
+    "transform": "world_to_cam",
+    "screen": [ [ -1, -1 ], [ 1, 1 ] ],
+    "shutter_time": [ 0, 1 ],
+    "lens_radius": 0,
+    "focal_distance": 0,
+    "fov": 40,
+    "film": {
+      "name": "grid.random.40.jpg",
+      "resolution": [ 600, 600 ],
+      "crop": [ [ 0, 0 ], [ 1, 1 ] ],
+      "filter": "no",
+      "filter_radius": [ 1, 1 ]
+    }
+  },
+  "sampler": {
+    "type": "random",
+    "sample_per_pixel": 40,
+    "sample_per_pixe": [ 1, 1 ],
+    "sample_dimension": 20,
+    "jitter": false
+  },
+  "integrator": {
+    "type": "path",
+    "max_depth": 10
+  }
+}

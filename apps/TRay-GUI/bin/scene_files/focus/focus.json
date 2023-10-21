@@ -1,0 +1,79 @@
+{
+  "transforms": [
+    { "name": "identical", "sequence": [ ] },
+    { "name": "trans_light", "sequence": [ { "type": "translate", "value": [ 0, 0, -500 ] } ] },
+    { "name": "trans_camera", "sequence": [
+        {
+          "type": "look_at", "value": {
+            "position": [ 0, 0, -100 ],
+            "look": [ 0, 0, 1 ],
+            "up": [ 0, 1, 0 ]
+          }
+        } ] }
+  ],
+  "colors": [
+    { "name": "color_blue", "type": "RGB", "value": [ 0.01, 0.66, 0.90 ] },
+    { "name": "color_white", "type": "RGB", "value": [ 3.00, 3.00, 3.00 ] }
+  ],
+  "textures": [
+    { "name": "tex_blue", "type": "constant", "return": "spectrum", "value": "color_blue" },
+    { "name": "tex_white", "type": "constant", "return": "spectrum", "value": "color_white" },
+    { "name": "tex_const", "type": "constant", "return": "float", "value": 0 }
+  ],
+  "materials": [
+    { "name": "matte_blue", "type": "matte", "diffuse": "tex_blue", "sigma": "tex_const" },
+    { "name": "matte_white", "type": "matte", "diffuse": "tex_white", "sigma": "tex_const" }
+  ],
+  "shapes": [
+    { "name": "shape_ball", "type": "sphere", "flip_normal": false, "transform": "identical", "radius": 40 },
+    {
+      "name": "shape_back", "type": "mesh_plain", "flip_normal": false, "transform": "identical",
+      "vertex": [
+        [ -1000, -1000, 1000 ],
+        [ -1000, 1000, 1000 ],
+        [ 1000, -1000, 1000 ],
+        [ 1000, 1000, 1000 ]
+      ],
+      "index": [ 0, 1, 3, 3, 2, 0 ]
+    }
+  ],
+  "lights": [
+    { "name": "light", "type": "distant", "transform": "trans_light", "emit": "color_white", "direction": [ 0, 0, -1 ] },
+    { "name": "light", "type": "distan", "transform": "trans_light", "emit": "color_white", "direction": [ 0, 0, 1 ] },
+    { "name": "light", "type": "distan", "transform": "trans_light", "emit": "color_white", "direction": [ 0, 1, 0 ] },
+    { "name": "light", "type": "distan", "transform": "trans_light", "emit": "color_white", "direction": [ 0, -1, 0 ] },
+    { "name": "light", "type": "distan", "transform": "trans_light", "emit": "color_white", "direction": [ 1, 0, 0 ] },
+    { "name": "light", "type": "distan", "transform": "trans_light", "emit": "color_white", "direction": [ -1, 0, 0 ] }
+  ],
+  "primitives": [
+    { "type": "geometric", "shape": "shape_ball", "material": "matte_blue" },
+    { "type": "geometric", "shape": "shape_back", "material": "matte_white" }
+  ],
+  "accelerator": { "type": "linear" },
+  "camera": {
+    "type": "perspective",
+    "transform": "trans_camera",
+    "screen": [ [ -1, -1 ], [ 1, 1 ] ],
+    "shutter_time": [ 0, 1 ],
+    "lens_radius": 1,
+    "focal_distance": 5,
+    "fov": 45,
+    "film": {
+      "name": "focus.02.8.jpg",
+      "resolution": [ 300, 300 ],
+      "crop": [ [ 0, 0 ], [ 1, 1 ] ],
+      "filter": "no"
+    }
+  },
+  "sampler": {
+    "type": "0,2-sequence",
+    "sample_per_pixel": 8,
+    "sample_per_pixe": [ 32, 32 ],
+    "sample_dimension": 20,
+    "jitter": true
+  },
+  "integrator": {
+    "type": "path",
+    "max_depth": 4
+  }
+}
