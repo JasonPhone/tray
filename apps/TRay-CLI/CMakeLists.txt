@@ -14,8 +14,6 @@ add_executable(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
   "${CMAKE_SOURCE_DIR}/lib/libglfw3.a"
-  imgui
-  gui
   TRay_geometry
   TRay_shape
   TRay_primitive
