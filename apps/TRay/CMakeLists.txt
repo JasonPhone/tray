@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5.0)
 
-project("TRay"
+project("TRay-CLI"
   LANGUAGES CXX
   DESCRIPTION "This is TRay."
 )
