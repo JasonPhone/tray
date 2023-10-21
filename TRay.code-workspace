@@ -1,14 +1,10 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
+  "folders": [
+    {
+      "path": "."
+    }
   ],
   "settings": {
-    "doxdocgen.generic.commandSuggestionAddPrefix": true,
-    "doxdocgen.file.fileOrder": [
-      "file", "author", "brief", "version", "date"
-    ],
     "files.associations": {
       "array": "cpp",
       "atomic": "cpp",
@@ -120,6 +116,10 @@
       "filesystem": "cpp"
     },
     "editor.tabSize": 2,
-    "C_Cpp.intelliSenseEngine": "disabled"
+    "C_Cpp.intelliSenseEngine": "disabled",
+    "cmake.copyCompileCommands": "",
+    "cmake.additionalCompilerSearchDirs": [
+      "C:/msys64/clang64/bin"
+    ],
   }
 }
