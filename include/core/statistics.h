@@ -3,6 +3,8 @@
 /// @brief Statics and profiling.
 /// @version 0.1
 /// @date 2023-10-21
+/// 
+#pragma once
 #include <functional>
 #include <map>
 #include <mutex>
