@@ -89,10 +89,6 @@ add_library(TRay_loader
   ${SOURCE_DIR}/loaders/meshloading.cpp
   ${SOURCE_DIR}/loaders/SceneLoader.cpp
 )
-add_library(TRay_memory
-  STATIC
-  ${SOURCE_DIR}/core/Memory.cpp
-)
 target_link_libraries(TRay_loader PRIVATE
   TRay_geometry
   TRay_shape
@@ -104,6 +100,14 @@ target_link_libraries(TRay_loader PRIVATE
   TRay_light
   TRay_scene
   TRay_integrator
+)
+add_library(TRay_memory
+  STATIC
+  ${SOURCE_DIR}/core/Memory.cpp
+)
+add_library(TRay_statistics
+  STATIC
+  ${SOURCE_DIR}/core/statistics.cpp
 )
 add_library(gui
   STATIC
