@@ -121,5 +121,8 @@
     "cmake.additionalCompilerSearchDirs": [
       "C:/msys64/clang64/bin"
     ],
+    "doxdocgen.file.fileOrder": [
+      "file", "author", "brief", "version", "date"
+    ],
   }
 }
