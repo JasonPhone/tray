@@ -3,7 +3,7 @@
 /// @brief Statics and profiling.
 /// @version 0.1
 /// @date 2023-10-21
-/// 
+///
 #pragma once
 #include <functional>
 #include <map>
@@ -14,6 +14,7 @@
 #include "TRay.h"
 #include "core/stringformat.h"
 
+namespace TRay {
 /// @brief Statstics are stored in each thread temporarily, and
 ///        will finally get merged into a global accumulator.
 ///        The accumulator is supposed to be accessed only for
@@ -24,7 +25,6 @@
 ///        a static callback list and static push-back method, with mutex.
 ///        It is singleton here.
 ///
-namespace TRay {
 class StatsAccumulator;
 class StatReporter {
  public:
@@ -41,7 +41,6 @@ class StatReporter {
   static std::vector<std::function<void(StatsAccumulator &)>> *m_callbacks;
   static void CallCallbacks(StatsAccumulator &accum);
 };
-
 
 void ReportThreadStats();
 // Will access the actual accumulator.

@@ -30,7 +30,7 @@ static void SplitCategory(const std::string &category, std::string *main_cat,
                           std::string *sub_cat) {
   size_t idx = category.find_first_of('/');
   if (idx != std::string::npos) {
-    *main_cat = category.substr(0, idx - 1);
+    *main_cat = category.substr(0, idx);
     *sub_cat = category.substr(idx + 1);
   } else {
     *sub_cat = category;

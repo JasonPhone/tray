@@ -4,6 +4,7 @@
 #include "core/Integrator.h"
 #include "core/TRay.h"
 #include "core/imageio.h"
+#include "core/statistics.h"
 #include "loaders/SceneLoader.h"
 
 using namespace TRay;
@@ -24,6 +25,7 @@ int main(int argc, char *argv[]) {
       render_file(argv[i]);
       time_t ed = time(NULL);
       SInfo(string_format("Rendering done, %d seconds used.", int(ed - st)));
+      TRay::PrintStats(std::cout);
     }
     return 0;
   }

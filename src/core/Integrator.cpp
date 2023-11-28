@@ -9,6 +9,9 @@
 #include "core/math/sampling.h"
 #include "core/reflection/BSDF.h"
 #include "core/reflection/BxDF.h"
+#include "core/statistics.h"
+
+STAT_COUNTER("Integrator/ray_sample", ray_sample_counter);
 
 namespace TRay {
 void SamplerIntegrator::render(const Scene &scene) {
@@ -66,6 +69,7 @@ void SamplerIntegrator::render(const Scene &scene) {
         // Generate ray through this camera sample.
         Ray ray;
         Float ray_w = m_camera->ray_sample(cam_sample, &ray);
+        ray_sample_counter++;
         // SDebug("ray_sample: " + ray.to_string());
         Spectrum L(0.0);
         if (ray_w > 0)
@@ -104,6 +108,7 @@ void SamplerIntegrator::render(const Scene &scene) {
   // Write to file.
   // --------------
   SInfo("SamplerIntegrator::render: Done rendering.");
+  ReportThreadStats();
 }
 /**
  * @brief Basic design for step progressive rendering.

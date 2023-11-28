@@ -25,6 +25,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
   TRay_scene
   TRay_integrator
   TRay_loader
+  TRay_statistics
 )
 
 # target_link_options(${PROJECT_NAME} PRIVATE "-mwindows")

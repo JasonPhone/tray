@@ -124,5 +124,6 @@
     "doxdocgen.file.fileOrder": [
       "file", "author", "brief", "version", "date"
     ],
+    "cmake.options.statusBarVisibility": "compact",
   }
 }

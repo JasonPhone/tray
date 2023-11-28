@@ -129,8 +129,8 @@
   },
   "sampler": {
     "type": "0,2-sequence",
-    "sample_per_pixel": 10,
-    "sample_dimension": 30,
+    "sample_per_pixel": 5,
+    "sample_dimension": 20,
     "jitter": true
   },
   "integrator": {

@@ -3,11 +3,15 @@
 #include "core/Sampler.h"
 #include "core/Scene.h"
 #include "core/reflection/BSDF.h"
+#include "core/statistics.h"
 
+STAT_COUNTER("PathIntegrator/Li_call", li_called)
+STAT_COUNTER("PathIntegrator/bounces", ray_bounce)
 
 namespace TRay {
 Spectrum PathIntegrator::Li(const Ray &ray, const Scene &scene,
                             Sampler &sampler, int) const {
+  li_called++;
   // SDebug("path integrator Li begin");
   // Sum of radiance of all sub paths until the longest one.
   // The paths in one PathIntegrator::Li() is from one point sequence.
@@ -25,6 +29,7 @@ Spectrum PathIntegrator::Li(const Ray &ray, const Scene &scene,
   // // and remove it when doing Russian roulette.
   // Float refract_scale = 1;
   for (bounce_cnt = 0;; bounce_cnt++) {
+    ray_bounce++;
     // SDebug(string_format("start bounce %d ", bounce_cnt + 1));
     // Extend the path one more point and add the contribution.
     // --------------------------------------------------------
