@@ -186,7 +186,7 @@ class SamplerIntegrator;
 class WhittedIntegrator;
 // integrators/DirectIntegrator.h
 class DirectIntegrator;
-// core/Memory.h
+// core/MemoryPool.h
 class MemoryPool;
 
 // ---------------------

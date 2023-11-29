@@ -103,7 +103,7 @@ target_link_libraries(TRay_loader PRIVATE
 )
 add_library(TRay_memory
   STATIC
-  ${SOURCE_DIR}/core/Memory.cpp
+  ${SOURCE_DIR}/core/MemoryPool.cpp
 )
 add_library(TRay_statistics
   STATIC
