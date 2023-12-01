@@ -172,6 +172,7 @@ bool SamplerIntegrator::render_step(const Scene &scene) {
     return done;
   }
 }
+/***************************************************/
 Spectrum SamplerIntegrator::specular_reflect(const Ray &ray,
                                              const SurfaceInteraction &si,
                                              const Scene &scene,

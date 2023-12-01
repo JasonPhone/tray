@@ -147,8 +147,9 @@ I dislike build systems, so any related problems please work it out by yourself.
   - [x] Basic Path Tracing
   - [ ] ...
 - [ ] System
-  - [ ] Statistics
-  - [ ] Memory Pool (see [here](https://github.com/microsoft/mimalloc))
+  - [ ] Parallelism
+  - [x] Statistics (Counter only)
+  - [ ] Memory Pool ([This?](https://github.com/microsoft/mimalloc))
   - [ ] Better UI
 
 ## GUI
