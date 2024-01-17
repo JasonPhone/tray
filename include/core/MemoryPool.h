@@ -12,6 +12,7 @@
 
 #include "core/TRay.h"
 
+
 namespace TRay {
 void *allocAligned(size_t size);
 void freeAligned(void *ptr);

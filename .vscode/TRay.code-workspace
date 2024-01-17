@@ -1,7 +1,7 @@
 {
   "folders": [
     {
-      "path": "."
+      "path": ".."
     }
   ],
   "settings": {
@@ -125,5 +125,6 @@
       "file", "author", "brief", "version", "date"
     ],
     "cmake.options.statusBarVisibility": "compact",
+    "doxdocgen.c.triggerSequence": "doc",
   }
 }

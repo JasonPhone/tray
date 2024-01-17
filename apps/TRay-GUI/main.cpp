@@ -40,8 +40,8 @@ static bool open_scene_file(const char *path) {
   file_path = path;
   bool stat = sloader.reload(path);
   if (stat) {
-    image_w = sloader.get_resulotion().x;
-    image_h = sloader.get_resulotion().y;
+    image_w = sloader.get_resolution().x;
+    image_h = sloader.get_resolution().y;
     return true;
   } else {
     SError("Error loading scene file.");
@@ -324,7 +324,7 @@ void render_file(const char *path) {
   auto scene = sloader.get_scene();
   auto integrator = sloader.get_integrator();
   integrator->render(*scene);
-  auto resolution = sloader.get_resulotion();
+  auto resolution = sloader.get_resolution();
 
   string fname = sloader.get_camera()->m_film->m_filename;
   sloader.get_camera()->m_film->write_image(1.0, image);
