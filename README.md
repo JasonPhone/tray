@@ -165,3 +165,7 @@ I dislike build systems, so any related problems please work it out by yourself.
 ## Others
 
 Design: Film + Filter = Sensor?
+
+## TODO
+
+https://www.pbr-book.org/3ed-2018/Utilities/Parallelism#ParallelForLoops
