@@ -65,6 +65,16 @@ I dislike build systems, so any related problems please work it out by yourself.
 - Scene Description File in json with [nlohman json](https://github.com/nlohmann/json)
 - Image Output with [stb_image](https://github.com/nothings/stb)
 
+## GUI
+
+- [x] Basic Framework
+  - [x] Image Preview
+  - [x] Render Control
+    - [x] Start/Pause Rendering
+  - [x] Scene Description File I/O
+    - [x] Scene File Load/Reload
+    - [x] File Dialog with [tiny file dialogs](https://sourceforge.net/projects/tinyfiledialogs/)
+
 ## TODO
 
 - [x] Geometry, Transformation
@@ -152,20 +162,10 @@ I dislike build systems, so any related problems please work it out by yourself.
   - [ ] Memory Pool ([This?](https://github.com/microsoft/mimalloc))
   - [ ] Better UI
 
-## GUI
+---
 
-- [ ] Basic Framework
-  - [x] Image Preview
-  - [x] Render Control
-    - [x] Start/Pause Rendering
-  - [x] Scene Description File I/O
-    - [x] Scene File Load/Reload
-    - [x] File Dialog with [tiny file dialogs](https://sourceforge.net/projects/tinyfiledialogs/)
+https://www.pbr-book.org/3ed-2018/Utilities/Parallelism#ParallelForLoops
 
 ## Others
 
 Design: Film + Filter = Sensor?
-
-## TODO
-
-https://www.pbr-book.org/3ed-2018/Utilities/Parallelism#ParallelForLoops
