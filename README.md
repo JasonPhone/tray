@@ -77,7 +77,8 @@ I dislike build systems, so any related problems please work it out by yourself.
 
 ## TODO
 
-Configuration loader and scene loader.
+Obj-based scene file formats.
+Class-based loaders, each class handles its own json.
 
 API
 

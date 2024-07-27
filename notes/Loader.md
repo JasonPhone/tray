@@ -12,72 +12,33 @@
 
 每个文件一个场景，每个场景包含：
 
-- 渲染器选项：
-  - n_threads
-  - verbose level
-- 场景配置：
-  - 一个或多个
-    - transforms, shapes
-    - colors, textures, materials
-    - lights, primitives.
-  - 单个
-    - accelerator, camera
-    - sampler, integrator.
+- 渲染器选项:
+  - 线程数
+  - 日志级别
+  - 图像输出配置（路径、名称、格式，etc）
+  - 相机、积分器和采样器
+- 场景配置
+  - 物体
+    - 实体
+      - 类型及参数
+      - 材质及参数
+      - 位置
+    - 介质（可能）
+  - 光源
+    - 类型及参数
+    - 材质及参数
+  - 加速结构
 
-### 配置文件语法
+## 配置文件语法
 
 完整文件：
 
-```json
-{
-  "comment": "an example scene file",
+TODO 待补充。
 
-  "lists of multiple objects": "below",
-  "transforms": [],
-  "colors": [],
-  "textures": [],
-  "materials": [],
-  "lights": [],
-  "primitives": [],
+## 代码设计
 
-  "single objects":"below",
-  "accelerator": {},
-  "camera": {},
-  "sampler": {},
-  "integrator": {},
-  "render": {},
+每个类注册一个调用接收配置文本，自己解析自己的配置。
 
-  "end":{}
-}
-```
+每个类维护一个可以被子类扩展的键列表以防 typo？可以用 namespace。
 
-单个对象：
-
-```json
-{
-  "name": "used for key-val mapping",
-  "type": "",
-  "reference_param": "some defined object",
-  "single value": 42,
-  "multiple values": [1, 2, 3],
-  "vertices": [
-    [0, 0, 0],
-    [1, 1, 1]
-  ],
-  "boolean": false,
-  "end": ""
-}
-```
-
-### 代码设计
-
-`Params`: Parameters, internally stored by `std::map`, one for each type.
-
-Each type T participating the rendering
-Should provide a function `T *createT(Params&)`
-
-`Loader`: Parse JSON file, convert each field into Params and call corresponding `createT()`.
-
-## 其他
-
-先写每个类的 `createT()`，搞清楚 `Params` 里面要存什么，怎么存；然后写 `Params` 相关的东西。
+Loader 负责把配置文件中每个类需要的部分传给它们。
