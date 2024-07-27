@@ -67,4 +67,40 @@ void StatsAccumulator::Clear() {
 //   std::cout << "thread done " << cnt << std::endl;
 //   TRay::ReportThreadStats();
 // }
+
+/**
+ * @note  The profiling method used in pbrt-v3 is unavailable on Windows.
+ *        Profiling function is postponed.
+ */
+// struct ProfileSample {
+//   std::atomic<prof_state_bit> sample_state{0};
+//   std::atomic<std::uint64_t> sample_count{0};
+// };
+// // We use a hash table to keep track of the profiler state counts. Because
+// // we can't do dynamic memory allocation in a signal handler (and because
+// // the counts are updated in a signal handler), we can't easily use
+// // std::unordered_map.  We therefore allocate a fixed size hash table and
+// // use linear probing if there's a conflict.
+// static constexpr int kProfileHashSize = 256;
+// static std::array<ProfileSample, kProfileHashSize> profile_samples;
+// static std::chrono::system_clock::time_point profile_start_time;
+
+// thread_local prof_state_bit profiler_state;
+// static std::atomic_bool profiler_running{false};
+// void initProfiler() {
+//   if (profiler_running) SError("Profiler is already running!!!");
+//   profiler_state = profileStateBit(Prof::SceneConstruction);
+//   clearProfiler();
+//   profile_start_time = std::chrono::system_clock::now();
+
+//   struct sigaction sa;
+
+// }
+
+// void suspendProfiler();
+// void resumeProfiler();
+// void profilerWorkerThreadInit();
+// void reportProfilerResults(FILE *dest);
+// void clearProfiler();
+// void cleanupProfiler();
 }  // namespace TRay

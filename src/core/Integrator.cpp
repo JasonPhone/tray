@@ -10,6 +10,7 @@
 #include "core/reflection/BSDF.h"
 #include "core/reflection/BxDF.h"
 #include "core/statistics.h"
+#include "core/parallel.h"
 
 STAT_COUNTER("Integrator/ray_sample", ray_sample_counter);
 
@@ -76,19 +77,19 @@ void SamplerIntegrator::render(const Scene &scene) {
           L = Li(ray, scene, *tile_sampler);
         // Check.
         if (L.has_NaN()) {
-          SError(string_format(
+          SWarn(string_format(
               "Get NaN radiance value "
               "for pixel (%d, %d), sample %d. Black value is used.",
               pxl.x, pxl.y, (int)tile_sampler->current_sample_index()));
           L = Spectrum(0.f);
         } else if (L.y() < -1e-5) {
-          SError(string_format(
+          SWarn(string_format(
               "Get negative radiance value, %f "
               "for pixel (%d, %d), sample %d. Black value is used.",
               L.y(), pxl.x, pxl.y, (int)tile_sampler->current_sample_index()));
           L = Spectrum(0.f);
         } else if (std::isinf(L.y())) {
-          SError(string_format(
+          SWarn(string_format(
               "Get INF radiance value "
               "for pixel (%d, %d), sample %d. Black value is used.",
               pxl.x, pxl.y, (int)tile_sampler->current_sample_index()));
@@ -100,6 +101,7 @@ void SamplerIntegrator::render(const Scene &scene) {
     m_camera->m_film->merge_tile(std::move(film_tile));
   };
   // No parallelism by now.
+  
   for (int y = 0; y < n_tiles.y; ++y)
     for (int x = 0; x < n_tiles.x; ++x) {
       tile_cnt++;
@@ -124,7 +126,7 @@ void SamplerIntegrator::render(const Scene &scene) {
  * Notes:
  *  A caller should be able to call a step rendering
  *  and get a result image with every tile having one
- *  pixel updated. Which means the privided function should
+ *  pixel updated. Which means the provided function should
  *  just push a step further, better return a step count and
  *  all-finished flag.
  *  The move sematics of Film::merge_tile. It should be changed.
@@ -255,7 +257,7 @@ Spectrum light_sample_uniform_one(const Interaction &inter, const Scene &scene,
     light_idx = clamp(int(sampler.sample_1D() * n_lights), 0, n_lights - 1);
     light_pdf = 1.0 / n_lights;
   }
-  // SDebug(string_format("seleted light %d from %d lights", light_idx,
+  // SDebug(string_format("selected light %d from %d lights", light_idx,
   // n_lights)); Compute lighting.
   if (light_pdf > 0) {
     const std::shared_ptr<Light> &light = scene.m_lights[light_idx];

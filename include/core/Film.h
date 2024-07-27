@@ -56,7 +56,7 @@ class Film {
   std::unique_ptr<Pixel[]> m_pixels;
   static constexpr int filter_table_width = 16;
   /// @brief 1/4 part of the filter table, assuming that the other 3 parts are
-  /// symmertric. The precision error of position is not significant.
+  /// symmetric. The precision error of position is not significant.
   Float m_filter_table[filter_table_width * filter_table_width];
 };
 

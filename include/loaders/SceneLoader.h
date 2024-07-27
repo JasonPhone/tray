@@ -14,7 +14,7 @@ class SceneLoader {
   std::shared_ptr<Scene> get_scene() const { return m_scene; }
   std::shared_ptr<Integrator> get_integrator() const { return m_integrator; }
   std::shared_ptr<Camera> get_camera() const { return m_camera; }
-  Vector2i get_resulotion() const {
+  Vector2i get_resolution() const {
     return m_camera ? m_camera->m_film->m_cropped_pixel_bound.diagonal()
                     : Vector2i(1, 1);
   }

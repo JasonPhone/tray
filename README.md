@@ -67,6 +67,12 @@ I dislike build systems, so any related problems please work it out by yourself.
 
 ## TODO
 
+Configuration loader and scene loader.
+
+API
+
+---
+
 - [x] Geometry, Transformation
   - [x] Coordinate System
   - [x] Vector
@@ -150,6 +156,8 @@ I dislike build systems, so any related problems please work it out by yourself.
   - [ ] Parallelism
   - [x] Statistics (Counter only)
   - [ ] Memory Pool ([This?](https://github.com/microsoft/mimalloc))
+  - [ ] Better Scene Format and Loader
+  - [ ] API
   - [ ] Better UI
 
 ## GUI
@@ -165,3 +173,14 @@ I dislike build systems, so any related problems please work it out by yourself.
 ## Others
 
 Design: Film + Filter = Sensor?
+
+Framework: Everything on a rooted obj-tree?
+
+### Code style
+
+- File name: KeyClass, or keyFunction.
+- Class and type: BigCamel.
+- Function: aloneFunction, memberFunction, parseHtml, checkId.
+- Variable: local_var, global_var, m_private_var, public_var.
+- Const or macro: kConstValue, SOME_MACRO.
+<!-- - Parameter: _func_parameter. -->

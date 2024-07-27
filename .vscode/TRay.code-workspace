@@ -126,5 +126,8 @@
     ],
     "cmake.options.statusBarVisibility": "compact",
     "doxdocgen.c.triggerSequence": "doc",
+    "cSpell.words": [
+      "Brdf"
+    ],
   }
 }

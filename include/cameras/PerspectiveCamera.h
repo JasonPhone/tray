@@ -24,4 +24,6 @@ class PerspectiveCamera : public ProjectiveCamera {
  private:
 
 };
+
+PerspectiveCamera* createPerspectiveCamera(const Params& params);
 }  // namespace TRay

@@ -15,7 +15,7 @@
 #include "core/stringformat.h"
 
 namespace TRay {
-/// @brief Statstics are stored in each thread temporarily, and
+/// @brief Statistics are stored in each thread temporarily, and
 ///        will finally get merged into a global accumulator.
 ///        The accumulator is supposed to be accessed only for
 ///        an existed thread-specific statistic variable.
@@ -72,4 +72,57 @@ class StatsAccumulator {
   static TRay::StatReporter STAT_REPORTER##var(STAT_CB##var);
 
 // void TestFunc();
+
+/**
+ * @brief Profiling uses system call to slice the time, interrupt the working
+ * threads, then accumulate the time some phase lasts. Phases of the thread are
+ * described with an `uint32_t`, each bit to indicate if one state is active.
+ * They form a stack-like hierarchy, which is NOT defined by calling, but the
+ * declaration order of phases below.
+ * @note Nice timer is unavailable on Win, so profiling is currently
+ * unavailable.
+ */
+// using prof_state_bit = std::uint32_t;
+// enum class Prof {
+//   SceneConstruction,
+//   AccelConstruction,
+//   IntegratorRender,
+//   SamplerIntegratorLi,
+//   DirectLighting,
+//   AccelIntersect,
+//   AccelIntersectP,
+//   TriIntersect,
+//   TriIntersectP,
+//   ComputeScatteringFuncs,
+//   GenerateCameraRay,
+//   BrdfEvaluation,
+//   NProfStates
+// };
+
+// extern thread_local prof_state_bit profiler_state;
+// inline prof_state_bit currentProfilerState() { return profiler_state; }
+// inline prof_state_bit profileStateBit(Prof p) { return (1ull << (int)p); }
+// void initProfiler();
+// void suspendProfiler();
+// void resumeProfiler();
+// void profilerWorkerThreadInit();
+// void reportProfilerResults(FILE *dest);
+// void clearProfiler();
+// void cleanupProfiler();
+// class ProfilePhase {
+//  public:
+//   ProfilePhase(Prof p) {
+//     state_bit_ = (1 << (int)p);
+//     // If is repeating call.
+//     reset_ = (profiler_state & state_bit_) == 0;
+//     profiler_state |= state_bit_;
+//   }
+//   ~ProfilePhase() {
+//     if (reset_) profiler_state &= ~state_bit_;
+//   }
+
+//  private:
+//   bool reset_;
+//   prof_state_bit state_bit_;
+// };
 }  // namespace TRay
