@@ -41,7 +41,7 @@ void render_file(const char *path) {
   auto scene = sloader.get_scene();
   auto integrator = sloader.get_integrator();
   integrator->render(*scene);
-  auto resolution = sloader.get_resulotion();
+  auto resolution = sloader.get_resolution();
 
   string fname = sloader.get_camera()->m_film->m_filename;
   sloader.get_camera()->m_film->write_image(1.0, image);

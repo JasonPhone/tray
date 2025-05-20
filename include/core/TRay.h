@@ -51,6 +51,10 @@ using Float = float;
 #define TRAY_L1_CACHELINE_SIZE 64
 #endif
 
+// For parallelism.
+// TODO Move into scene file.
+#define TRAY_N_THREADS 2
+
 namespace TRay {
 // Forward decl.
 // TODO reorder to show the structure
@@ -188,6 +192,8 @@ class WhittedIntegrator;
 class DirectIntegrator;
 // core/MemoryPool.h
 class MemoryPool;
+// loaders/Params
+class Params;
 
 // ---------------------
 
