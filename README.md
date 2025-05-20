@@ -12,52 +12,6 @@ TRay is OK with clang 15.0.7. Some builtin function may fail MSVC.
 
 I dislike build systems, so any related problems please work it out by yourself. I am trying to make it OK on most platforms, by writing (for me) most portable codes.
 
-# Project Structure
-
-```text
-+---.vscode
-+---apps
-|   +---sample_images
-|   +---test
-|   |   \---bin
-|   \---TRay
-|       \---bin
-+---build
-+---extern
-|   +---file_dialog
-|   +---glad
-|   +---GLFW
-|   +---ImGui
-|   +---KHR
-|   \---nlohmann
-+---include
-|   +---accelerators
-|   +---cameras
-|   +---core
-|   +---filters
-|   +---gui
-|   +---integrators
-|   +---lights
-|   +---loaders
-|   +---materials
-|   +---samplers
-|   +---shapes
-|   \---textures
-+---lib
-\---src
-    +---accelerators
-    +---cameras
-    +---core
-    +---filters
-    +---gui
-    +---integrators
-    +---lights
-    +---loaders
-    +---materials
-    +---samplers
-    \---shapes
-```
-
 # Features
 
 ## IO

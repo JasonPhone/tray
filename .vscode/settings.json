@@ -1,4 +1,5 @@
 {
   "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
-  "editor.tabSize": 2
+  "editor.tabSize": 2,
+  "cmake.preferredGenerators": ["Ninja"]
 }

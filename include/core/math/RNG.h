@@ -1,4 +1,5 @@
 #pragma once
+#include <algorithm>
 #include "core/TRay.h"
 // #include <random>
 /**
